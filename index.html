@@ -320,6 +320,17 @@
   }
   .reaction-btn:hover{ border-color:var(--gold); color:var(--text-dark); }
   .reaction-btn.active{ background:var(--ink); border-color:var(--ink); color:var(--gold-light); }
+  .reaction-btn.btn-partager{ margin-left:auto; }
+  .reaction-btn.copie{ background:var(--gold); border-color:var(--gold); color:var(--ink); font-weight:700; }
+
+  @keyframes surlignagePulse{
+    0%, 100%{ box-shadow:0 0 0 0 rgba(180,144,63,0); }
+    25%, 75%{ box-shadow:0 0 0 4px rgba(180,144,63,.55); }
+  }
+  .carte-surlignee{
+    animation:surlignagePulse 1.3s ease-in-out 2;
+    border-color:var(--gold) !important;
+  }
   .categorie-bloc{ margin-bottom:44px; }
   .categorie-titre{
     font-size:19px; color:var(--burgundy);
@@ -857,7 +868,8 @@ const ICONES = {
   download: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0-5-5m5 5 5-5M4 21h16"/></svg>',
   eye: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
   pouceHaut: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v11H3V10h4Zm4-3 1-6 2 1c1 .5 1.5 1.5 1.3 2.5L14.5 9H20a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18.4 21H11a2 2 0 0 1-2-2V11c0-.6.2-1.2.6-1.6L11 7Z"/></svg>',
-  pouceBas: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleY(-1)"><path d="M7 10v11H3V10h4Zm4-3 1-6 2 1c1 .5 1.5 1.5 1.3 2.5L14.5 9H20a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18.4 21H11a2 2 0 0 1-2-2V11c0-.6.2-1.2.6-1.6L11 7Z"/></svg>'
+  pouceBas: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleY(-1)"><path d="M7 10v11H3V10h4Zm4-3 1-6 2 1c1 .5 1.5 1.5 1.3 2.5L14.5 9H20a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18.4 21H11a2 2 0 0 1-2-2V11c0-.6.2-1.2.6-1.6L11 7Z"/></svg>',
+  partager: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>'
 };
 
 /* ---------- "Nouveau" : mémorisé dans le navigateur du visiteur ---------- */
@@ -909,14 +921,15 @@ function voter(id, type){
 }
 
 /* ---------- Rendu : cartes PDF ---------- */
-function carteHtmlPdf(doc){
+function carteHtmlPdf(doc, contexte){
+  contexte = contexte || 'defaut';
   const tags = (doc.motsCles || []).map(t => `<span class="tag">${t}</span>`).join('');
   const badge = estNouveau(doc.id) ? `<span class="badge-new" data-badge-id="${doc.id}">Nouveau</span>` : '';
   const reaction = obtenirReactionArticle(doc.id);
   const lienVue = lienVisualisationDrive(doc.lienDrive);
   const apercu = lienApercuImageDrive(doc.lienDrive);
   return `
-    <div class="pdf-card">
+    <div class="pdf-card" id="carte-${contexte}-${doc.id}">
       <div class="doc-thumb-wrap">
         <a href="${lienVue}" target="_blank" rel="noopener" onclick="marquerCommeVu('${doc.id}')">
           <img class="doc-thumb" src="${apercu}" alt="Aperçu — ${doc.titre}" loading="lazy" onerror="this.closest('.doc-thumb-wrap').remove()">
@@ -938,19 +951,22 @@ function carteHtmlPdf(doc){
           <button type="button" class="reaction-btn ${reaction.monVote==='dislike' ? 'active':''}" data-dislike-btn="${doc.id}" onclick="voter('${doc.id}','dislike')">
             ${ICONES.pouceBas} <span data-dislike-count="${doc.id}">${reaction.dislikes}</span>
           </button>
+          <button type="button" class="reaction-btn btn-partager" onclick="copierLien('article','${doc.id}', this)">
+            ${ICONES.partager} Partager
+          </button>
         </div>
         <div class="doc-date-pub">Publié le ${doc.date || '—'}</div>
       </div>
     </div>`;
 }
 
-function afficherPdfDans(elementId, liste){
+function afficherPdfDans(elementId, liste, contexte){
   const el = document.getElementById(elementId);
   if(!liste || liste.length === 0){
     el.innerHTML = `<div class="empty-note">Aucun document pour le moment.</div>`;
     return;
   }
-  el.innerHTML = liste.map(carteHtmlPdf).join('');
+  el.innerHTML = liste.map(doc => carteHtmlPdf(doc, contexte)).join('');
 }
 
 /* ---------- Rendu : onglet Articles, classé par section ---------- */
@@ -963,7 +979,7 @@ function afficherArticlesParCategorie(){
     return `
       <div class="categorie-bloc">
         <h3 class="categorie-titre">${cat}</h3>
-        <div class="pdf-grid">${docs.map(carteHtmlPdf).join('')}</div>
+        <div class="pdf-grid">${docs.map(d => carteHtmlPdf(d, 'articles')).join('')}</div>
       </div>`;
   }).join('');
   el.innerHTML = blocs || `<div class="empty-note">Aucun article pour le moment.</div>`;
@@ -1000,7 +1016,7 @@ function afficherEtudes(){
     const badge = index === 0 ? `<span class="badge-new">Nouvelle étude</span>` : '';
     const reaction = obtenirReactionArticle(e.id);
     return `
-    <article class="etude">
+    <article class="etude" id="carte-etude-${e.id}">
       <div class="etude-entete">
         ${badge}
         <div class="etude-date">${e.date || ''}</div>
@@ -1013,6 +1029,9 @@ function afficherEtudes(){
         </button>
         <button type="button" class="reaction-btn ${reaction.monVote==='dislike' ? 'active':''}" data-dislike-btn="${e.id}" onclick="voter('${e.id}','dislike')">
           ${ICONES.pouceBas} <span data-dislike-count="${e.id}">${reaction.dislikes}</span>
+        </button>
+        <button type="button" class="reaction-btn btn-partager" onclick="copierLien('etude','${e.id}', this)">
+          ${ICONES.partager} Partager
         </button>
       </div>
     </article>
@@ -1050,6 +1069,65 @@ function afficherContact(){
   `;
 }
 
+/* ---------- Liens de partage ---------- */
+function genererLienPartage(type, id){
+  return `${location.origin}${location.pathname}${location.search}#${type}=${id}`;
+}
+
+function copierLien(type, id, boutonEl){
+  const lien = genererLienPartage(type, id);
+  const succes = function(){
+    if(!boutonEl) return;
+    const original = boutonEl.innerHTML;
+    boutonEl.innerHTML = '✓ Lien copié !';
+    boutonEl.classList.add('copie');
+    setTimeout(function(){
+      boutonEl.innerHTML = original;
+      boutonEl.classList.remove('copie');
+    }, 2200);
+  };
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(lien).then(succes).catch(function(){ copierLienSecours(lien, succes); });
+  } else {
+    copierLienSecours(lien, succes);
+  }
+}
+
+function copierLienSecours(lien, callback){
+  const zone = document.createElement('textarea');
+  zone.value = lien;
+  zone.style.position = 'fixed';
+  zone.style.opacity = '0';
+  document.body.appendChild(zone);
+  zone.select();
+  try{ document.execCommand('copy'); callback(); } catch(e){ /* rien à faire */ }
+  document.body.removeChild(zone);
+}
+
+function surlignerCarte(elementId){
+  const el = document.getElementById(elementId);
+  if(!el) return;
+  setTimeout(function(){
+    el.scrollIntoView({ behavior:'smooth', block:'center' });
+    el.classList.add('carte-surlignee');
+    setTimeout(function(){ el.classList.remove('carte-surlignee'); }, 2600);
+  }, 200);
+}
+
+function ouvrirLienPartageRecu(){
+  const correspondance = location.hash.match(/^#(article|etude)=(.+)$/);
+  if(!correspondance) return;
+  const type = correspondance[1];
+  const id = decodeURIComponent(correspondance[2]);
+  if(type === 'article'){
+    afficherOnglet('articles');
+    surlignerCarte('carte-articles-' + id);
+  } else if(type === 'etude'){
+    afficherOnglet('etude');
+    surlignerCarte('carte-etude-' + id);
+  }
+}
+
 /* ---------- Navigation par onglets ---------- */
 function afficherOnglet(nom){
   effacerRecherche(false);
@@ -1080,7 +1158,7 @@ function lancerRecherche(){
   document.getElementById('resultats-souscritre').textContent =
     `${pdfTrouves.length} document(s), ${etudesTrouvees.length} étude(s) trouvée(s).`;
 
-  afficherPdfDans('resultats-pdf', pdfTrouves);
+  afficherPdfDans('resultats-pdf', pdfTrouves, 'resultats');
 
   const elEtudes = document.getElementById('resultats-etudes');
   elEtudes.innerHTML = etudesTrouvees.length === 0 ? '' : etudesTrouvees.map(e => `
@@ -1162,7 +1240,7 @@ function initialiserOptionsLecture(){
 }
 
 /* ---------- Initialisation ---------- */
-afficherPdfDans('liste-pdf', PDF_DOCUMENTS);
+afficherPdfDans('liste-pdf', PDF_DOCUMENTS, 'accueil');
 afficherArticlesParCategorie();
 afficherVideos();
 afficherEtudes();
@@ -1171,6 +1249,7 @@ afficherVision();
 afficherContact();
 document.getElementById('annee-courante').textContent = new Date().getFullYear();
 initialiserOptionsLecture();
+ouvrirLienPartageRecu();
 </script>
 
 </body>
