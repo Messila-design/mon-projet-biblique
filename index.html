@@ -7,7 +7,7 @@
 <title>Le Centre de Formation Laméd</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!--
 ====================================================================
@@ -56,7 +56,7 @@
     --text-onink-soft:#B8B3D6;
     --font-display:'Lora', Georgia, serif;
     --font-body:'Lora', Georgia, serif;
-    --font-mono:'Space Mono', monospace;
+    --font-mono:'Inter', -apple-system, sans-serif;
     --radius:2px;
     --shadow-card: 0 1px 2px rgba(27,32,54,0.08), 0 6px 20px rgba(27,32,54,0.06);
   }
@@ -121,7 +121,7 @@
     border-bottom:2px solid transparent;
     transition:.15s;
   }
-  nav.tabs button:hover{ color:var(--text-onink); }
+  nav.tabs button:hover{ color:var(--text-onink); border-bottom-color:var(--gold-light); }
   nav.tabs button.active{
     color:var(--gold-light);
     border-bottom-color:var(--gold);
@@ -381,8 +381,67 @@
   .etude h3{ font-size:21px; margin:6px 0 14px; }
   .etude .etude-corps{ font-size:15.5px; color:var(--text-dark); }
   .etude .etude-corps p{ margin:0 0 1em; }
+  .etude-layout{
+    display:grid; grid-template-columns:1fr 230px; gap:44px; align-items:start;
+  }
+  .etude-toc{
+    position:sticky; top:90px;
+    border-left:2px solid var(--gold);
+    padding:4px 0 4px 18px;
+  }
+  .etude-toc-label{
+    font-family:var(--font-mono); font-weight:600; font-size:11px;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--gold);
+    margin-bottom:12px;
+  }
+  .etude-toc ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .etude-toc ul.etude-toc-sous{ margin-top:8px; padding-left:14px; border-left:1px solid var(--parchment-dark); }
+  .etude-toc a{
+    color:var(--text-soft); text-decoration:none; font-size:13px; line-height:1.4;
+    transition:.15s;
+  }
+  .etude-toc a:hover{ color:var(--burgundy); text-decoration:underline; }
+  @media (max-width:900px){
+    .etude-layout{ grid-template-columns:1fr; }
+    .etude-toc{ position:static; order:-1; margin-bottom:24px; border-left:none; border-top:2px solid var(--gold); padding:14px 0 0; }
+  }
+
+  /* ============ LECTEUR EN LIGNE (PDF) ============ */
+  .lecteur-overlay{
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(21,24,40,.72);
+    padding:32px 18px; overflow-y:auto;
+  }
+  .lecteur-overlay.ouvert{ display:block; }
+  .lecteur-panel{
+    background:var(--parchment); max-width:980px; margin:0 auto;
+    border:1px solid var(--parchment-dark);
+    box-shadow:0 24px 64px rgba(0,0,0,.45);
+  }
+  .lecteur-header{
+    position:sticky; top:0; z-index:2;
+    background:var(--ink);
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:16px 26px;
+  }
+  .lecteur-titre{ font-family:var(--font-display); font-size:18px; font-weight:700; color:#fff; }
+  .lecteur-fermer{
+    background:none; border:1px solid var(--ink-line); color:var(--text-onink);
+    width:32px; height:32px; font-size:15px; flex-shrink:0;
+  }
+  .lecteur-fermer:hover{ border-color:var(--gold); color:var(--gold-light); }
+  .lecteur-corps{ padding:38px 40px 56px; }
+  @media (max-width:720px){
+    .lecteur-corps{ padding:26px 20px 40px; }
+    .lecteur-header{ padding:14px 18px; }
+  }
   .etude .etude-corps a{ color:var(--burgundy); text-decoration:underline; }
   .etude .etude-corps a:hover{ color:var(--gold); }
+  .etude .etude-corps h3{
+    font-size:21px; color:var(--ink); margin:1.8em 0 .7em;
+    border-bottom:2px solid var(--gold); padding-bottom:8px;
+  }
+  .etude .etude-corps h3:first-child{ margin-top:0; }
   .etude .etude-corps h4{
     font-size:16.5px; color:var(--burgundy); margin:1.6em 0 .6em;
   }
@@ -650,6 +709,17 @@
   <div class="colophon-bottom">© <span id="annee-courante"></span> Centre de Formation Laméd</div>
 </footer>
 
+<!-- ================= LECTEUR EN LIGNE (PDF avec table des matières) ================= -->
+<div id="lecteur-pdf" class="lecteur-overlay" onclick="if(event.target===this) fermerLecteur()">
+  <div class="lecteur-panel">
+    <div class="lecteur-header">
+      <div class="lecteur-titre" id="lecteur-titre"></div>
+      <button type="button" class="lecteur-fermer" onclick="fermerLecteur()" aria-label="Fermer la lecture">✕</button>
+    </div>
+    <div class="lecteur-corps" id="lecteur-corps"></div>
+  </div>
+</div>
+
 
 <script>
 /* ====================================================================
@@ -681,7 +751,240 @@ const PDF_DOCUMENTS = [
     motsCles: ["tradition", "torah", "philosophie", "ancêtres"],
     categorie: "Doctrines",
     lienDrive: "https://drive.google.com/file/d/1_NFxiMU25P8S0MTtO-Sxd6f4QsFDm_Za/view?usp=drive_link",
-    date: "03/07/2026"
+    date: "03/07/2026",
+    contenuHtml: `
+      <blockquote>
+        <p>Un peuple qui a tendance à conserver la malédiction des traditions de ses ancêtres, est un peuple qui manque de sens, qui creuse sa propre tombe et qui livre sa progéniture à Satan !</p>
+        <cite>L'Évangile du Mashiah Yéhoshoua</cite>
+      </blockquote>
+      <p>À Elohîm soit toute la Gloire par Mashiah Yéhoshoua notre Seigneur et Père ! Amen !</p>
+      <p><em>Version de bible utilisée : la Bible de Yéhoshoua Ha Mashiah (BYM)</em></p>
+
+      <p>Le plus souvent, nous nous posons les questions de savoir : Où est passé la sainteté du Seigneur dans les assemblées locales ? ou encore : Pourquoi la puissance du Saint-Esprit se fait-elle si rare ? Les réponses à ces interrogations sont simples : nous avons du levain dans nos plats, <em>les traditions humaines</em>. Le combat de l'Église depuis son engendrement par le Seigneur Jésus-Christ a toujours été celui de garder la foi pure et sans compromis, qui a été transmise par le moyen du Seigneur d'abord, ensuite par les apôtres et les prophètes. Cette foi est tellement menacée dans ces derniers temps que nous vivons, qu'il serait primordial de s'affermir davantage dans les promesses d'Elohîm et dans la vérité de l'Évangile du Seigneur.</p>
+      <p>C'est pourquoi mon désir, c'est qu'au travers de cet article, nous soyons tous bénis et que notre discernement soit aiguisé encore plus, afin de refouler avec force tous enseignements étrangers à la foi biblique.</p>
+
+      <h3>I- Qu'est-ce qu'une tradition ?</h3>
+      <p>Une tradition se définit comme une doctrine ou une pratique transmise par la parole ou par les œuvres de siècles en siècles. En d'autres termes, elle représente l'ensemble des règles, des cultures, des coutumes ou des enseignements d'une famille, d'un peuple ou d'une nation, transmis de générations en générations.</p>
+      <p>Le mot tradition dérive d'un mot latin <em>tradere</em> qui signifie « transmettre » ou « donner ». Il désigne généralement les croyances, les doctrines, les coutumes, les normes éthiques et morales, ainsi que les valeurs et attitudes culturelles transmises oralement ou par l'exemple.</p>
+      <p>En hébreu biblique, le mot tradition est traduit par <strong>מָסֹרֶת</strong> « <em>macoreth</em> » et désigne le lien pour parler d'une alliance. Nous retrouvons ce mot une seule fois dans l'Écriture, dans le livre du prophète Yehezkel (Ézéchiel) au chapitre 20:37 :</p>
+      <blockquote>
+        <p>Je vous ferai passer sous la verge et je vous introduirai dans le lien de l'alliance.</p>
+        <cite>Yehezkel (Ézéchiel) 20:37</cite>
+      </blockquote>
+      <p>Selon le Seigneur, la tradition est un lien, une corde qui relie des générations d'humains aux fondateurs, aux géniteurs ou aux chefs de clans ou de familles. Ce lien a pour sceau des habitudes ou des commandements qui ont été donnés et observés au fil des âges.</p>
+      <p>En somme, la tradition est un mode de vie, une empreinte marquée dans les consciences et reflétée par les œuvres quotidiennes. C'est un héritage quelquefois multiforme dont les pratiquants obéissent sans parfois vérifier les sources ou les auteurs de leurs croyances. En d'autres termes, la tradition est le caractère héréditaire propre à un peuple, à une famille ou à une nation. Nous avons par exemple, dans le livre du prophète Yirmeyah (Jérémie) au chapitre 35, l'histoire d'une famille de scribes appelée les Récabites, qui fut louée par YHWH Adonaï à cause de la conservation des ordonnances de leur père Yonadab (Jonadab) fils de Récab.</p>
+      <blockquote>
+        <p>Et je mis devant les fils de la maison des Récabites des coupes pleines de vin, et des calices, et je leur dis : Buvez du vin ! Et ils me répondirent : Nous ne buvons pas de vin, car Yonadab, fils de Récab, notre père, nous a donné cet ordre en disant : Vous ne boirez jamais de vin, ni vous ni vos fils ; vous ne bâtirez aucune maison, vous ne sèmerez aucune semence, vous ne planterez aucune vigne, et n'en aurez pas ; mais vous habiterez sous des tentes toute votre vie, afin que vous viviez longtemps sur la Terre où vous êtes étrangers. Nous avons donc obéi à la voix de Yonadab, fils de Récab, notre père, dans toutes les choses qu'il nous a ordonnées, de sorte que nous n'avons pas bu de vin tous les jours de notre vie, ni nous, ni nos femmes, ni nos fils, ni nos filles. Nous n'avons bâti aucune maison pour demeure, et nous n'avons eu ni vigne, ni champ, ni semence. Mais nous avons habité sous des tentes, nous avons obéi, et nous avons fait selon toutes les choses que Yonadab, notre père, nous a ordonnées (versets 5 à 10). C'est pourquoi Adonaï déclara à la maison des Récabites : Ainsi parle YHWH Tsevaot, l'Elohîm d'Israël : Parce que vous avez obéi au commandement de Yonadab votre père, que vous avez gardé tous ses commandements, et que vous avez fait selon tout ce qu'il vous a ordonné, c'est pourquoi, ainsi parle YHWH Tsevaot, l'Elohîm d'Israël : Yonadab, fils de Récab, ne manquera jamais de descendants qui se tiennent debout devant moi (versets 18 à 19).</p>
+        <cite>Yirmeyah (Jérémie) 35:5-19</cite>
+      </blockquote>
+      <p>L'obéissance aux commandements des parents, soumis au Seigneur, est une grande bénédiction, car cette tradition vient d'Elohîm. C'est pourquoi l'Écriture encourage les enfants à se soumettre à leurs parents dans la justice et la vérité.</p>
+      <blockquote>
+        <p>Enfants, obéissez à vos parents dans le Seigneur, car cela est juste. Honore ton père et ta mère, c'est le premier commandement avec une promesse, afin que tout aille bien pour toi et que tu vives longtemps sur la Terre. Et vous, pères, n'irritez pas vos enfants, mais nourrissez-les jusqu'à maturité par l'éducation et l'avertissement du Seigneur.</p>
+        <cite>Éphésiens 6:1-4</cite>
+      </blockquote>
+      <p>Sans ce fondement dans les familles, nous aurons à faire à des nations entièrement détruites.</p>
+
+      <h3>II- Les traditions d'Elohîm</h3>
+
+      <h4>II-1 La Torah d'Elohîm</h4>
+      <p>Comme nous l'avons déjà dit plus haut, une tradition est un héritage de vie, de commandements prescrits, ou d'habitudes culturelles et morales transmis au fil des âges. En réalité, tout humain est soumis d'une manière ou d'une autre à une tradition : l'être humain est un traditionnel par nature. Notre Elohim et Seigneur Mashiah Yéhoshoua a donné aux êtres humains ses traditions afin qu'ils marchent en conformité avec son Royaume. Dans son plan parfait, Il prit Abraham, fils de Térach, fils de Nachor, fils d'Héber, fils de Sem, fils d'Adam, et lui donna des fils. YHWH lui dit par rapport à ces fils :</p>
+      <blockquote>
+        <p>Sache, sache comme une chose certaine, que tes descendants habiteront 400 ans comme étrangers sur une Terre qui ne leur appartient point, et qu'ils seront asservis aux habitants de la Terre qui les opprimera.</p>
+        <cite>Bereshit (Genèse) 15:13</cite>
+      </blockquote>
+      <p>C'est cette descendance qui fut appelée du nom d'Israël et qui reçut dans le désert, à travers Moshé, la Torah d'Elohim. L'indignation de certaines nations non juives face au choix du Seigneur concernant Israël n'a en effet nullement de sens lorsque nous comprenons la Seigneurie et la volonté d'Adonaï. C'est une indignation sans fondement, car :</p>
+      <blockquote>
+        <p>Notre Elohim est au ciel, Il fait tout ce qu'il veut (Psaumes 115:3). Louez YHWH ! Car YHWH est bon ! Chantez son Nom, car il est agréable ! Car YHWH s'est choisi Yaacov et Israël pour sa possession. Certainement, je sais que YHWH est grand et notre Seigneur est au-dessus de tous les elohim. YHWH fait tout ce qui lui plaît, dans les cieux et sur la Terre, dans la mer et dans tous les abîmes (Tehilim/Psaumes 135:3-6). Il a établi le témoignage en Yaacov, et il a mis la Torah en Israël ; Il a donné cette ordonnance à nos pères, de la faire connaître à leurs fils, pour qu'elle soit connue de la génération future, des fils qui naîtraient, et pour que, lorsqu'ils seront grands, ils la relatent à leurs fils, afin qu'ils mettent leur confiance en Elohim, qu'ils n'oublient point les œuvres d'El, et qu'ils gardent ses commandements.</p>
+        <cite>Tehilim (Psaumes) 78:3-7</cite>
+      </blockquote>
+      <p>En effet, le Seigneur, après avoir fait sortir les hébreux de l'Égypte, les conduisit dans le désert afin de leur faire connaître ses traditions à Lui. Car les habitants de la Terre dont ils devaient prendre possession ne connaissaient pas les voies d'Adonaï. Leur tradition était impure et abominable aux yeux de YHWH. C'est pourquoi Il déclara :</p>
+      <blockquote>
+        <p>Ne vous rendez point impurs par aucune de ces choses, car les nations que je vais chasser devant vous se sont rendues impures par toutes ces choses. Mais quant à vous, vous garderez mes ordonnances et mes jugements, et vous ne ferez aucune de ces abominations, tant celui qui est né dans la Terre que l'étranger qui fait son séjour parmi vous.</p>
+        <cite>Vayiqra (Lévitique) 18:24,26</cite>
+      </blockquote>
+      <p>Leur pèlerinage dans le désert, ainsi que leur établissement à Kena'an, avaient pour but de révéler et d'enseigner aux nations la tradition pure, la Torah de YHWH. Celle-ci était subdivisée en trois autres torahs, dans lesquelles on retrouve plusieurs préceptes : 613 commandements environ.</p>
+      <p><strong>La torah morale :</strong> cette torah, avant d'être officiellement mise sur des tables de pierre et des lettres pour être enseignée au peuple, était déjà inscrite et est toujours inscrite dans les consciences humaines : c'est l'œuvre unique de YHWH. Cette torah est le fondement de toutes les nations. Aucune nation ne peut échapper à cette torah, même la nation la plus assombrie par le mal en garde en elle une, voire quelques préceptes justes liés à celle-ci. La preuve en est que la plupart des lois juridiques qui régissent nos nations sont issues de la torah. Avant Moshé, la torah morale était déjà là, mais non promulguée officiellement. Par exemple, à Guérar, en terre des Philistins, où Dagon était adoré, il était interdit de prendre la femme de son prochain du vivant de son mari. Lorsque Abraham monta à Guérar avec Sarah sa femme, Elohim ne permit pas à Abimélek de s'approcher de Sarah, sous peine de jugement.</p>
+      <blockquote>
+        <p>Abimélek appela Abraham et lui dit : Que nous as-tu fait ? En quoi ai-je péché contre toi, pour que tu fasses venir sur moi et sur mon royaume un si grand péché ? Tu as fait à mon égard une action qui ne se fait pas !</p>
+        <cite>Bereshit (Genèse) 20:9</cite>
+      </blockquote>
+      <p>Cependant, ni Abimélek ni son peuple ne craignaient YHWH, car :</p>
+      <blockquote>
+        <p>Abraham dit : C'est parce que je disais : Il n'y a sûrement aucune crainte d'Elohîm dans cet endroit, et ils me tueront à cause de ma femme.</p>
+        <cite>Bereshit (Genèse) 20:11</cite>
+      </blockquote>
+      <p>En examinant de plus près, nous voyons clairement que ce peuple de Guérar avait la connaissance du péché de l'adultère.</p>
+      <p>La torah morale révèle la nature du Seigneur : Juste, Saint, Miséricorde, Vérité, etc. Tout humain descendant d'Adam a hérité de Lui une portion de son être. Voilà pourquoi il est écrit, dans Romains 2:13-15, concernant les gentils (expression employée pour parler des nations sans la loi et la crainte d'Elohim), qu'ils font naturellement les choses qui y sont écrites dans la torah, sans pourtant avoir la torah écrite entre leurs mains. Elle est établie :</p>
+      <blockquote>
+        <p>… pour les violeurs de la torah et les réfractaires, pour les impies et les pécheurs, pour les non-saints et les profanes, pour les parricides et les meurtriers, pour les hommes qui se prostituent, pour les homosexuels, pour les marchands d'esclaves, pour les menteurs, pour les parjures et pour tout ce qui s'oppose à la saine doctrine.</p>
+        <cite>1 Timothée 2:9-10</cite>
+      </blockquote>
+      <p>Elohim a mis par écrit cette torah afin d'enseigner aux hébreux, ainsi qu'aux nations, comment Lui plaire, et quelles sont toutes les abominations que ses yeux ne peuvent supporter : l'idolâtrie, la relation sexuelle illicite, l'inceste, l'adultère, la rébellion, la zoophilie, le mensonge, l'orgueil, etc. (lire Vayiqra 18,19 ; Shemot/Exode 20:1-17 ; Devarim/Deutéronome 4:1-10). Il n'est possible d'accomplir parfaitement cette torah qu'en Yéhoshoua Mashiah !</p>
+      <blockquote>
+        <p>Car ce qui était impossible à la torah, parce qu'elle était faible à cause de la chair, Elohîm, en envoyant son propre Fils dans une chair semblable à celle du péché et au sujet du péché, a condamné le péché dans la chair, afin que l'ordonnance de la torah soit accomplie en nous, qui ne marchons pas selon la chair, mais selon l'Esprit.</p>
+        <cite>Romains 8:3-4</cite>
+      </blockquote>
+      <p><strong>La torah sociale ou civile juive :</strong> c'est la torah qui coordonnait le fonctionnement du peuple hébreu sur plusieurs plans.</p>
+      <p><em>Sur le plan militaire :</em> en ce temps-là, seuls les mâles âgés de 20 ans et plus étaient enrôlés pour la guerre. Aucune femme n'allait en guerre. C'est pourquoi Elohim interdisait :</p>
+      <blockquote>
+        <p>Que l'équipement d'un homme fort ne soit pas sur une femme, et qu'un homme fort ne s'habille pas avec un vêtement de femme, car quiconque fait ces choses est en abomination à YHWH, ton Elohîm.</p>
+        <cite>Deutéronome 22:5</cite>
+      </blockquote>
+      <p>Quoique ce passage soit souvent mal compris à cause d'une interprétation hors contexte, et parfois de traductions malencontreuses, qui ont occasionné des erreurs doctrinales considérables, YHWH interdisait simplement le mélange (travestisme). Lire Bamidbar (Nombres) 1:1-47.</p>
+      <p><em>Sur le plan alimentaire :</em> les hébreux avaient un code alimentaire particulier, différent des nations. YHWH ordonna en ce temps-là de ne pas consommer certaines espèces animales, comme l'aigle, le vautour, le chameau, les grenouilles, le hérisson, etc. (voir Vayiqra 11). C'était une prescription strictement juive !</p>
+      <p>Tout citer n'est pas forcément nécessaire. Toutefois, outre cela, il y avait aussi des impôts qui étaient collectés pour nourrir les lévites et les rois, parmi lesquels les dîmes et les offrandes. Les dîmes étaient réservées exclusivement à la tribu de Lévi. C'est une tradition qu'Elohim avait donnée aux descendants d'Aaron, d'après ce qui est écrit :</p>
+      <blockquote>
+        <p>Et ceux des fils de Lévi qui reçoivent la prêtrise ont en effet l'ordre, selon la torah, de prélever la dîme sur le peuple, c'est-à-dire sur leurs frères, bien qu'ils soient sortis des reins d'Abraham.</p>
+        <cite>Hébreux 7:5</cite>
+      </blockquote>
+      <p>Cet ordre n'a nullement été donné aux gabonais, aux français, aux congolais, aux belges ou aux américains, mais à la tribu de Lévi seule ! Lire Bamidbar 14:22-29, 18:21-32, 1 Samuel 8:14-15.</p>
+      <p><strong>La torah cérémonielle :</strong> c'est la torah liée au culte, dont seuls les prêtres lévites, de la semence d'Aaron, avaient été choisis pour exercer la prêtrise devant Adonaï.</p>
+      <blockquote>
+        <p>Et toi, fais approcher de toi Aaron ton frère et ses fils avec lui, du milieu des fils d'Israël, pour qu'ils remplissent les fonctions de la prêtrise pour moi : Aaron, Nadab et Abihou, Éléazar et Ithamar, fils d'Aaron.</p>
+        <cite>Shemot (Exode) 28:1</cite>
+      </blockquote>
+      <p>Lire Vayiqra 1 ; 2 ; 3 ; 4 ; 5 ; 6 ; 12 ; 14 ; 15 ; 21. Cette torah a été accomplie à la croix par le Seigneur Yéhoshoua Ha Mashiah : « Car Mashiah est la fin de la torah pour la justice de tout croyant » (Romains 10:4). C'est ce que notre Seigneur Yéhoshoua avait confirmé en disant aux disciples qui se rendaient à Emmaüs :</p>
+      <blockquote>
+        <p>Ce sont ici les paroles que je vous disais lorsque j'étais encore avec vous, qu'il fallait que fût accompli tout ce qui est écrit de moi dans la torah de Moshé, dans les prophètes, et dans les psaumes.</p>
+        <cite>Loukas (Luc) 24:44</cite>
+      </blockquote>
+      <p>Toute la torah cérémonielle que Moshé a reçue révélait dans l'ombre le sacrifice du Mashiah. Aujourd'hui, en réalité, nous sommes censés mieux comprendre les Écritures, car Mashiah nous a déjà ouvert l'esprit par le Saint-Esprit. C'est par cela que nous comprenons mieux pourquoi les dîmes ne sont plus d'actualité. « Car la prêtrise étant changée, le changement de la torah aussi devient une nécessité » (Hébreux 7:12).</p>
+
+      <h4>II-2 L'Évangile du Mashiah</h4>
+      <p>Tout d'abord, comprenons que l'expression « évangile », du grec εὐαγγέλιον (<em>euaggelion</em>), était employée au premier siècle pour désigner « la Bonne nouvelle » du Seigneur Yéhoshoua Mashiah. Toutefois, de façon générale, nous entendons souvent parler de nouvelles de toutes sortes : annoncer à des parents qu'on a décroché son premier emploi, ou qu'on a été promu, qu'un enfant est né, ou qu'un parent a survécu à un accident, etc. Ce sont autant de bonnes nouvelles qui peuvent réjouir le cœur de ceux qui les entendent. Mais la particularité de l'Évangile du Mashiah, c'est que cette bonne nouvelle repose sur le SALUT ! Un salut qu'aucune tradition humaine ne peut posséder ni engendrer, car il est céleste :</p>
+      <blockquote>
+        <p>Or il y avait dans cette même contrée des bergers, vivant dans les champs et veillant sur leur troupeau pendant les veilles de la nuit. Et voici qu'un ange du Seigneur se tint au-dessus d'eux, et la gloire du Seigneur resplendit autour d'eux, et ils furent pris d'une grande peur. Mais l'ange leur dit : N'ayez pas peur, car voici, je vous prêche une bonne nouvelle qui sera pour tout le peuple une grande joie : c'est qu'aujourd'hui, dans la ville de David, il vous est né un Sauveur qui est Mashiah, le Seigneur.</p>
+        <cite>Loukas (Luc) 2:8-11</cite>
+      </blockquote>
+      <p>La Bonne nouvelle, l'Évangile, présente le Sauveur aux humains. Raison pour laquelle :</p>
+      <blockquote>
+        <p>Lui que nous annonçons, avertissant tout être humain et enseignant tout être humain en toute sagesse, afin de présenter tout être humain parfait en Mashiah Yéhoshoua.</p>
+        <cite>Colossiens 1:28</cite>
+      </blockquote>
+      <p>L'Évangile a un fondement et un Roi : Yehowshuw'a Ha Mashiyach (Jésus-Christ). Il est aussi appelé l'Évangile du Royaume d'Elohim. « Le commencement de l'Évangile de Yéhoshoua Mashiah, le Fils d'Elohîm » (Yohanan/Jean 1:1) :</p>
+      <blockquote>
+        <p>Or, après que Yohanan eut été mis en prison, Yéhoshoua alla dans la Galilée, prêchant l'Évangile du Royaume d'Elohîm, et disant : Le temps est accompli et le Royaume d'Elohîm s'est approché. Repentez-vous et croyez à l'Évangile.</p>
+        <cite>Yohanan (Jean) 1:14-15</cite>
+      </blockquote>
+      <p>L'Évangile de Yéhoshoua est celui d'Elohîm, il n'y a pas de différence. Car, en tant que Fils d'Elohim, il est héritier. Toute la structure et le fondement de la doctrine chrétienne reposent sur LUI et en LUI, et c'est par LUI que les apôtres ont bâti des disciples. L'Évangile du Mashiah est l'héritage de tous ceux qui ont cru en Elohim par son moyen, et qui marchent selon ce que YHWH Elohim a ordonné.</p>
+      <blockquote>
+        <p>Étant allés donc, faites de toutes les nations des disciples, les baptisant pour le nom du Père et du Fils et du Saint-Esprit, leur enseignant à garder tout ce que je vous ai ordonné. Et voici, moi je suis avec vous tous les jours jusqu'à l'achèvement de l'âge. Amen !</p>
+        <cite>Matthieu 28:19-20</cite>
+      </blockquote>
+      <p>Ces enseignements du Seigneur, ainsi que ceux des apôtres et des prophètes, constituent la doctrine, la foi qui nous a été transmise une fois pour toutes. Elle représente les traditions de YHWH. L'apôtre Paulus, dans ses lettres aux Corinthiens, demandera aux frères de marcher selon les traditions qu'il avait reçues du Seigneur.</p>
+      <blockquote>
+        <p>Or je vous loue, frères, de ce qu'en toutes choses vous vous souvenez de moi, et de ce que vous retenez les traditions telles que je vous les ai transmises.</p>
+        <cite>1 Corinthiens 11:2</cite>
+      </blockquote>
+      <p>Mais encore : « Nous vous ordonnons, frères, au nom de notre Seigneur Yéhoshoua Mashiah, de vous éloigner de tout frère qui marche dans le désordre et non selon la tradition qu'il a reçue de nous » (2 Thessaloniciens 3:6).</p>
+      <p><strong>Traditions selon lesquelles :</strong></p>
+      <ul>
+        <li>Yéhoshoua Mashiah est YHWH ELOHIM, le Créateur de toute chose (Genèse 1:1 ; Jérémie 10:10-12 ; Colossiens 1:15-20 ; Hébreux 1:8-12)</li>
+        <li>Yéhoshoua est la Voie, la Vérité et la Vie (Jean 14:6)</li>
+        <li>L'Évangile est basé sur la mort et la résurrection du Mashiah (1 Corinthiens 15:1-12 ; Galates 1:8)</li>
+        <li>Yéhoshoua est le Seul médiateur entre YHWH et les humains (1 Timothée 2:5-6)</li>
+        <li>Yéhoshoua est YHWH fait chair (1 Timothée 3:16 ; Jean 1:1-2,14)</li>
+        <li>Tout disciple a en lui la notion du travail et de l'autonomie financière (2 Thessaloniciens 3:6-12 ; Actes 18:2-3, 20:33-35)</li>
+        <li>YHWH est contre le divorce (1 Corinthiens 7:10-11 ; Romains 7:1-3)</li>
+        <li>Il n'y a qu'un Seul Elohim, Père et Seigneur (1 Corinthiens 8:3-6 ; Malachie 1:6)</li>
+        <li>La sanctification est le fondement de tout croyant en Mashiah (1 Pierre 1:15-16 ; Hébreux 12:14)</li>
+        <li>Nous attendons notre véritable domicile et le retour de notre Seigneur pour les noces (Philippiens 3:20-21 ; 1 Corinthiens 15:51-58)</li>
+      </ul>
+      <p>L'Évangile de notre Seigneur, notre Évangile, notre tradition, est christocentrique. Tout livre ou enseignement qui ne suit pas de près la parole d'Elohîm doit être banni avec force :</p>
+      <blockquote>
+        <p>Mais c'est à cause de vous, frères, que j'ai tourné figurément ces choses sur moi et sur Apollos, afin qu'en nous vous appreniez à ne pas penser au-delà de ce qui est écrit, de peur que, individuellement, vous ne vous enfliez en faveur de l'un contre l'autre.</p>
+        <cite>1 Corinthiens 4:6</cite>
+      </blockquote>
+      <p>Mais aussi : « Si quelqu'un enseigne une autre doctrine et ne vient pas aux saines paroles de notre Seigneur Yéhoshoua Mashiah, et à la doctrine qui est selon la piété, il est enflé d'orgueil, il ne sait rien, mais c'est un malade qui s'occupe de débats et de querelles au sujet de choses vides et insignifiantes, d'où naissent l'envie, les querelles, les médisances et les mauvais soupçons, les vaines disputes de gens à la pensée corrompue et privés de la vérité, qui pensent que la piété est une source de gain. Sépare-toi de ces sortes de gens » (1 Timothée 6:3-5).</p>
+      <p>En tant qu'ambassadeurs du Royaume du Mashiah, nous devons vraiment réaliser notre responsabilité : celle de garder et d'enseigner les traditions d'Elohîm aux nations. Car les traditions des humains enseignent une fausse adoration et présentent la doctrine de la Ténèbre.</p>
+      <blockquote>
+        <p>Ce peuple s'approche de moi de sa bouche et m'honore des lèvres, mais son cœur est très éloigné de moi. Mais ils m'adorent en vain, en enseignant des doctrines qui ne sont que des commandements d'humains.</p>
+        <cite>Matthieu 15:8-9</cite>
+      </blockquote>
+
+      <h3>III- Les traditions des humains</h3>
+      <blockquote>
+        <p>Prenez garde que personne ne fasse de vous sa proie par le moyen de la philosophie et d'une vaine tromperie, selon la tradition des humains, selon les rudiments du monde, et non selon Mashiah. Parce qu'en lui habite corporellement toute la plénitude de la divinité.</p>
+        <cite>Colossiens 2:8-9</cite>
+      </blockquote>
+
+      <h4>III-1 Le culte des ancêtres</h4>
+      <p>Comme nous l'avons déjà dit plus haut, une tradition est un héritage transmis de générations en générations. Il peut être culinaire, comportemental, vestimentaire ou oral. Ainsi, la tradition humaine est celle qui est de l'ordre humain et de la sagesse humaine. Quoiqu'on puisse y retrouver une apparence de piété, la base est très éloignée d'Èlohiym. Précisons que tout être humain est traditionnel. En effet, nous avons hérité de certaines choses qui ne sont pas mauvaises en soi, par exemple l'art culinaire ou le respect du prochain. Mais lorsque nous parlons du culte des ancêtres, il s'agit de l'adoration hostile à la foi chrétienne qui était pratiquée par ces derniers.</p>
+      <p>Dans 2 Timothée 1:3, l'apôtre Paulos affirmait qu'il servait Èlohiym depuis ses ancêtres. Ces derniers étaient des hommes et des femmes qui marchaient avec Èlohiym : entre autres les patriarches, certains rois comme David, Ezéchias, des juges et bien d'autres, dont le témoignage est digne d'être reçu (Hébreux 11). L'apôtre ne dit nullement qu'il invoquait ou adorait ses ancêtres, mais au contraire, il marchait suivant la voie de ses pères, qui était conforme à Èlohiym. On entend un peu partout, et particulièrement en Afrique centrale (cas du Gabon), qu'il nous faut un retour aux sources, aux ancêtres. Mais de quels ancêtres s'agit-il ? Qui invoquaient-ils ? Quel était leur culte ? Peut-on recevoir leur témoignage comme étant digne de foi ?</p>
+      <p>En réalité, s'il faut être logique, tout être humain descend d'un seul : Adam ; et Adam, le premier être humain, l'ancêtre et le père de nous tous, invoquait YHWH, l'Èlohiym qui a fait toute chose et par qui sont toutes choses. Ce retour à l'ancestralité, en Afrique ou partout dans le monde, est en réalité un retour non vers l'Èlohiym Véritable, mais vers d'autres horizons : les ténèbres. Car nos ancêtres n'adoraient pas le vrai Seigneur et Èlohiym. C'est pourquoi il est écrit :</p>
+      <blockquote>
+        <p>Et si vous invoquez le Père qui juge de façon impartiale selon l'œuvre de chacun, conduisez-vous avec crainte pendant le temps de votre demeure en terre étrangère, sachant que ce n'est pas par des choses corruptibles — argent ou or — que vous avez été rachetés hors de votre vaine manière de vivre que vos ancêtres vous avaient transmise.</p>
+        <cite>1 Pierre 1:17-18</cite>
+      </blockquote>
+      <p>Petros affirmait clairement que l'héritage des ancêtres est une vanité, une corruption. Parmi ces vaines manières de vivre, nous avons les rites initiatiques et les coutumes. Au Gabon, on retrouve plusieurs rites et coutumes, comme : la dot, le Mwuri, le Njembé, le Njobi, le Broumba Yano, le Melane, le Bwuti, etc.</p>
+      <p>Le but n'est pas de décrire point par point ces traditions, mais de faire ressortir le mal des rites que pratiquaient ces ancêtres traditionnels de nos familles. En effet, toutes nos ethnies ont hérité de rites ancestraux différents. Malgré leurs divergences, elles ont toutes un seul point commun : l'initiation des profanes (l'admission de quelqu'un au culte d'une divinité, à la connaissance de ses mystères). Ces initiations sont un moyen par lequel certains entrent, directement ou indirectement, en contact avec l'au-delà, avec le monde des esprits, souvent appelés les génies (des esprits mauvais, des démons). Invocation des morts, prise de plantes aphrodisiaques comme les racines de l'iboga, maquillage au kaolin, commerce des âmes (la dot), cannibalisme, écorces de bois, lavage du corps, incisions du corps et danses symboliques sont au cœur de ces rites. Les traditions de nos ancêtres ont en réalité pour fondement l'idolâtrie et la sorcellerie. Plusieurs divinités sont invoquées lors de cérémonies parfois nocturnes. Choses qui ne sont pas étranges en Afrique, car nous avons grandi au milieu d'elles.</p>
+      <blockquote>
+        <p>Qu'on ne trouve au milieu de toi personne qui fasse passer par le feu son fils ou sa fille, personne qui pratique la divination, le spiritisme, la sorcellerie, qui dit la bonne aventure, ni d'enchanteur qui fait des incantations, personne qui consulte ceux qui évoquent les morts et ceux qui ont un esprit de divination, personne qui consulte les morts.</p>
+        <cite>Deutéronome 18:10-11</cite>
+      </blockquote>
+      <p>D'ailleurs : « Que dis-je donc ? Que l'idole soit quelque chose ? Ou que ce qui est sacrifié à l'idole soit quelque chose ? Mais les choses que les nations sacrifient, elles les sacrifient à des démons et non à Elohîm. Or je ne veux pas que vous deveniez les associés des démons. Vous ne pouvez pas boire la coupe du Seigneur et la coupe des démons » (1 Corinthiens 10:19-21).</p>
+      <p>La parole du Mashiah est claire, frères et sœurs : soutenir les rites de nos pays ou la dot reviendrait vraiment à résister au Seigneur. Nous savons que, selon les Écritures, les chrétiens ne pratiquent pas la dot, car elle est étrangère à la tradition du Seigneur et repose entièrement sur un héritage ancestral sombre. C'est pourquoi Adonaï YHWH avait dit :</p>
+      <blockquote>
+        <p>N'apprenez pas la voie des nations… Car les ordonnances des peuples sont une vanité.</p>
+        <cite>Jérémie 10:2-3</cite>
+      </blockquote>
+      <p>Certes, nous retrouvons le mot « dot » dans les écrits bibliques, comme dans Genèse 34:1-19, Deutéronome 22:28-29 ou Exode 22:15-16, mais cela était dans un cadre bien précis : celui de la réparation d'un délit commis. C'était une amende à payer due à un déshonneur (le viol).</p>
+      <p>En Israël, le Seigneur reprochait crûment aux pharisiens et aux scribes d'avoir changé la parole de YHWH au profit de leur tradition, qu'ils appelaient « la tradition des anciens » (Matthieu 15:1-9). En effet, cette tradition des anciens reposait sur le judaïsme. Ce judaïsme se composait de trois livres :</p>
+      <p>Tout d'abord, la bible hébraïque (le Tanakh), constituée de la Torah (les cinq livres de Moshé), des Névi'im (les prophètes) et des Kétouvim (les Hagiographes).</p>
+      <p>Ensuite, le Talmud, composé de deux branches : la Michna et la Guemara. Le Talmud représentait la loi orale qui se transmettait de bouche à oreille. Par crainte que cette loi ne se perde dans l'oubli, des rabbins ont entrepris de la consigner par écrit, ce qui allait s'appeler la « Michna », un corpus immense comprenant des décisions juridiques et des lois touchant à tous les domaines. La « Guemara » est une explication de la Michna et un recueil de discussions et de controverses entre sages à propos des lois, de la philosophie, de la vie quotidienne, des sciences, de la morale… Elle est le fondement de l'autorité des lois et des traditions juives qui furent accumulées pendant sept siècles, depuis -200 jusqu'à environ 500. La Michna et la Guemara forment le Talmud, le livre le plus important de la tradition orale pour le judaïsme.</p>
+      <p>Enfin, la Kabbale, qui regroupe les enseignements mystiques et ésotériques du judaïsme. Les kabbalistes considèrent Elohîm comme une lumière spirituelle infinie qui éclaire l'univers tout entier. Le but de l'âme est de s'élever aussi haut que possible pour tenter de s'approcher de cette source. Ils insistent sur les notions de sainteté du peuple juif, de réparation du monde, de foi dans la rédemption, de croyance en la venue du Messie. Les textes kabbalistiques les plus importants ont été rédigés au Moyen-Âge.</p>
+      <p>Nous vivons vraiment la dernière heure, frères et sœurs. Aujourd'hui, nous voyons dans les « églises » et dans le monde l'invocation des anges gardiens, l'utilisation des épées pendant les cultes chrétiens, des livres sur les sorties astrales, les symboles et images d'animaux, des sectes comme le Mahikari, le Yoga… Toutes ces choses qui ont fortement influencé notre génération par l'occultisme et la sorcellerie tirent pour la plupart leur racine dans la Kabbale. C'est de l'initiation aux puissances ténébreuses ! L'apôtre Paulos, ayant conscience de toutes ces réalités, avertissait les chrétiens crétois de ne pas s'attacher aux fables judaïques, car Èlohiym n'y est pas.</p>
+      <blockquote>
+        <p>Quelqu'un d'entre eux, leur propre prophète, a dit : Les Crétois sont toujours menteurs, de mauvaises bêtes, des ventres paresseux. Ce témoignage est véritable. Motif en raison duquel reprends-les sévèrement, afin qu'ils deviennent sains dans la foi, et qu'ils ne s'attachent pas aux mythes judaïques et aux commandements d'humains qui se détournent de la vérité.</p>
+        <cite>Tite 1:12-14</cite>
+      </blockquote>
+      <p>On comprend mieux pourquoi le Seigneur Yéhoshoua était si tranchant avec les pharisiens et les scribes. Ils avaient embrassé d'autres traditions, outre celles que YHWH leur avait données.</p>
+
+      <h4>III-2 Les philosophies</h4>
+      <p>La philosophie, du grec ancien φιλοσοφία / <em>philosophía</em> (composé de φιλέω / <em>philéô</em>, « aimer », et de σοφία / <em>sophía</em>, « sagesse, savoir »), signifie littéralement « amour du savoir » et communément « amour de la sagesse ». C'est une démarche qui vise à la compréhension du monde et de la vie par une réflexion rationnelle et critique, une recherche de la vérité guidée par un questionnement sur le monde, la connaissance et l'existence humaine.</p>
+      <p>La philosophie grecque a largement influencé les civilisations anciennes et modernes. C'est un héritage qui a traversé les siècles. Elle dispose en elle-même de plusieurs courants de pensée, comme le stoïcisme, l'épicurisme, le bogomilisme, le marxisme, etc. Lorsque nous examinons de près ces courants de pensée, ils sont malheureusement très éloignés de la foi biblique.</p>
+      <p>Tout d'abord, constatons que les Grecs étaient très idolâtres et adoraient plusieurs divinités. À Athènes, l'apôtre Paulos avait fait ce constat :</p>
+      <blockquote>
+        <p>Mais pendant que Paulos les attendait à Athènes, son esprit s'irritait en lui-même, en voyant que cette ville était pleine d'idoles.</p>
+        <cite>Actes 17:16</cite>
+      </blockquote>
+      <p>Ensuite, la conversation de l'apôtre Paulos avec les philosophes épicuriens et stoïciens témoigne de l'absence du Salut et de la connaissance précise et correcte du vrai Elohîm et Seigneur. Car lorsque Paulos leur annonça la résurrection d'entre les morts :</p>
+      <blockquote>
+        <p>Mais lorsqu'ils entendirent parler de la résurrection des morts, en effet les uns se moquèrent, et les autres dirent : Nous t'entendrons là-dessus une autre fois.</p>
+        <cite>Actes 17:32</cite>
+      </blockquote>
+      <p>Enfin, la doctrine que Paulos annonçait était tellement étrangère à leur confession religieuse qu'ils désiraient en savoir plus :</p>
+      <blockquote>
+        <p>Alors ils le prirent avec eux et le conduisirent à l'Aréopage, en disant : Pourrions-nous savoir quelle est cette nouvelle doctrine dont tu parles ? Car tu apportes certaines choses étranges à nos oreilles. Nous voudrions donc savoir ce que veulent dire ces choses.</p>
+        <cite>Actes 17:19-20</cite>
+      </blockquote>
+      <p>La doctrine que Paulos apportait aux Athéniens était christocentrique. Il ne parla ni de Zeus, ni d'Hermès, ni de l'argent — juste Yéhoshoua et la résurrection. Voilà pourquoi nous affirmons, en conformité avec les Écritures, qu'aucun courant philosophique, ni les védas, ni le coran musulman, ni les livres ésotériques, ni l'héritage ancestral des rites ne possèdent la vérité sur le salut de l'être humain. C'est d'ailleurs la raison pour laquelle Paulos avertissait les frères de Colosses de ne pas se laisser séduire par la sagesse de ces doctrines philosophiques. Car en réalité :</p>
+      <blockquote>
+        <p>Qui ont, en effet, un renom de sagesse avec leur culte volontaire, leur humilité et leur rigoureux traitement du corps, mais qui n'ont en fait aucune valeur et ne contribuent qu'à la satisfaction de la chair.</p>
+        <cite>Colossiens 2:23</cite>
+      </blockquote>
+      <p>Nous sommes dans un temps de séduction particulière, où malheureusement la plupart de ces courants philosophiques sont présents dans les cœurs et dans nos assemblées locales.</p>
+      <p><strong>Le stoïcisme :</strong> doctrine philosophique majeure de l'Antiquité, le stoïcisme tire son nom du grec <em>stoa</em>, qui signifie « portique », parce que son fondateur Zénon de Cittium (335-264 av. J.-C.) enseignait sous une colonnade de l'agora d'Athènes. La sagesse stoïcienne consiste à accepter la place qui nous est donnée dans l'univers, à vivre en harmonie avec la nature en prenant soin de son corps et de son âme par la pratique de la vertu et le rejet des passions. Cette sagesse repose sur trois points clés : la recherche du bonheur dans la vertu et l'autosuffisance — les stoïciens ne croient pas au salut de l'humain par l'œuvre salvatrice du Seigneur à la croix, mais à une recherche permanente du bien-être par les efforts personnels, d'où le développement personnel et le message de la prospérité financière tellement enseignés dans les écoles, les universités et les « églises » ; ensuite, la destruction des passions perturbatrices par des pratiques ascétiques (mortification, discipline de soi) — un mal qu'on observe aujourd'hui dans la communauté dite chrétienne, où ces pratiques sont mises au centre de toute faveur divine, alors que la force pour lutter contre les passions de la chair n'est nullement les efforts ascétiques, mais la croix du Mashiah :</p>
+      <blockquote>
+        <p>Mais ceux qui sont au Mashiah ont crucifié la chair avec ses passions et ses désirs.</p>
+        <cite>Galates 5:24</cite>
+      </blockquote>
+      <p><strong>L'épicurisme,</strong> ou doctrine d'Épicure, ou philosophie du Jardin, est un courant de philosophie créé par Épicure en 306 av. J.-C. à Athènes, dans un jardin. Cette doctrine a pour objectif principal l'atteinte du bonheur par la satisfaction des seuls désirs « naturels et nécessaires ». C'est une doctrine matérialiste et atomiste qui encourage la recherche du plaisir modéré et la tranquillité de l'âme, tout en soulignant l'importance de l'amitié, de la connaissance et de l'absence de crainte de la mort.</p>
+      <blockquote>
+        <p>Que votre façon de vivre soit exempte d'amour de l'argent, étant contents de ce que vous avez présentement. Car lui-même a dit : Je ne te délaisserai jamais et je ne t'abandonnerai jamais.</p>
+        <cite>Hébreux 13:5</cite>
+      </blockquote>
+      <p>Mais encore : « Ne soyez pas portés çà et là par des doctrines diverses et étrangères, car il est bon que le cœur soit affermi par la grâce, et non pas par les aliments qui n'ont pas profité à ceux qui y ont marché » (Hébreux 13:9).</p>
+      <p>Le stoïcisme comme l'épicurisme ont fortement influencé la foi chrétienne au fil des âges, préparant ainsi une génération à la recherche effrénée du bonheur sans Èlohiym. Introduits dans le christianisme au début du deuxième siècle par certains pères de l'église catholique romaine, le christianisme moderne se veut matérialiste. D'où beaucoup de chrétiens ont du mal à accepter le train de vie que le Seigneur leur accorde. C'est pourquoi ils se perdent ! Pourtant, il est écrit :</p>
+      <blockquote>
+        <p>Mais cherchez premièrement le Royaume d'Elohîm et sa justice, et toutes ces choses vous seront ajoutées. Ne vous inquiétez donc pas pour le lendemain, car le lendemain s'inquiétera de lui-même. À chaque jour suffit son mal.</p>
+        <cite>Matthieu 6:33-34</cite>
+      </blockquote>
+      <p>Et n'oublions pas que : « Les pas de l'homme fort sont dirigés par YHWH ; comment l'être humain peut-il comprendre sa voie ? » (Proverbes 20:24).</p>
+      <p>Je réalise avec le temps combien cette parole, la Bible, est vraie. Car tout ce que le Seigneur Yéhoshoua nous avait annoncé s'accomplit sous nos yeux. Raison de plus de s'attacher à celle-ci. Allélou-Yah !</p>
+      <p>Que le Seigneur, notre Père, nous aide à connaître sa volonté de jour en jour, afin que nous fassions ce qui LUI est agréable. Qu'IL fortifie nos membres pour être toujours des instruments de sa justice ici-bas et jusqu'à son retour. Amen !</p>
+      <p style="text-align:center; font-weight:700; margin-top:2em;">Que toute la Gloire et l'honneur soient à notre Seul et Unique Elohiym : YEHOSHOUA HA MASHIAH !</p>
+    `
   },
   {
     id: "verifier-ecritures",
@@ -988,7 +1291,8 @@ const ICONES = {
   eye: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
   pouceHaut: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v11H3V10h4Zm4-3 1-6 2 1c1 .5 1.5 1.5 1.3 2.5L14.5 9H20a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18.4 21H11a2 2 0 0 1-2-2V11c0-.6.2-1.2.6-1.6L11 7Z"/></svg>',
   pouceBas: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleY(-1)"><path d="M7 10v11H3V10h4Zm4-3 1-6 2 1c1 .5 1.5 1.5 1.3 2.5L14.5 9H20a2 2 0 0 1 2 2.4l-1.6 8A2 2 0 0 1 18.4 21H11a2 2 0 0 1-2-2V11c0-.6.2-1.2.6-1.6L11 7Z"/></svg>',
-  partager: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>'
+  partager: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>',
+  livre: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17Z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg>'
 };
 
 /* ---------- "Nouveau" : mémorisé dans le navigateur du visiteur ---------- */
@@ -1060,8 +1364,9 @@ function carteHtmlPdf(doc, contexte){
         <div class="doc-desc">${doc.description || ''}</div>
         <div class="doc-tags">${tags}</div>
         <div class="doc-actions">
+          ${doc.contenuHtml ? `<a class="btn btn-primary" href="#" onclick="event.preventDefault(); ouvrirLecteur('${doc.id}')">${ICONES.livre} Lire en ligne</a>` : ''}
           <a class="btn btn-ghost" href="${lienVue}" target="_blank" rel="noopener" onclick="marquerCommeVu('${doc.id}')">${ICONES.eye} Voir</a>
-          <a class="btn btn-primary" href="${lienTelechargementDrive(doc.lienDrive)}" target="_blank" rel="noopener" onclick="marquerCommeVu('${doc.id}')">${ICONES.download} Télécharger</a>
+          <a class="btn ${doc.contenuHtml ? 'btn-ghost' : 'btn-primary'}" href="${lienTelechargementDrive(doc.lienDrive)}" target="_blank" rel="noopener" onclick="marquerCommeVu('${doc.id}')">${ICONES.download} Télécharger</a>
         </div>
         <div class="doc-reactions">
           <button type="button" class="reaction-btn ${reaction.monVote==='like' ? 'active':''}" data-like-btn="${doc.id}" onclick="voter('${doc.id}','like')">
@@ -1125,6 +1430,80 @@ function afficherVideos(){
 }
 
 /* ---------- Rendu : études bibliques ---------- */
+/* ---------- Table des matières automatique pour les études ---------- */
+function slugifier(texte){
+  return texte
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+function injecterTableDesMatieres(contenu, idPrefixe){
+  const titres = [];
+  let compteur = 0;
+  const contenuAvecIds = contenu.replace(/<(h3|h4)>(.*?)<\/\1>/g, function(complet, tag, texte){
+    compteur++;
+    const ancre = `toc-${idPrefixe}-${slugifier(texte)}-${compteur}`;
+    titres.push({ texte: texte, ancre: ancre, niveau: tag === 'h3' ? 1 : 2 });
+    return `<${tag} id="${ancre}">${texte}</${tag}>`;
+  });
+  return { contenuAvecIds, titres };
+}
+
+function construireTocHtml(titres){
+  const aDeuxNiveaux = titres.some(t => t.niveau === 1) && titres.some(t => t.niveau === 2);
+  if(!aDeuxNiveaux){
+    return '<ul>' + titres.map(t => `<li><a href="#${t.ancre}">${t.texte}</a></li>`).join('') + '</ul>';
+  }
+  let html = '<ul>';
+  let dansSousListe = false;
+  titres.forEach(function(t, i){
+    if(t.niveau === 1){
+      if(dansSousListe){ html += '</ul>'; dansSousListe = false; }
+      if(i > 0) html += '</li>';
+      html += `<li><a href="#${t.ancre}">${t.texte}</a>`;
+    } else {
+      if(!dansSousListe){ html += '<ul class="etude-toc-sous">'; dansSousListe = true; }
+      html += `<li><a href="#${t.ancre}">${t.texte}</a></li>`;
+    }
+  });
+  if(dansSousListe) html += '</ul>';
+  html += '</li></ul>';
+  return html;
+}
+
+/* ---------- Lecteur en ligne (PDF avec table des matières) ---------- */
+function ouvrirLecteur(id){
+  const doc = PDF_DOCUMENTS.find(d => d.id === id);
+  if(!doc || !doc.contenuHtml) return;
+  const { contenuAvecIds, titres } = injecterTableDesMatieres(doc.contenuHtml, 'lecteur-' + doc.id);
+  const toc = titres.length > 0 ? `
+    <nav class="etude-toc">
+      <div class="etude-toc-label">Table des matières</div>
+      ${construireTocHtml(titres)}
+    </nav>` : '';
+  document.getElementById('lecteur-titre').textContent = doc.titre;
+  document.getElementById('lecteur-corps').innerHTML = `
+    <div class="etude">
+      <div class="etude-layout">
+        <div class="etude-corps">${contenuAvecIds}</div>
+        ${toc}
+      </div>
+    </div>`;
+  const overlay = document.getElementById('lecteur-pdf');
+  overlay.classList.add('ouvert');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  marquerCommeVu(id);
+}
+
+function fermerLecteur(){
+  document.getElementById('lecteur-pdf').classList.remove('ouvert');
+  document.body.style.overflow = '';
+}
+
 function afficherEtudes(){
   const el = document.getElementById('liste-etudes');
   if(!ETUDES_BIBLIQUES || ETUDES_BIBLIQUES.length === 0){
@@ -1134,6 +1513,12 @@ function afficherEtudes(){
   el.innerHTML = ETUDES_BIBLIQUES.map((e, index) => {
     const badge = index === 0 ? `<span class="badge-new">Nouvelle étude</span>` : '';
     const reaction = obtenirReactionArticle(e.id);
+    const { contenuAvecIds, titres } = injecterTableDesMatieres(e.contenu, e.id);
+    const toc = titres.length > 0 ? `
+      <nav class="etude-toc">
+        <div class="etude-toc-label">Table des matières</div>
+        ${construireTocHtml(titres)}
+      </nav>` : '';
     return `
     <article class="etude" id="carte-etude-${e.id}">
       <div class="etude-entete">
@@ -1141,7 +1526,10 @@ function afficherEtudes(){
         <div class="etude-date">${e.date || ''}</div>
       </div>
       <h3>${e.titre}</h3>
-      <div class="etude-corps">${e.contenu}</div>
+      <div class="etude-layout">
+        <div class="etude-corps">${contenuAvecIds}</div>
+        ${toc}
+      </div>
       <div class="doc-reactions">
         <button type="button" class="reaction-btn ${reaction.monVote==='like' ? 'active':''}" data-like-btn="${e.id}" onclick="voter('${e.id}','like')">
           ${ICONES.pouceHaut} <span data-like-count="${e.id}">${reaction.likes}</span>
@@ -1322,6 +1710,12 @@ document.addEventListener('click', function(e){
   const wrap = document.querySelector('.lecture-wrap');
   if(panel && panel.classList.contains('ouvert') && !wrap.contains(e.target)){
     panel.classList.remove('ouvert');
+  }
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    const overlay = document.getElementById('lecteur-pdf');
+    if(overlay && overlay.classList.contains('ouvert')) fermerLecteur();
   }
 });
 
