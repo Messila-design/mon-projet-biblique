@@ -7,7 +7,7 @@
 <title>Le Centre de Formation Laméd</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!--
 ====================================================================
@@ -57,7 +57,7 @@
     --text-onink-soft:#A8A3C4;
     --font-display:'Cormorant Garamond', Georgia, serif;
     --font-body:'Lora', Georgia, serif;
-    --font-mono:'Space Mono', monospace;
+    --font-mono:'Inter', -apple-system, sans-serif;
     --radius:6px;
     --shadow-card: 0 2px 8px rgba(20,24,41,0.06), 0 12px 32px rgba(20,24,41,0.08);
     --shadow-hover: 0 8px 24px rgba(20,24,41,0.12), 0 20px 48px rgba(20,24,41,0.1);
@@ -723,6 +723,7 @@
     .contact-list .liens{ flex-direction:column; gap:8px; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 </head>
 <body>
 
@@ -910,8 +911,8 @@
 // Collez le lien de partage Google Drive tel quel dans "lienDrive".
 // "id" : un identifiant unique et stable (ne le changez pas après publication,
 //        sinon le document réapparaîtra comme "Nouveau" et les votes seront réinitialisés).
-// "categorie" : une des valeurs suivantes → Fondamentaux, Doctrines, Eschatologie,
-//               L'Historique, Religion, Les Livres (utilisé dans l'onglet "Articles").
+// "categorie" : une des valeurs suivantes → La Doctrine Apostolique, Fondamentaux, Doctrines,
+//               Eschatologie, L'Historique, Religion, Les Livres (utilisé dans l'onglet "Articles").
 // Ajoutez toujours vos nouveaux documents tout en haut du tableau (juste après le crochet [) :
 // c'est ce qui fait que les nouveautés apparaissent en premier sur l'accueil et dans "Articles".
 const PDF_DOCUMENTS = [
@@ -925,13 +926,120 @@ const PDF_DOCUMENTS = [
     date: "04/07/2026"
   },
   {
-    id: "les-traditions",
-    titre: "Les Traditions",
-    description: "La Torah d'Elohîm, l'Évangile du Mashiah, le culte des ancêtres et les philosophies grecques : distinguer les traditions divines des traditions humaines.",
-    motsCles: ["tradition", "torah", "philosophie", "ancêtres"],
-    categorie: "Doctrines",
-    lienDrive: "https://drive.google.com/file/d/1_NFxiMU25P8S0MTtO-Sxd6f4QsFDm_Za/view?usp=drive_link",
-    date: "03/07/2026"
+    id: "repentance-oeuvres-mortes",
+    titre: "La Repentance des œuvres mortes",
+    description: "Premier volet de la Doctrine apostolique : ce qu'est vraiment la repentance, comment elle se manifeste, et ce qui se passe pour celui qui refuse de s'y soumettre.",
+    motsCles: ["repentance", "doctrine apostolique", "conversion", "salut"],
+    categorie: "La Doctrine Apostolique",
+    lienDrive: "https://drive.google.com/file/d/17ejhqFmieSBbqKs4wSxnbXUztIIpzlzs/view?usp=drive_link",
+    date: "07/07/2026",
+    contenuHtml: `
+      <p><em>Bonjour, bonsoir à tous,</em></p>
+      <p>Sur tout l'ensemble de la Doctrine des apôtres que nous pouvons retrouver dans les écrits de la Nouvelle Alliance, il est important, voire capital, pour tout enfant d'Èlohiym de connaître les doctrines fondamentales. Par cet article sur la repentance des œuvres mortes, nous commençons une longue série d'enseignements sur les points capitaux de la Doctrine apostolique. Notre texte de base sera :</p>
+      <blockquote>
+        <p>C'est pourquoi, laissant la parole qui n'enseigne que les premiers principes du Mashiah, tendons à la perfection, ne posant pas de nouveau le fondement de la repentance des œuvres mortes, et de la foi en Elohîm, de la doctrine des lavages [baptêmes] effectués au moyen de l'eau, et de la résurrection des morts, et du jugement éternel. Et c'est ce que nous ferons, si Elohîm le permet.</p>
+        <cite>Hébreux 6:1-3</cite>
+      </blockquote>
+
+      <h3>Qu'est-ce que la repentance ?</h3>
+      <p>Le mot « repentance » vient de l'helléniste μετανοια (<em>metanoia</em>). Ce mot a deux sens : premièrement un « changement de mentalité, d'intention » ou « d'avis », et deuxièmement la « tristesse qu'on éprouve de ses péchés » et la « douleur d'avoir offensé Èlohiym ». En d'autres termes, la repentance est la décision qu'une personne prend de changer de comportement après avoir désapprouvé son comportement actuel.</p>
+
+      <h3>Comment parvient-on à la repentance ?</h3>
+      <p>Pour arriver à la repentance, il faut au préalable avoir été au contact de l'Évangile ; ceci est impératif. En effet, dans ces temps qui sont les derniers, il y a une profusion de faux messages, inspirés par les démons, qui mettent de nombreuses personnes dans la confusion. C'est pourquoi la Bible dit :</p>
+      <blockquote>
+        <p>Mais l'Esprit dit expressément que dans les derniers temps, certains s'éloigneront de la foi, s'attachant à des esprits trompeurs et des doctrines de démons.</p>
+        <cite>1 Timothée 4:1</cite>
+      </blockquote>
+      <p>Plus le retour d'Adonay Yehowshuw'a ha-Mashiyah (Jésus-Christ) sur Terre approche, plus les démons s'activent pour mettre en déroute tous les hommes en mettant en place de nombreuses religions dans le seul objectif d'égarer les hommes : « Réjouissez-vous cieux et vous qui y dressez vos tentes. Malheur à ceux qui habitent la terre et la mer, parce que le diable est descendu vers vous, ayant une grande colère, sachant qu'il a peu de temps ! » (Apocalypse 12:12).</p>
+
+      <h3>Qu'est-ce que l'Évangile ?</h3>
+      <p>L'Évangile est la bonne nouvelle du Royaume des cieux qu'Èlohiym a donnée aux hommes afin qu'ils soient sauvés. Ce message venant d'Èlohiym indique que tous les hommes, nés d'un homme et d'une femme, sont nés pécheurs à cause d'Adam et Hawwah (Romains 3:23 ; 5:12). Cette condition les destine tous à aller en enfer, puis dans le lac de feu et de soufre, où toutes les âmes déchues brûleront dans le feu éternel pour l'éternité. Mais par amour pour l'être humain, Èlohiym s'est fait chair en Yehowshuw'a ha-Mashiyah afin de mourir pour tous les hommes sur la croix du calvaire. Ainsi, toutes les personnes qui mettront leur foi et leur confiance en lui pour être sauvées recevront de lui le rachat de leurs âmes, la justification et la vie éternelle :</p>
+      <blockquote>
+        <p>Car Elohîm a tant aimé le monde qu'il a donné son Fils Unique, afin que quiconque croit en lui ne périsse pas, mais qu'il ait la vie éternelle.</p>
+        <cite>Jean 3:16</cite>
+      </blockquote>
+      <p>Ce Salut n'est possible en personne d'autre qu'en la personne de Yehowshuw'a ha-Mashiyah : « Il est ainsi écrit, et ainsi il fallait que le Mashiah souffre, et qu'il ressuscite des morts le troisième jour, et que la repentance et le pardon des péchés seraient prêchés en son Nom à toutes les nations, à commencer par Yeroushalaim » (Luc 24:46-47), et : « Celui qui croit au Fils a la vie éternelle, mais celui qui est rebelle au Fils ne verra pas la vie, mais la colère d'Elohîm demeure sur lui » (Jean 3:36).</p>
+      <p>L'Évangile, par la puissance du Saint-Esprit, met l'homme face à ses responsabilités en lui démontrant qu'il est pécheur, qu'il ne peut rien pour se sauver, mais qu'il a impérativement besoin d'un sauveur, c'est-à-dire Èlohiym Yehowshuw'a ha-Mashiyah. Lorsque ce message parvient au cœur de l'homme, le Saint-Esprit le convainc automatiquement qu'il est pécheur et qu'il doit systématiquement se repentir s'il veut être sauvé :</p>
+      <blockquote>
+        <p>Toutefois, je vous dis la vérité : il vous est avantageux que je m'en aille. Car si je ne m'en vais pas, le défenseur ne viendra pas à vous. Mais si je m'en vais, je vous l'enverrai. Et quand il sera venu, il convaincra le monde de péché, de justice et de jugement.</p>
+        <cite>Jean 16:7-8</cite>
+      </blockquote>
+      <p>Dans cette situation, l'homme est devant son éternité : doit-il se repentir ou pas ?</p>
+
+      <h3>Nous répondrons ainsi à notre question préalablement posée : qu'est-ce que la repentance ?</h3>
+      <p>Le mot « repentance » peut se partager en deux parties : la confession et la conversion.</p>
+      <p>La confession est l'acte par lequel l'homme avoue volontairement tous ses péchés à Èlohiym, parfois en public (Proverbes 28:13 ; Actes 19:17-20 ; 1 Jean 1:9).</p>
+      <p>La conversion est la décision personnelle que l'homme prend de se détourner de sa vaine manière de vivre pour se tourner vers la voie du Salut en Yehowshuw'a ha-Mashiyah par le moyen de l'Évangile (Marc 1:14-15). Il est clair que si le message que les hommes écoutent est basé sur l'argent, les biens matériels et autres, ce message ne produira pas de conversion véritable car il ne vient pas d'Èlohiym ; mais cela produira des religieux.</p>
+      <p>La repentance fait naître d'en-haut tout homme qui croit en Yehowshuw'a ha-Mashiyah. C'est ainsi que la Bible dit :</p>
+      <blockquote>
+        <p>Si donc quelqu'un est en Mashiah, il est une nouvelle créature. Les choses anciennes sont passées ; voici toutes choses sont devenues nouvelles.</p>
+        <cite>2 Corinthiens 5:17</cite>
+      </blockquote>
+      <p>Pour les chrétiens, la repentance ne fait plus allusion à la conversion mais au renoncement aux œuvres mortes pour marcher en nouveauté de vie. Voilà pourquoi la Bible parle de la repentance des œuvres mortes. Cependant, lorsqu'un enfant d'Èlohiym a chuté, les lettres aux sept Églises d'Apocalypse (par exemple Apocalypse 2:5 : « Repens-toi, et pratique tes premières œuvres ») montrent que la repentance d'un croyant implique souvent un retour aux premières œuvres et une attitude de cœur similaire à la conversion initiale.</p>
+
+      <h3>Qu'est-ce qu'une nouvelle créature ?</h3>
+      <p>Il est question de l'homme dont l'esprit a été régénéré par le Saint-Esprit. En effet, lors de la repentance, le Saint-Esprit vient siéger dans l'homme afin de lui apporter la vie éternelle dont il a besoin pour rentrer en contact avec le roi de la vie Yehowshuw'a ha-Mashiyah. Étant dans cet état, l'homme nouveau, ayant reçu le Saint-Esprit, ne peut plus de lui-même aimer le mal ou se complaire dans les œuvres des ténèbres :</p>
+      <blockquote>
+        <p>Quiconque demeure en lui ne pèche pas. Quiconque pèche ne l'a pas vu et ne l'a pas connu. Petits enfants, que personne ne vous égare. Celui qui pratique la justice est juste comme lui-même est juste. Celui qui pratique le péché est du diable, car le diable pèche dès le commencement. C'est pour cela que le Fils d'Elohîm s'est manifesté afin de détruire les œuvres du diable. Quiconque a été engendré d'Elohîm ne pratique pas le péché, car la semence d'Elohîm demeure en lui, et il ne peut pécher, parce qu'il a été engendré d'Elohîm.</p>
+        <cite>1 Jean 3:6-10</cite>
+      </blockquote>
+
+      <h3>Que doit faire l'homme pour ne plus pécher ?</h3>
+      <p>Pour ne plus pécher, le croyant doit avoir une vie de prière quotidienne et lire constamment la Parole d'Èlohiym, tout en s'appliquant à mettre en pratique tout ce qui est en relation avec l'enseignement des apôtres.</p>
+
+      <h3>Mais que se passe-t-il si le croyant en Yehowshuw'a ha-Mashiyah commet un péché ?</h3>
+      <p>S'il a péché, le sang du Seigneur est là pour nous purifier de nos péchés lorsqu'il demande pardon pour sa faute :</p>
+      <blockquote>
+        <p>Si nous disons que nous n'avons pas de péché, nous nous égarons nous-mêmes, et la vérité n'est pas en nous. Si nous confessons nos péchés, il est fidèle et juste pour nous les remettre et pour nous purifier de toute injustice. Si nous disons que nous n'avons pas de péché, nous le faisons menteur et sa parole n'est pas en nous.</p>
+        <cite>1 Jean 1:8-10</cite>
+      </blockquote>
+      <p>Mais ce dernier doit aussi prendre la décision de ne plus recommencer.</p>
+
+      <h3>Peut-on être chrétien et avoir des difficultés à sortir d'un péché ?</h3>
+      <p>Oui, c'est possible dans la mesure où le disciple du Seigneur ne veut pas se discipliner ou contrôler ce qui est pour lui une occasion de chute. Parmi les différents aspects du Fruit de l'Esprit, la Bible nous parle de la maîtrise de soi (Galates 5:22), la force que nous donne le Saint-Esprit afin de pouvoir contrôler les réactions de l'âme qui veulent nous pousser à pécher. Par contre, s'il pratique le péché, il n'est pas dans la foi mais c'est un non-croyant :</p>
+      <blockquote>
+        <p>Celui qui pratique le péché est du diable, parce que, dès le commencement, le diable pèche. C'est pour cela que le Fils d'Elohîm s'est manifesté afin de détruire les œuvres du diable. Quiconque a été engendré d'Elohîm ne pratique pas le péché, parce que la semence d'Elohîm demeure en lui, et il ne peut pécher, parce qu'il a été engendré d'Elohîm.</p>
+        <cite>1 Jean 3:8</cite>
+      </blockquote>
+
+      <h3>Que peut-il se passer pour celui qui refuse de se repentir ?</h3>
+      <p>Refuser de se repentir d'un péché dont nous sommes les seuls auteurs et coupables, c'est de l'orgueil. Cette situation pousse le croyant vers l'apostasie. Le premier signe de l'apostasie, c'est la tristesse du Saint-Esprit (Éphésiens 4:30) : la situation où le Saint-Esprit nous alerte sur notre péché, telle une alarme, pour que l'on puisse se repentir. Impossible d'être indifférent, son interpellation est comme une pression sur nous.</p>
+      <p>Puis, si l'homme s'obstine, il va progressivement vers l'extinction du Saint-Esprit (1 Thessaloniciens 5:19), c'est-à-dire la mort spirituelle. L'homme mort spirituellement est celui qui est reparti vers tout ce qu'il avait abandonné comme péché avant sa conversion (2 Pierre 2:20-22).</p>
+      <p>Si, malgré cette situation, il refuse toujours de se repentir pour revenir au Seigneur et s'oppose au Saint-Esprit, alors le Seigneur lui retire son Esprit (Apocalypse 2:5), lui envoie l'esprit d'égarement afin qu'il ne croie plus en la vérité mais au mensonge, et pour qu'il soit condamné à aller dans le lac de feu et de soufre pour l'éternité (2 Thessaloniciens 2:9-12).</p>
+      <p>Ce dont nous parlons, ce ne sont là que les étapes générales. Nous ne pouvons pas définir le temps où le Seigneur va permettre qu'une personne s'égare. Cela peut prendre du temps, même des années, avant que le Seigneur ne lui retire son Esprit, car le Seigneur Yehowshuw'a ha-Mashiyah n'est pas venu à la croix pour condamner les hommes mais pour qu'ils soient sauvés (1 Timothée 2:4-5).</p>
+
+      <h3>Qu'est-ce qui prouve qu'une personne s'est réellement repentie ?</h3>
+      <p>Sur le moment, il est impossible d'authentifier la repentance d'une personne, mais avec le temps, nous saurons si elle l'est véritablement ou pas. En effet, la repentance fait nécessairement porter des fruits. Le prophète Jean le Baptiste disait aux pharisiens :</p>
+      <blockquote>
+        <p>Et confessant leurs péchés, ils se faisaient baptiser par lui dans le Yarden. Mais, voyant venir à son baptême beaucoup de pharisiens et de sadducéens, il leur dit : Progéniture de vipères, qui vous a appris à fuir la colère à venir ? Produisez donc des fruits convenables à la repentance et ne pensez pas à dire en vous-mêmes : Nous avons Abraham pour père ! Car je vous dis qu'Elohîm peut réveiller de ces pierres mêmes des enfants à Abraham.</p>
+        <cite>Matthieu 3:6-9</cite>
+      </blockquote>
+      <p>L'apôtre Paulus dit aussi : « Mais à ceux de Damas d'abord, et à Yeroushalaim, dans toute la Judée et parmi les nations, j'ai prêché la repentance et la conversion à Elohîm, avec la pratique d'œuvres dignes de la repentance » (Actes 26:20), c'est-à-dire qu'au bout d'un temps, il faut nécessairement que nous puissions voir le Fruit de l'Esprit comme cela est mentionné dans plusieurs livres, sans quoi la personne n'est pas convertie (Galates 5:22 ; 1 Thessaloniciens 4:1-8 ; Romains 6:22 ; Hébreux 12:14).</p>
+
+      <h3>La manifestation des dons de l'Esprit est-elle une preuve qu'une personne est vraiment chrétienne après s'être repentie de ses péchés ?</h3>
+      <p>Malheureusement, les dons spirituels ne sont pas une preuve qu'une personne s'est vraiment repentie. Dans la Bible, nous avons un homme, le juge Shimshôn (Samson), qui avait une grande puissance pour délivrer son peuple des Philistins, mais à cause de son mauvais caractère, il jouait avec le péché. Un jour, il alla dormir chez une prostituée, puis se leva pour aller arracher les portes de la ville. Quand bien même il était dans le péché, l'onction se manifestait toujours ; ainsi l'onction et les dons spirituels ne sont pas une preuve de la repentance (Juges 16:1-3).</p>
+      <p>En outre, les serviteurs de Satan peuvent imiter les dons spirituels afin d'induire les enfants d'Èlohiym en erreur pour mieux les prendre au piège :</p>
+      <blockquote>
+        <p>Car de tels hommes sont des faux apôtres, des ouvriers trompeurs qui se transforment en apôtres du Mashiah. Et cela n'est pas étonnant, car Satan lui-même se transforme en ange de lumière. Ce n'est donc pas une grande chose si ses serviteurs aussi se transforment en serviteurs de justice. Mais leur fin sera selon leurs œuvres.</p>
+        <cite>2 Corinthiens 11:13-15</cite>
+      </blockquote>
+      <p>Exemple patent avec la femme Iyzèvèl (Jézabel) (Apocalypse 2:20).</p>
+
+      <h3>Envers qui devons-nous nous repentir ?</h3>
+      <p>Premièrement, lorsqu'un homme pèche, c'est contre le Seigneur qu'il le fait, et bien évidemment il doit se repentir envers le Seigneur Yehowshuw'a ha-Mashiyah pour retrouver la paix :</p>
+      <blockquote>
+        <p>J'ai péché contre toi, contre toi seul, et j'ai fait ce qui est mal à tes yeux, en sorte que tu seras juste dans ta sentence, sans reproche dans ton jugement.</p>
+        <cite>Psaumes 51:6</cite>
+      </blockquote>
+      <p>Deuxièmement, il y a aussi la repentance envers les hommes. En effet, si nous sommes des pierres d'achoppement pour des frères, il faut réparer le préjudice pour ramener la paix — même envers des inconvertis :</p>
+      <blockquote>
+        <p>Mais si ton frère a péché contre toi, va et reprends-le entre toi et lui seul. S'il t'écoute, tu as gagné ton frère. Mais, s'il ne t'écoute pas, prends encore avec toi une ou deux personnes, afin que par la bouche de deux ou trois témoins, toute parole soit ferme. Mais s'il refuse de les écouter, dis-le à l'assemblée, et s'il refuse aussi d'écouter l'assemblée, qu'il soit pour toi comme un païen et comme un publicain.</p>
+        <cite>Matthieu 18:15-17</cite>
+      </blockquote>
+
+      <p>Qu'Èlohiym Yehowshuw'a ha-Mashiyah soit béni abondamment pour cet enseignement et que toute la Gloire lui soit rendue.</p>
+      <p>Notre prière pour vous, qu'Adonay puisse davantage vous ouvrir l'intelligence afin que vous puissiez comprendre sa Parole et l'aimer, lui et lui seul. Amen !</p>
+    `
   },
   {
     id: "verifier-ecritures",
@@ -1751,34 +1859,70 @@ function marquerCommeVu(id){
   document.querySelectorAll(`[data-badge-id="${id}"]`).forEach(b => b.remove());
 }
 
-/* ---------- J'aime / Je n'aime pas : comptabilisé dans le navigateur du visiteur ---------- */
-function obtenirReactions(){
-  try{ return JSON.parse(localStorage.getItem('lamed_reactions') || '{}'); }
-  catch(e){ return {}; }
-}
-function obtenirReactionArticle(id){
-  const r = obtenirReactions();
-  return r[id] || { likes:0, dislikes:0, monVote:null };
-}
-function voter(id, type){
-  const r = obtenirReactions();
-  const cur = r[id] || { likes:0, dislikes:0, monVote:null };
-  if(cur.monVote === type){
-    if(type === 'like') cur.likes = Math.max(0, cur.likes - 1);
-    else cur.dislikes = Math.max(0, cur.dislikes - 1);
-    cur.monVote = null;
-  } else {
-    if(cur.monVote === 'like') cur.likes = Math.max(0, cur.likes - 1);
-    if(cur.monVote === 'dislike') cur.dislikes = Math.max(0, cur.dislikes - 1);
-    if(type === 'like') cur.likes++; else cur.dislikes++;
-    cur.monVote = type;
+/* ---------- J'aime / Je n'aime pas : compteurs PARTAGÉS entre tous les visiteurs (via CounterAPI) ---------- */
+// Espace de nommage propre au site — ne pas modifier, sous peine de perdre l'historique des votes.
+const ESPACE_COMPTEURS = 'centre-lamed-reactions';
+let clientCompteurs = null;
+function obtenirClientCompteurs(){
+  if(!clientCompteurs && window.Counter){
+    clientCompteurs = new Counter({ workspace: ESPACE_COMPTEURS });
   }
-  r[id] = cur;
-  localStorage.setItem('lamed_reactions', JSON.stringify(r));
-  document.querySelectorAll(`[data-like-count="${id}"]`).forEach(el => el.textContent = cur.likes);
-  document.querySelectorAll(`[data-dislike-count="${id}"]`).forEach(el => el.textContent = cur.dislikes);
-  document.querySelectorAll(`[data-like-btn="${id}"]`).forEach(el => el.classList.toggle('active', cur.monVote === 'like'));
-  document.querySelectorAll(`[data-dislike-btn="${id}"]`).forEach(el => el.classList.toggle('active', cur.monVote === 'dislike'));
+  return clientCompteurs;
+}
+
+// Seul le CHOIX du visiteur (pas le total) est mémorisé dans son navigateur, pour éviter qu'il vote deux fois.
+function obtenirMonVote(id){
+  try{ return (JSON.parse(localStorage.getItem('lamed_mon_vote') || '{}'))[id] || null; }
+  catch(e){ return null; }
+}
+function definirMonVote(id, valeur){
+  let v = {};
+  try{ v = JSON.parse(localStorage.getItem('lamed_mon_vote') || '{}'); }catch(e){}
+  if(valeur === null) delete v[id]; else v[id] = valeur;
+  localStorage.setItem('lamed_mon_vote', JSON.stringify(v));
+}
+
+function afficherCompteurs(id, likes, dislikes){
+  document.querySelectorAll(`[data-like-count="${id}"]`).forEach(el => el.textContent = likes);
+  document.querySelectorAll(`[data-dislike-count="${id}"]`).forEach(el => el.textContent = dislikes);
+}
+
+async function chargerReactions(id){
+  const client = obtenirClientCompteurs();
+  if(!client){ afficherCompteurs(id, 0, 0); return; }
+  try{
+    const [likeRes, dislikeRes] = await Promise.all([
+      client.get('like-' + id).catch(() => ({ value: 0 })),
+      client.get('dislike-' + id).catch(() => ({ value: 0 }))
+    ]);
+    afficherCompteurs(id, likeRes.value || 0, dislikeRes.value || 0);
+  } catch(e){
+    afficherCompteurs(id, 0, 0);
+  }
+}
+
+async function voter(id, type){
+  const client = obtenirClientCompteurs();
+  if(!client) return;
+  const voteActuel = obtenirMonVote(id);
+  try{
+    if(voteActuel === type){
+      await client.down(type + '-' + id);
+      definirMonVote(id, null);
+    } else {
+      if(voteActuel){ await client.down(voteActuel + '-' + id); }
+      await client.up(type + '-' + id);
+      definirMonVote(id, type);
+    }
+  } catch(e){ /* en cas d'erreur réseau, on ne bloque pas l'affichage */ }
+  const nouveauVote = obtenirMonVote(id);
+  document.querySelectorAll(`[data-like-btn="${id}"]`).forEach(el => el.classList.toggle('active', nouveauVote === 'like'));
+  document.querySelectorAll(`[data-dislike-btn="${id}"]`).forEach(el => el.classList.toggle('active', nouveauVote === 'dislike'));
+  chargerReactions(id);
+}
+
+function chargerReactionsListe(ids){
+  [...new Set(ids)].forEach(id => chargerReactions(id));
 }
 
 /* ---------- Rendu : cartes PDF ---------- */
@@ -1786,7 +1930,7 @@ function carteHtmlPdf(doc, contexte){
   contexte = contexte || 'defaut';
   const tags = (doc.motsCles || []).map(t => `<span class="tag">${t}</span>`).join('');
   const badge = estNouveau(doc.id) ? `<span class="badge-new" data-badge-id="${doc.id}">Nouveau</span>` : '';
-  const reaction = obtenirReactionArticle(doc.id);
+  const monVote = obtenirMonVote(doc.id);
   const lienVue = lienVisualisationDrive(doc.lienDrive);
   const apercu = lienApercuImageDrive(doc.lienDrive);
   return `
@@ -1808,11 +1952,11 @@ function carteHtmlPdf(doc, contexte){
           <a class="btn ${doc.contenuHtml ? 'btn-ghost' : 'btn-primary'}" href="${lienTelechargementDrive(doc.lienDrive)}" target="_blank" rel="noopener" onclick="marquerCommeVu('${doc.id}')">${ICONES.download} Télécharger</a>
         </div>
         <div class="doc-reactions">
-          <button type="button" class="reaction-btn ${reaction.monVote==='like' ? 'active':''}" data-like-btn="${doc.id}" onclick="voter('${doc.id}','like')">
-            ${ICONES.pouceHaut} <span data-like-count="${doc.id}">${reaction.likes}</span>
+          <button type="button" class="reaction-btn ${monVote==='like' ? 'active':''}" data-like-btn="${doc.id}" onclick="voter('${doc.id}','like')">
+            ${ICONES.pouceHaut} <span data-like-count="${doc.id}">…</span>
           </button>
-          <button type="button" class="reaction-btn ${reaction.monVote==='dislike' ? 'active':''}" data-dislike-btn="${doc.id}" onclick="voter('${doc.id}','dislike')">
-            ${ICONES.pouceBas} <span data-dislike-count="${doc.id}">${reaction.dislikes}</span>
+          <button type="button" class="reaction-btn ${monVote==='dislike' ? 'active':''}" data-dislike-btn="${doc.id}" onclick="voter('${doc.id}','dislike')">
+            ${ICONES.pouceBas} <span data-dislike-count="${doc.id}">…</span>
           </button>
           <button type="button" class="reaction-btn btn-partager" onclick="copierLien('article','${doc.id}', this)">
             ${ICONES.partager} Partager
@@ -1830,10 +1974,11 @@ function afficherPdfDans(elementId, liste, contexte){
     return;
   }
   el.innerHTML = liste.map(doc => carteHtmlPdf(doc, contexte)).join('');
+  chargerReactionsListe(liste.map(d => d.id));
 }
 
 /* ---------- Rendu : onglet Articles, classé par section ---------- */
-const ORDRE_CATEGORIES = ["Fondamentaux", "Doctrines", "Eschatologie", "L'Historique", "Religion", "Les Livres"];
+const ORDRE_CATEGORIES = ["La Doctrine Apostolique", "Fondamentaux", "Doctrines", "Eschatologie", "L'Historique", "Religion", "Les Livres"];
 function afficherArticlesParCategorie(){
   const el = document.getElementById('liste-articles-par-categorie');
   const blocs = ORDRE_CATEGORIES.map(cat => {
@@ -1846,6 +1991,7 @@ function afficherArticlesParCategorie(){
       </div>`;
   }).join('');
   el.innerHTML = blocs || `<div class="empty-note">Aucun article pour le moment.</div>`;
+  chargerReactionsListe(PDF_DOCUMENTS.map(d => d.id));
 }
 
 /* ---------- Rendu : vidéos ---------- */
@@ -1951,7 +2097,7 @@ function afficherEtudes(){
   }
   el.innerHTML = ETUDES_BIBLIQUES.map((e, index) => {
     const badge = index === 0 ? `<span class="badge-new">Nouvelle étude</span>` : '';
-    const reaction = obtenirReactionArticle(e.id);
+    const monVote = obtenirMonVote(e.id);
     const { contenuAvecIds, titres } = injecterTableDesMatieres(e.contenu, e.id);
     const toc = titres.length > 0 ? `
       <nav class="etude-toc">
@@ -1970,11 +2116,11 @@ function afficherEtudes(){
         ${toc}
       </div>
       <div class="doc-reactions">
-        <button type="button" class="reaction-btn ${reaction.monVote==='like' ? 'active':''}" data-like-btn="${e.id}" onclick="voter('${e.id}','like')">
-          ${ICONES.pouceHaut} <span data-like-count="${e.id}">${reaction.likes}</span>
+        <button type="button" class="reaction-btn ${monVote==='like' ? 'active':''}" data-like-btn="${e.id}" onclick="voter('${e.id}','like')">
+          ${ICONES.pouceHaut} <span data-like-count="${e.id}">…</span>
         </button>
-        <button type="button" class="reaction-btn ${reaction.monVote==='dislike' ? 'active':''}" data-dislike-btn="${e.id}" onclick="voter('${e.id}','dislike')">
-          ${ICONES.pouceBas} <span data-dislike-count="${e.id}">${reaction.dislikes}</span>
+        <button type="button" class="reaction-btn ${monVote==='dislike' ? 'active':''}" data-dislike-btn="${e.id}" onclick="voter('${e.id}','dislike')">
+          ${ICONES.pouceBas} <span data-dislike-count="${e.id}">…</span>
         </button>
         <button type="button" class="reaction-btn btn-partager" onclick="copierLien('etude','${e.id}', this)">
           ${ICONES.partager} Partager
@@ -1983,6 +2129,7 @@ function afficherEtudes(){
     </article>
   `;
   }).join('');
+  chargerReactionsListe(ETUDES_BIBLIQUES.map(e => e.id));
 }
 
 /* ---------- Rendu : annonce de la dernière étude sur l'accueil ---------- */
