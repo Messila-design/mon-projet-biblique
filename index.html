@@ -549,6 +549,49 @@
     margin:0; padding-left:20px; font-size:12.5px; color:var(--text-soft);
   }
   .etude .etude-corps ol.etude-notes li{ margin-bottom:.5em; }
+
+  .note-marque{
+    cursor:help;
+    color:var(--gold);
+    font-weight:700;
+    font-size:.75em;
+    border-bottom:1px dotted var(--gold);
+    position:relative;
+    outline:none;
+  }
+  .note-marque:hover::after,
+  .note-marque:focus::after{
+    content: attr(data-note);
+    position:absolute;
+    left:50%;
+    bottom:135%;
+    transform:translateX(-50%);
+    background:var(--ink);
+    color:var(--text-onink);
+    font-family:var(--font-body);
+    font-weight:400;
+    font-size:12.5px;
+    line-height:1.45;
+    padding:10px 13px;
+    width:250px;
+    max-width:70vw;
+    white-space:normal;
+    text-align:left;
+    box-shadow:0 10px 26px rgba(0,0,0,.4);
+    z-index:80;
+    pointer-events:none;
+  }
+  .note-marque:hover::before,
+  .note-marque:focus::before{
+    content:"";
+    position:absolute;
+    left:50%; bottom:115%;
+    transform:translateX(-50%);
+    border:6px solid transparent;
+    border-top-color:var(--ink);
+    z-index:80;
+    pointer-events:none;
+  }
   .etude .etude-corps li{ margin-bottom:.4em; }
   .etude .etude-corps table{
     width:100%; border-collapse:collapse; margin:0 0 1.4em;
@@ -967,7 +1010,7 @@ const PDF_DOCUMENTS = [
         <p>Sache, sache comme une chose certaine, que tes descendants habiteront 400 ans comme étrangers sur une Terre qui ne leur appartient point, et qu'ils seront asservis aux habitants de la Terre qui les opprimera.</p>
         <cite>Bereshit (Genèse) 15:13</cite>
       </blockquote>
-      <p>C'est cette descendance qui fut appelée du nom d'Israël et qui reçut dans le désert, à travers Moshé, la Torah d'Elohîm. L'indignation de certaines nations non juives face au choix du Seigneur concernant Israël n'a en effet nullement de sens lorsque nous comprenons la Seigneurie et la volonté d'Adonaï. C'est une indignation sans fondement, car :</p>
+      <p>C'est cette descendance qui fut appelée du nom d'Israël et qui reçut dans le désert, à travers Moshé, la Torah<sup class="note-marque" tabindex="0" data-note="De l'hébreu Towrah, qui signifie : « doctrine, ou enseignement. »">1</sup> d'Elohîm. L'indignation de certaines nations non juives face au choix du Seigneur concernant Israël n'a en effet nullement de sens lorsque nous comprenons la Seigneurie et la volonté d'Adonaï. C'est une indignation sans fondement, car :</p>
       <blockquote>
         <p>Notre Elohim est au ciel, Il fait tout ce qu'il veut (Psaumes 115:3). Louez YHWH ! Car YHWH est bon ! Chantez son Nom, car il est agréable ! Car YHWH s'est choisi Yaacov et Israël pour sa possession. Certainement, je sais que YHWH est grand et notre Seigneur est au-dessus de tous les elohim. YHWH fait tout ce qui lui plaît, dans les cieux et sur la Terre, dans la mer et dans tous les abîmes (Tehilim/Psaumes 135:3-6). Il a établi le témoignage en Yaacov, et il a mis la Torah en Israël ; Il a donné cette ordonnance à nos pères, de la faire connaître à leurs fils, pour qu'elle soit connue de la génération future, des fils qui naîtraient, et pour que, lorsqu'ils seront grands, ils la relatent à leurs fils, afin qu'ils mettent leur confiance en Elohim, qu'ils n'oublient point les œuvres d'El, et qu'ils gardent ses commandements.</p>
         <cite>Tehilim (Psaumes) 78:3-7</cite>
@@ -978,7 +1021,7 @@ const PDF_DOCUMENTS = [
         <cite>Vayiqra (Lévitique) 18:24,26</cite>
       </blockquote>
       <p>Leur pèlerinage dans le désert, ainsi que leur établissement à Kena'an, avaient pour but de révéler et d'enseigner aux nations la tradition pure, la Torah de YHWH. Celle-ci était subdivisée en trois autres torahs, dans lesquelles on retrouve plusieurs préceptes : 613 commandements environ.</p>
-      <p><strong>La torah morale :</strong> cette torah, avant d'être officiellement mise sur des tables de pierre et des lettres pour être enseignée au peuple, était déjà inscrite et est toujours inscrite dans les consciences humaines : c'est l'œuvre unique de YHWH. Cette torah est le fondement de toutes les nations. Aucune nation ne peut échapper à cette torah, même la nation la plus assombrie par le mal en garde en elle une, voire quelques préceptes justes liés à celle-ci. La preuve en est que la plupart des lois juridiques qui régissent nos nations sont issues de la torah. Avant Moshé, la torah morale était déjà là, mais non promulguée officiellement. Par exemple, à Guérar, en terre des Philistins, où Dagon était adoré, il était interdit de prendre la femme de son prochain du vivant de son mari. Lorsque Abraham monta à Guérar avec Sarah sa femme, Elohim ne permit pas à Abimélek de s'approcher de Sarah, sous peine de jugement.</p>
+      <p><strong>La torah morale :</strong> cette torah, avant d'être officiellement mise sur des tables de pierre et des lettres pour être enseignée au peuple, était déjà inscrite et est toujours inscrite dans les consciences humaines : c'est l'œuvre unique de YHWH. Cette torah est le fondement de toutes les nations. Aucune nation ne peut échapper à cette torah, même la nation la plus assombrie par le mal en garde en elle une, voire quelques préceptes justes liés à celle-ci. La preuve en est que la plupart des lois juridiques qui régissent nos nations sont issues de la torah. Avant Moshé, la torah morale était déjà là, mais non promulguée officiellement. Par exemple, à Guérar, en terre des Philistins, où Dagon<sup class="note-marque" tabindex="0" data-note="Divinité d'origine sémite, adorée par des philistins, représentée sous la forme d'un homme avec une queue de poisson (sirène mâle).">2</sup> était adoré, il était interdit de prendre la femme de son prochain du vivant de son mari. Lorsque Abraham monta à Guérar avec Sarah sa femme, Elohim ne permit pas à Abimélek de s'approcher de Sarah, sous peine de jugement.</p>
       <blockquote>
         <p>Abimélek appela Abraham et lui dit : Que nous as-tu fait ? En quoi ai-je péché contre toi, pour que tu fasses venir sur moi et sur mon royaume un si grand péché ? Tu as fait à mon égard une action qui ne se fait pas !</p>
         <cite>Bereshit (Genèse) 20:9</cite>
@@ -989,7 +1032,7 @@ const PDF_DOCUMENTS = [
         <cite>Bereshit (Genèse) 20:11</cite>
       </blockquote>
       <p>En examinant de plus près, nous comprenons que ce peuple de Guérar avait la connaissance du péché de l'adultère.</p>
-      <p>La torah morale révèle la nature du Seigneur : Juste, Saint, Miséricorde, Vérité, etc. Tout humain descendant d'Adam a hérité de Lui une portion de son être. Voilà pourquoi il est écrit, dans Romains 2:13-15, concernant les gentils (expression employée pour parler des nations sans la loi et la crainte d'Elohim), qu'ils font naturellement les choses qui y sont écrites dans la torah, sans pourtant avoir la torah écrite entre leurs mains. Elle est établie :</p>
+      <p>La torah morale révèle la nature du Seigneur : Juste, Saint, Miséricorde, Vérité, etc. Tout humain descendant d'Adam a hérité de Lui une portion de son être. Voilà pourquoi il est écrit, dans Romains 2:13-15, concernant les gentils<sup class="note-marque" tabindex="0" data-note="Expression employée pour parler des nations sans la loi et la crainte d'Elohim.">3</sup>, qu'ils font naturellement les choses qui y sont écrites dans la torah, sans pourtant avoir la torah écrite entre leurs mains. Elle est établie :</p>
       <blockquote>
         <p>… pour les violeurs de la torah et les réfractaires, pour les impies et les pécheurs, pour les non-saints et les profanes, pour les parricides et les meurtriers, pour les hommes qui se prostituent, pour les homosexuels, pour les marchands d'esclaves, pour les menteurs, pour les parjures et pour tout ce qui s'oppose à la saine doctrine.</p>
         <cite>1 Timothée 2:9-10</cite>
@@ -1092,7 +1135,7 @@ const PDF_DOCUMENTS = [
         <cite>1 Pierre 1:17-18</cite>
       </blockquote>
       <p>Petros affirmait clairement que l'héritage des ancêtres est une vanité, une corruption. Parmi ces vaines manières de vivre, nous avons les rites initiatiques et les coutumes. Au Gabon, on retrouve plusieurs rites et coutumes, comme : la dot, le Mwuri, le Njembé, le Njobi, le Boumba Yano, le Melane, le Bwuti, etc.</p>
-      <p>Le but n'est pas de décrire point par point ces traditions, mais de faire ressortir le mal des rites que pratiquaient ces ancêtres traditionnels de nos familles. En effet, toutes nos ethnies ont hérité de rites ancestraux différents. Malgré leurs divergences, elles ont toutes un seul point commun : l'initiation des profanes (l'admission de quelqu'un au culte d'une divinité, à la connaissance de ses mystères). Ces initiations sont un moyen par lequel certains entrent, directement ou indirectement, en contact avec l'au-delà, avec le monde des esprits, souvent appelés les génies (des esprits mauvais, des démons). Invocation des morts, prise de plantes aphrodisiaques comme les racines de l'iboga, maquillage au kaolin, commerce des âmes (la dot), cannibalisme, écorces de bois, lavage du corps, incisions du corps et danses symboliques sont au cœur de ces rites. Les traditions de nos ancêtres ont en réalité pour fondement l'idolâtrie et la sorcellerie. Plusieurs divinités sont invoquées lors de cérémonies parfois nocturnes. Choses qui ne sont pas étranges en Afrique, car nous avons grandi au milieu d'elles.</p>
+      <p>Le but n'est pas de décrire point par point ces traditions, mais de faire ressortir le mal des rites que pratiquaient ces ancêtres traditionnels de nos familles. En effet, toutes nos ethnies ont hérité de rites ancestraux différents. Malgré leurs divergences, elles ont toutes un seul point commun : l'initiation<sup class="note-marque" tabindex="0" data-note="« Initiation » : admission de quelqu'un au culte d'une divinité, à la connaissance de ses mystères.">4</sup> des profanes. Ces initiations sont un moyen par lequel certains entrent, directement ou indirectement, en contact avec l'au-delà, avec le monde des esprits, souvent appelés les génies<sup class="note-marque" tabindex="0" data-note="« Génies » : ce sont des esprits mauvais, des démons.">5</sup>. Invocation des morts, prise de plantes aphrodisiaques comme les racines de l'iboga<sup class="note-marque" tabindex="0" data-note="Arbuste africain dont la racine contient des alcaloïdes puissants, principalement l'ibogaïne, utilisés traditionnellement dans les rituels mystiques et pour leurs effets psychédéliques (hallucinations, expériences de mort imminente).">6</sup>, maquillage au kaolin, commerce des âmes (la dot), cannibalisme, écorces de bois, lavage du corps, incisions du corps et danses symboliques sont au cœur de ces rites. Les traditions de nos ancêtres ont en réalité pour fondement l'idolâtrie et la sorcellerie. Plusieurs divinités sont invoquées lors de cérémonies parfois nocturnes. Choses qui ne sont pas étranges en Afrique, car nous avons grandi au milieu d'elles.</p>
       <blockquote>
         <p>Qu'on ne trouve au milieu de toi personne qui fasse passer par le feu son fils ou sa fille, personne qui pratique la divination, le spiritisme, la sorcellerie, qui dit la bonne aventure, ni d'enchanteur qui fait des incantations, personne qui consulte ceux qui évoquent les morts et ceux qui ont un esprit de divination, personne qui consulte les morts.</p>
         <cite>Deutéronome 18:10-11</cite>
@@ -1107,7 +1150,7 @@ const PDF_DOCUMENTS = [
       <p>En Israël, le Seigneur reprochait crûment aux pharisiens et aux scribes d'avoir changé la parole de YHWH au profit de leur tradition, qu'ils appelaient « la tradition des anciens » (Matthieu 15:1-9). En effet, cette tradition des anciens reposait sur le judaïsme. Il reposait sur le Tanakh, aussi appelé la bible hébraïque, regroupant la Torah (les cinq livres de Moshé), les Névi'im (les prophètes) et les Kétouvim (les Hagiographes).</p>
       <p>Outre cela, on y retrouvait déjà, avant l'Église, dans la pensée judaïque, la loi orale qui se transmettait de bouche à oreille. Elle n'était pas encore manuscrite, mais faisait déjà obstacle à la Torah d'Elohîm : le lavage des mains avant le repas, les baptêmes avant les repas, le lavage des cruches, etc. (Marc 7:1-4). Le Seigneur leur donna le nom d'hypocrites, car ils modifiaient la parole pour leur profit. Ce n'est qu'après la destruction du temple de Yeroushalaïm en l'an 70 après J.-C. que des rabbins entreprirent de consigner cette loi orale par crainte de la perdre dans l'oubli — ce qu'ils appelèrent la Michna, puis son interprétation, la Guemara. La Michna et la Guemara composent le Talmud dans le judaïsme actuel. La Michna est un corpus immense comprenant des décisions juridiques et des lois touchant à tous les domaines.</p>
       <p>La « Guemara » est une explication de la Michna et un recueil de discussions et de controverses entre sages à propos des lois, de la philosophie, de la vie quotidienne, des sciences, de la morale… Elle est le fondement de l'autorité des lois et des traditions juives qui furent accumulées pendant sept siècles, depuis -200 jusqu'à environ 500. La Michna et la Guemara forment le Talmud, le livre le plus important de la tradition orale pour le judaïsme. Ce n'est pas un ouvrage achevé mais un compte rendu de débats et de paroles d'intellectuels donnant un enseignement aux lecteurs. L'originalité du Talmud est surtout son approche et sa manière de débattre de divers sujets : pas de distinction entre questions importantes et sujets mineurs, maintien des controverses ouvertes, multiplicité des sens pour chaque verset, chaque mot, chaque lettre.</p>
-      <p>Nous vivons vraiment la dernière heure, frères et sœurs. Aujourd'hui, nous voyons dans les « églises » et dans le monde l'invocation des anges gardiens, l'utilisation des épées pendant les cultes chrétiens, des livres sur les sorties astrales, les symboles et images d'animaux, des sectes comme le Mahikari, le Yoga… Toutes ces choses qui ont fortement influencé notre génération par l'occultisme et la sorcellerie tirent pour la plupart leur racine dans la Kabbale (doctrine mystique et ésotérique du judaïsme). C'est de l'initiation aux puissances ténébreuses ! L'apôtre Paulos, ayant conscience de toutes ces réalités, avertissait les chrétiens crétois de ne pas s'attacher aux fables judaïques, car Èlohiym n'y est pas.</p>
+      <p>Nous vivons vraiment la dernière heure, frères et sœurs. Aujourd'hui, nous voyons dans les « églises » et dans le monde l'invocation des anges gardiens, l'utilisation des épées pendant les cultes chrétiens, des livres sur les sorties astrales, les symboles et images d'animaux, des sectes comme le Mahikari, le Yoga… Toutes ces choses qui ont fortement influencé notre génération par l'occultisme et la sorcellerie tirent pour la plupart leur racine dans la Kabbale<sup class="note-marque" tabindex="0" data-note="Kabbale : doctrine mystique et ésotérique du judaïsme.">8</sup>. C'est de l'initiation aux puissances ténébreuses ! L'apôtre Paulos, ayant conscience de toutes ces réalités, avertissait les chrétiens crétois de ne pas s'attacher aux fables judaïques, car Èlohiym n'y est pas.</p>
       <blockquote>
         <p>Quelqu'un d'entre eux, leur propre prophète, a dit : Les Crétois sont toujours menteurs, de mauvaises bêtes, des ventres paresseux. Ce témoignage est véritable. Motif en raison duquel reprends-les sévèrement, afin qu'ils deviennent sains dans la foi, et qu'ils ne s'attachent pas aux mythes judaïques et aux commandements d'humains qui se détournent de la vérité.</p>
         <cite>Tite 1:12-14</cite>
@@ -1143,7 +1186,7 @@ const PDF_DOCUMENTS = [
         <p>Mais ceux qui sont au Mashiah ont crucifié la chair avec ses passions et ses désirs.</p>
         <cite>Galates 5:24</cite>
       </blockquote>
-      <p><strong>L'épicurisme,</strong> ou doctrine d'Épicure, ou philosophie du Jardin, est un courant de philosophie créé par Épicure en 306 av. J.-C. à Athènes, dans un jardin. Cette doctrine a pour objectif principal l'atteinte du bonheur par la satisfaction des seuls désirs « naturels et nécessaires ». C'est une doctrine matérialiste et atomiste qui encourage la recherche du plaisir modéré et la tranquillité de l'âme, tout en soulignant l'importance de l'amitié, de la connaissance et de l'absence de crainte de la mort.</p>
+      <p><strong>L'épicurisme,</strong> ou doctrine d'Épicure, ou philosophie du Jardin, est un courant de philosophie créé par Épicure en 306 av. J.-C. à Athènes, dans un jardin. Cette doctrine a pour objectif principal l'atteinte du bonheur par la satisfaction des seuls désirs « naturels et nécessaires ». C'est une doctrine matérialiste et atomiste<sup class="note-marque" tabindex="0" data-note="L'atomisme est un courant philosophique et physicien affirmant que la matière est discontinue et composée d'éléments insécables.">7</sup> qui encourage la recherche du plaisir modéré et la tranquillité de l'âme, tout en soulignant l'importance de l'amitié, de la connaissance et de l'absence de crainte de la mort.</p>
       <blockquote>
         <p>Que votre façon de vivre soit exempte d'amour de l'argent, étant contents de ce que vous avez présentement. Car lui-même a dit : Je ne te délaisserai jamais et je ne t'abandonnerai jamais.</p>
         <cite>Hébreux 13:5</cite>
@@ -1849,6 +1892,64 @@ const VIDEOS_YOUTUBE = [
 // c'est toujours la première étude du tableau qui est considérée comme "la plus récente"
 // (bandeau sur l'accueil + badge "Nouvelle étude" dans cet onglet).
 const ETUDES_BIBLIQUES = [
+  {
+    id: "corruption-morale",
+    titre: "LA CORRUPTION MORALE",
+    date: "08/07/2026",
+    contenu: `
+      <p><em>Bonjour bonsoir à tous,</em></p>
+      <p>J'aimerais nous partager quelques réflexions sur <em>la corruption morale</em>.</p>
+      <p>Prenons comme texte de base 1 Corinthiens 5:9-11 :</p>
+      <blockquote>
+        <p>Je vous ai écrit dans la lettre de ne pas vous mêler<sup class="note-marque" tabindex="0" data-note="Du grec συναναμίγνυμι (sunanamignumi) : « s'associer étroitement avec », « fréquenter assidûment » — voir l'étude du mot ci-dessous.">1</sup> avec les hommes qui se prostituent, mais non pas d'une manière absolue avec les hommes qui se prostituent de ce monde, ou avec les cupides, ou les ravisseurs, ou les idolâtres — autrement, vous devez donc sortir du monde. Mais maintenant, ce que je vous ai écrit, c'est de ne pas vous mêler<sup class="note-marque" tabindex="0" data-note="Même mot grec συναναμίγνυμι (sunanamignumi) qu'à la note 1, répété ici dans le second commandement de l'apôtre Paulus.">2</sup> avec quelqu'un qui se nomme frère, s'il est un homme qui se prostitue, ou cupide, ou idolâtre, ou railleur, ou ivrogne, ou ravisseur, de ne pas même manger avec un tel homme.</p>
+        <cite>1 Corinthiens 5:9-11 — BYM</cite>
+      </blockquote>
+      <p>Dans le passage précédent, nous allons porter notre étude sur le mot <em>mêler</em>. Je souhaite que par ce partage le Seigneur vous ouvre les yeux et qu'il nous délivre, car nous sommes trop souvent trop naïfs.</p>
+      <p>Le mot <em>mêler</em> vient du grec <em>sunanamignumi</em> (translittération approximative du grec ancien συναναμίγνυμι). Il s'agit d'un verbe grec de la Nouvelle Alliance, rare et spécifique, qui n'apparaît que trois fois dans la Bible.</p>
+      <p>Je vais vous fournir une compréhension complète et biblique de ce mot, en m'appuyant sur son étymologie, son sens biblique, ses versets bibliques avec des exemples concrets, et enfin des applications dans la vie quotidienne.</p>
+
+      <h3>Compréhension biblique complète</h3>
+      <p>Le verbe συναναμίγνυμι (<em>sunanamignumi</em>) est un composé grec issu de :</p>
+      <ul>
+        <li><em>σύν</em> (syn) : « avec » ou « ensemble », indiquant une union ou une association.</li>
+        <li><em>ἀνά</em> (ana) : « sur » ou « de nouveau », qui renforce l'idée de répétition ou de continuité.</li>
+        <li><em>μῖγνυμι</em> (mignymi) : « mélanger » ou « unir ».</li>
+      </ul>
+      <p>Littéralement, il signifie « mélanger ensemble de manière continue » ou « s'unir intimement et régulièrement ». Dans le contexte biblique (koinè grec de la Nouvelle Alliance), il prend un sens figuré dominant : « s'associer étroitement avec », « fréquenter assidûment » ou « avoir une compagnie intime et persistante ». Cette notion implique non seulement une proximité physique, mais aussi une participation morale et spirituelle, comme un mélange d'influences qui peut altérer l'identité ou la pureté.</p>
+      <p>Bibliquement, ce mot souligne le principe que l'apôtre Paulus prônait : la séparation du mal pour préserver la sainteté de l'église. Il n'est pas neutre : il met en garde contre les associations qui risquent de corrompre la foi, en écho à des thèmes plus larges comme la pureté rituelle de l'Ancienne Alliance (ex. : Lévitique 19:2, « Soyez saints, car je suis saint ») ou l'appel à la vigilance spirituelle (2 Corinthiens 6:14, « Ne vous mettez pas avec les infidèles sous un joug étranger »). Contrairement à d'autres verbes grecs pour « compagnie » comme συνεῖναι (<em>suneinai</em>, simplement « être avec »), <em>sunanamignumi</em> insiste sur l'idée d'un mélange profond et continu, comme des substances qui se fondent irrémédiablement. Cela reflète la vision paulinienne de l'église comme un corps pur (1 Corinthiens 12), où les liens toxiques menacent l'unité en Mashiyach.</p>
+      <p>Ce mot n'apparaît que dans les épîtres de Paulus, soulignant son usage pastoral pour corriger des communautés en crise (Corinthe et Thessalonique). Il n'a pas d'équivalent direct en hébreu biblique, mais évoque des idées de séparation des impurs (ex. : Esdras 9-10 sur les mariages mixtes).</p>
+
+      <h3>Exemples concrets dans la Bible</h3>
+      <p>Le mot est utilisé trois fois, toujours à la forme infinitive passive présent (συναναμίγνυσθαι, « ne pas s'associer »), dans un contexte d'exhortation disciplinaire. Voici les occurrences avec le texte grec, une traduction littérale et une explication exégétique :</p>
+
+      <h4>1 Corinthiens 5:9</h4>
+      <p>Texte grec : « Ἔγραψα ὑμῖν ἐν τῇ ἐπιστολῇ μὴ συναναμίγνυσθαι πόρνοις » (J'ai écrit dans l'épître de ne pas s'associer avec les prostitués/impurs sexuellement).</p>
+      <p><strong>Contexte :</strong> Paulus corrige un scandale à Corinthe : un homme vit en inceste avec la femme de son père (v. 1). Il clarifie une lettre antérieure mal comprise, en distinguant les païens des chrétiens fautifs.</p>
+      <p><strong>Exemple concret :</strong> Imaginez une communauté chrétienne primitive où un membre commet un adultère public. L'apôtre Paulus dit : ne « mélangez » pas votre vie avec lui comme si de rien n'était — pas de repas partagés, pas de culte commun — pour éviter la contagion morale, comme un levain qui fermente toute la pâte (v. 6-8). C'est une discipline aimante pour le salut du fautif (v. 5).</p>
+
+      <h4>1 Corinthiens 5:11</h4>
+      <p>Texte grec : « νῦν δὲ ἔγραψα ὑμῖν μὴ συναναμίγνυσθαι ἐάν τις ἀδελφὸς ὀνομαζόμενος… » (Maintenant, j'ai écrit de ne pas s'associer si quelqu'un se nomme frère mais est… [liste de péchés : avare, idolâtre, adultère, ivrogne, voleur]).</p>
+      <p><strong>Contexte :</strong> Suite du même chapitre, Paulus liste des péchés graves et insiste : tolérez les païens (v. 10), mais excluez les « frères » qui persistent dans le mal.</p>
+      <p><strong>Exemple concret :</strong> À Corinthe, une église diverse (juifs, grecs, esclaves) risque de diluer sa sainteté en festoyant avec un chrétien cupide ou ivrogne. Paulus compare cela à un mélange impur : « Ne mangez pas même avec un tel homme » (v. 11). C'est un appel à l'excommunication temporaire pour restauration, pas à la haine.</p>
+
+      <h4>2 Thessaloniciens 3:14</h4>
+      <p>Texte grec : « Εἰ δέ τις οὐχ ὑπακούει τῷ λόγῳ ἡμῶν διὰ τῆς ἐπιστολῆς, τοῦτον σημειοῦσθε, μὴ συναναμίγνυσθαι ὑμῖν, ἵνα ἐντραπῇ » (Si quelqu'un n'obéit pas à notre parole par cette lettre, notez-le, ne vous associez pas avec lui, afin qu'il ait honte).</p>
+      <p><strong>Contexte :</strong> Paulus exhorte les Thessaloniciens oisifs qui vivent aux dépens des autres (v. 6-13), dans une ville persécutée où la paresse mine la communauté.</p>
+      <p><strong>Exemple concret :</strong> Des croyants, attendant le retour du Mashiyach, refusent de travailler et deviennent un fardeau. Paulus dit : isolez-les socialement (pas de compagnie intime) pour les inciter à la repentance, comme un avertissement fraternel qui restaure la diligence (v. 15 : « Ne le traitez pas comme un ennemi, mais admonestez-le comme un frère »).</p>
+
+      <p>Dans ces exemples, <em>sunanamignumi</em> n'est pas une isolation totale (comme l'excommunication juive), mais une distance mesurée pour la croissance spirituelle, équilibrée par l'amour (Galates 6:1).</p>
+
+      <h3>Exemples concrets dans le quotidien</h3>
+      <p>Bien que ce mot soit rare et biblique, son sens profond s'applique aujourd'hui pour guider les relations chrétiennes. Il invite à une vigilance sur nos « mélanges » influents, sans pharisaïsme. Voici des illustrations pratiques :</p>
+      <ul>
+        <li><strong>Dans l'église ou la communauté :</strong> si un ami chrétien tombe dans l'addiction (alcool, par exemple), au lieu de l'ignorer ou de le juger, appliquez une « non-association intime » : priez pour lui, mais évitez les sorties privées qui normaliseraient le péché. Organisez une intervention fraternelle (Matthieu 18:15-17) pour l'aider à se repentir, comme l'apôtre Paulus à Corinthe. Résultat : il se sent aimé mais confronté, favorisant la guérison.</li>
+        <li><strong>Au travail ou en société :</strong> vous côtoyez un collègue corrompu (menteur, manipulateur). <em>Sunanamignumi</em> conseille de collaborer professionnellement (comme Paulus tolère les païens), mais pas de « mélanger » vos vies : pas de dîners privés ou de confidences qui vous exposent à son influence. Par exemple, refusez une promotion impliquant une alliance éthique douteuse, préservant votre intégrité comme un « sel de la terre » (Matthieu 5:13).</li>
+        <li><strong>Dans les relations personnelles :</strong> si un ami persiste dans l'idolâtrie moderne (matérialisme extrême), limitez votre amitié pour éviter le « mélange » spirituel. Parlez-lui avec grâce, mais priorisez des cercles sains. Par exemple, évitez de partager des vacances avec des amis toxiques qui moquent votre foi, en optant pour des groupes édifiants qui renforcent votre marche en Mashiyach.</li>
+      </ul>
+
+      <p>Désolé pour la longueur du texte. Cependant, j'ai la conviction qu'il vous fera du bien, comme moi-même j'ai été édifié dessus.</p>
+    `
+  },
   {
     id: "combat-spirituel-oppression",
     titre: "LE COMBAT SPIRITUEL : LA GUERRE DANS LES PENSÉES",
