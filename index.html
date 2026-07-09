@@ -2286,7 +2286,7 @@ const VISION = {
 // --- 5. CONTACT ---
 const CONTACT = {
   email: "tech@lecentre-lamed.org",
-  facebook: "https://facebook.com/dictionnaire-biblique",
+  facebook: "https://www.facebook.com/DICO.BIBLIQUE/",
   whatsapp: "https://whatsapp.com/channel/0029Vb1mc5jE50UkkTcL8p0C"
 };
 
@@ -2770,8 +2770,8 @@ function afficherModal(){
 
 function fermerModal(){
   if(modalAbonnement) modalAbonnement.style.display = 'none';
+  sessionStorage.setItem('modal_newsletter_a_ete_affichee', 'true');
   localStorage.setItem('lamed_a_vu_modal_abonnement', 'true');
-  if(formAbonnement) formAbonnement.reset();
 }
 
 function initialiserModalAbonnement(){
@@ -2815,8 +2815,8 @@ function initialiserModalAbonnement(){
 }
 
 function afficherModalAbonnement(){
-  const aDejaVu = localStorage.getItem('lamed_a_vu_modal_abonnement');
-  if(!aDejaVu) afficherModal();
+  // Afficher directement la modal (la logique d'affichage unique par session est gérée par le timer)
+  afficherModal();
 }
 
 function afficherModalAbonnementManuellement(){
@@ -2826,7 +2826,13 @@ function afficherModalAbonnementManuellement(){
 // Initialiser au chargement du DOM
 document.addEventListener('DOMContentLoaded', function(){
   initialiserModalAbonnement();
-  afficherModalAbonnement();
+  
+  // Afficher la modal après 10 secondes (si pas déjà affichée cette session)
+  setTimeout(function() {
+    if (!sessionStorage.getItem('modal_newsletter_a_ete_affichee')) {
+      afficherModalAbonnement();
+    }
+  }, 10000); // 10 000 ms = 10 secondes
 });
 </script>
 
