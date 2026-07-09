@@ -727,7 +727,7 @@
   }
   .colophon-inner{
     max-width:1180px; margin:0 auto; padding:44px 24px 30px;
-    display:flex; flex-wrap:wrap; align-items:center; gap:36px; justify-content:space-between;
+    display:flex; flex-wrap:wrap; align-items:center; gap:36px; justify-content:flex-start;
   }
   .colophon-brand{
     display:flex; align-items:center; gap:18px;
@@ -740,7 +740,7 @@
   .colophon-brand-text p{ font-size:13.5px; color:var(--text-onink-soft); margin:0; }
   .contact-list{
     display:flex; flex-direction:column; gap:12px;
-    margin-left:auto; padding-left:70px;
+    flex-shrink:0;
   }
   .contact-list .liens{ display:flex; flex-direction:column; gap:14px; }
   .contact-list .eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold-light); margin-bottom:4px; }
@@ -766,8 +766,138 @@
     .hero-actions{ flex-direction:column; align-items:stretch; }
     .btn-hero-primary, .btn-hero-secondary{ width:100%; justify-content:center; }
     .vision-block{ padding:36px 22px; }
-    .contact-list{ margin-left:0; padding-left:0; }
+    .colophon-inner{ flex-direction:column; align-items:center; gap:24px; }
+    .newsletter-subscribe{ flex-grow:0; order:2; }
+    .contact-list{ margin-left:0; padding-left:0; order:3; }
     .contact-list .liens{ flex-direction:column; gap:8px; }
+    .colophon-brand{ order:1; }
+  }
+
+  /* ============ MODAL D'ABONNEMENT ============ */
+  .modal-overlay{
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(20,24,41,0.85);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+  }
+  .modal-content{
+    background:var(--parchment-card);
+    padding:40px;
+    border-radius:var(--radius);
+    max-width:480px;
+    width:90%;
+    box-shadow:var(--shadow-hover);
+    position:relative;
+    text-align:center;
+  }
+  .modal-fermer{
+    position:absolute;
+    top:16px; right:16px;
+    background:none;
+    border:none;
+    font-size:28px;
+    color:var(--text-soft);
+    cursor:pointer;
+    padding:4px 8px;
+    line-height:1;
+  }
+  .modal-fermer:hover{
+    color:var(--gold);
+  }
+  .modal-content h2{
+    color:var(--gold-dark);
+    margin-bottom:12px;
+  }
+  .modal-content p{
+    color:var(--text-dark);
+    margin-bottom:24px;
+    line-height:1.5;
+  }
+  .modal-form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .modal-form input{
+    padding:14px 16px;
+    border:1px solid var(--gold-light);
+    border-radius:var(--radius);
+    font-family:var(--font-mono);
+    font-size:15px;
+    background:var(--parchment);
+    color:var(--text-dark);
+  }
+  .modal-form input:focus{
+    outline:none;
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px var(--gold-glow);
+  }
+  .btn-abonnement{
+    padding:14px 24px;
+    background:var(--gold);
+    color:var(--parchment);
+    border:none;
+    border-radius:var(--radius);
+    font-family:var(--font-body);
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:var(--transition);
+  }
+  .btn-abonnement:hover{
+    background:var(--gold-dark);
+    transform:translateY(-1px);
+  }
+  .modal-mention{
+    font-size:12px;
+    color:var(--text-soft);
+    margin-top:16px;
+    margin-bottom:0;
+  }
+  @media (max-width: 480px){
+    .modal-content{ padding:30px 20px; }
+    .modal-content h2{ font-size:22px; }
+  }
+
+  /* ---------- Bouton newsletter dans le footer ---------- */
+  .newsletter-subscribe{
+    flex-grow:1;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .btn-newsletter{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px 24px;
+    background:transparent;
+    color:var(--gold-light);
+    border:1px solid var(--gold-light);
+    border-radius:var(--radius);
+    font-family:var(--font-body);
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition:var(--transition);
+    text-decoration:none;
+  }
+  .btn-newsletter:hover{
+    background:var(--gold);
+    color:var(--ink);
+    border-color:var(--gold);
+  }
+  .btn-newsletter:before{
+    content:'📧';
+    font-size:16px;
   }
 </style>
 </head>
@@ -927,6 +1057,11 @@
         <div class="name">Centre de Formation Laméd</div>
         <p>לָמֵד — « apprendre, enseigner ». Merci de votre visite et de votre soutien.</p>
       </div>
+    </div>
+    <div class="newsletter-subscribe">
+      <button onclick="afficherModalAbonnementManuellement()" class="btn-newsletter">
+        <span>S'abonner à la newsletter</span>
+      </button>
     </div>
     <div class="contact-list" id="bloc-contact">
       <div class="eyebrow">Nous contacter</div>
@@ -2625,7 +2760,87 @@ afficherContact();
 document.getElementById('annee-courante').textContent = new Date().getFullYear();
 initialiserOptionsLecture();
 ouvrirLienPartageRecu();
+
+/* ---------- Modal d'abonnement pour les nouveaux visiteurs ---------- */
+let modalAbonnement, formAbonnement;
+
+function afficherModal(){
+  if(modalAbonnement) modalAbonnement.style.display = 'flex';
+}
+
+function fermerModal(){
+  if(modalAbonnement) modalAbonnement.style.display = 'none';
+  localStorage.setItem('lamed_a_vu_modal_abonnement', 'true');
+  if(formAbonnement) formAbonnement.reset();
+}
+
+function initialiserModalAbonnement(){
+  modalAbonnement = document.getElementById('modal-abonnement');
+  formAbonnement = document.getElementById('form-abonnement');
+  const fermerBtn = document.getElementById('fermer-modal');
+  
+  if(!modalAbonnement) return;
+  
+  // Fermer avec le bouton X
+  if(fermerBtn){
+    fermerBtn.onclick = fermerModal;
+  }
+  
+  // Fermer en cliquant en dehors
+  modalAbonnement.onclick = function(e){
+    if(e.target === modalAbonnement) fermerModal();
+  };
+  
+  // Fermer avec la touche Echap
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modalAbonnement.style.display === 'flex') fermerModal();
+  });
+  
+  // Gérer le formulaire
+  if(formAbonnement){
+    formAbonnement.onsubmit = function(e){
+      e.preventDefault();
+      const email = document.getElementById('email-abonnement').value;
+      
+      if(email && email.includes('@')){
+        // Ici vous pouvez ajouter l'envoi à votre service d'email
+        // Par exemple: envoyerEmailAbonnement(email);
+        alert('Merci pour votre abonnement ! Nous vous enverrons nos actualités.');
+        fermerModal();
+      } else {
+        alert('Veuillez entrer une adresse email valide.');
+      }
+    };
+  }
+}
+
+function afficherModalAbonnement(){
+  const aDejaVu = localStorage.getItem('lamed_a_vu_modal_abonnement');
+  if(!aDejaVu) afficherModal();
+}
+
+function afficherModalAbonnementManuellement(){
+  afficherModal();
+}
+
+// Initialiser au chargement du DOM
+document.addEventListener('DOMContentLoaded', function(){
+  initialiserModalAbonnement();
+  afficherModalAbonnement();
+});
 </script>
+
+<!-- Modal d'abonnement pour les nouveaux visiteurs -->
+<div id="modal-abonnement" class="modal-overlay" style="display: none;">
+  <div class="modal-content" style="max-width: 500px; width: 90%;">
+    <button id="fermer-modal" class="modal-fermer">&times;</button>
+    <iframe src="https://preview.mailerlite.io/forms/2498680/192497221949720269/share" 
+            style="width: 100%; height: 400px; border: none; border-radius: 6px;"
+            frameborder="0"
+            allowfullscreen>
+    </iframe>
+  </div>
+</div>
 
 </body>
 </html>
