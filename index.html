@@ -40,21 +40,21 @@
 
 <style>
   :root{
-    --ink:#141829;
-    --ink-soft:#1E2440;
-    --ink-line:#2E3560;
-    --parchment:#FAF8F4;
-    --parchment-dark:#E8E2D6;
-    --parchment-card:#FFFFFF;
-    --gold:#C4A052;
-    --gold-light:#E2C878;
-    --gold-glow:rgba(196,160,82,0.22);
-    --burgundy:#8B3333;
-    --burgundy-dark:#6A2727;
-    --text-dark:#1E1A14;
-    --text-soft:#5C5348;
-    --text-onink:#F2EBD8;
-    --text-onink-soft:#A8A3C4;
+    --ink:#0D1122;
+    --ink-soft:#141A33;
+    --ink-line:#232A4C;
+    --parchment:#F6F1E6;
+    --parchment-dark:#E9E2D5;
+    --parchment-card:#FEF9F1;
+    --gold:#D1B55A;
+    --gold-light:#ECD38C;
+    --gold-glow:rgba(209,181,90,0.22);
+    --burgundy:#7C1821;
+    --burgundy-dark:#631418;
+    --text-dark:#121725;
+    --text-soft:#5D5862;
+    --text-onink:#F5EFE0;
+    --text-onink-soft:#B8B2A8;
     --font-display:'Cormorant Garamond', Georgia, serif;
     --font-body:'Lora', Georgia, serif;
     --font-mono:'Inter', -apple-system, sans-serif;
@@ -69,10 +69,9 @@
   html{ scroll-behavior:smooth; }
   body{
     margin:0;
-    background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(196,160,82,0.07), transparent 55%),
-      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(139,51,51,0.04), transparent 50%),
-      var(--parchment);
+    min-height:100vh;
+    background: radial-gradient(circle at top, rgba(84, 121, 171, 0.15), transparent 18%),
+      linear-gradient(180deg, #030811 0%, #081226 38%, #0b1630 100%);
     color:var(--text-dark);
     font-family:var(--font-body);
     line-height:1.6;
@@ -99,7 +98,8 @@
   }
   .header-inner{
     max-width:1180px; margin:0 auto;
-    display:flex; align-items:center; gap:24px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:24px;
     padding:12px 24px;
     flex-wrap:wrap;
   }
@@ -110,14 +110,14 @@
     flex-shrink:0;
   }
   .brand-mark{
-    width:40px; height:40px;
-    border:1px solid rgba(196,160,82,0.55);
-    border-radius:var(--radius);
+    width:56px; height:56px;
+    border:1px solid rgba(209,181,90,0.95);
+    border-radius:calc(var(--radius) + 3px);
     display:flex; align-items:center; justify-content:center;
-    font-size:21px; color:var(--gold-light);
+    font-size:26px; color:var(--gold);
     flex-shrink:0;
-    background:rgba(196,160,82,0.08);
-    box-shadow:0 0 20px var(--gold-glow);
+    background:rgba(209,181,90,0.22);
+    box-shadow:0 0 36px rgba(209,181,90,0.38);
     transition:var(--transition);
   }
   .brand:hover .brand-mark{
@@ -128,39 +128,60 @@
   .brand-text .name{ font-family:var(--font-display); font-size:17px; font-weight:700; }
   .brand-text .sub{ font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; color:var(--gold-light); text-transform:uppercase; }
 
-  nav.tabs{
-    display:flex; gap:4px; margin-left:8px;
+  .header-links{
+    display:flex; align-items:center; gap:30px;
+    flex:1;
+    justify-content:center;
     flex-wrap:wrap;
   }
-  nav.tabs button{
-    background:none; border:none;
+  .header-links a{
     color:var(--text-onink-soft);
-    font-size:14.5px; font-weight:600;
-    padding:10px 16px;
-    border-radius:var(--radius);
-    border-bottom:2px solid transparent;
+    text-decoration:none;
+    font-size:15px;
+    font-weight:600;
     transition:var(--transition);
   }
-  nav.tabs button:hover{
-    color:var(--text-onink);
-    background:rgba(255,255,255,0.05);
-  }
-  nav.tabs button.active{
+  .header-links a:hover{
     color:var(--gold-light);
-    background:rgba(196,160,82,0.1);
-    border-bottom-color:var(--gold);
+  }
+  .contact-cta{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px 22px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:999px;
+    color:var(--text-onink);
+    text-decoration:none;
+    transition:var(--transition);
+    white-space:nowrap;
+  }
+  .contact-cta:hover{
+    background:rgba(255,255,255,0.14);
+    border-color:rgba(255,255,255,0.28);
   }
 
   .search-wrap{
-    margin-left:auto;
     display:flex; align-items:center;
     background:rgba(255,255,255,0.06);
     border:1px solid rgba(255,255,255,0.12);
     border-radius:var(--radius);
     padding:0 6px 0 12px;
-    min-width:230px;
-    flex:1 1 230px; max-width:340px;
+    min-width:180px;
+    flex:0 1 auto;
+    max-width:280px;
     transition:var(--transition);
+  }
+  .header-actions{
+    display:flex; align-items:center; gap:12px;
+  }
+  .header-actions{
+    display:flex; align-items:center; gap:12px;
+  }
+  .lecture-wrap{
+    display:flex;
+    align-items:center;
   }
   .search-wrap:focus-within{
     border-color:rgba(196,160,82,0.45);
@@ -245,13 +266,24 @@
   /* ============ HERO ============ */
   .hero{
     position:relative; overflow:hidden;
+    margin:0 -24px 48px;
+    border-radius:0;
     background:
-      radial-gradient(ellipse 70% 80% at 20% 100%, rgba(139,51,51,0.18), transparent 55%),
-      radial-gradient(ellipse 60% 70% at 85% 20%, rgba(196,160,82,0.12), transparent 50%),
-      linear-gradient(165deg, #0F1220 0%, var(--ink) 45%, #1A2040 100%);
+      radial-gradient(circle at 50% 20%, rgba(210, 234, 255, 0.18), transparent 34%),
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 22%),
+      linear-gradient(180deg, #060B1A 0%, #081027 40%, #0A132A 100%);
     color:var(--text-onink);
-    padding:100px 24px 88px;
+    padding:120px 24px 94px;
     text-align:center;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 50% 35%, rgba(224, 245, 255, 0.14), transparent 16%),
+      linear-gradient(to bottom, transparent 70%, rgba(250,248,244,0.04));
+    pointer-events:none;
   }
   .hero::before{
     content:"ל";
@@ -271,15 +303,16 @@
     0%{ opacity:.04; transform:translate(-50%,-46%) scale(1); }
     100%{ opacity:.09; transform:translate(-50%,-46%) scale(1.02); }
   }
-  .hero::after{
-    content:"";
-    position:absolute; inset:0;
-    background:linear-gradient(to bottom, transparent 70%, rgba(250,248,244,0.04));
-    pointer-events:none;
-  }
   .hero-inner{
     position:relative; max-width:780px; margin:0 auto;
     animation:fadeUp 0.9s var(--ease) both;
+  }
+  .hero-hebrew{
+    font-family:var(--font-display);
+    font-size:clamp(46px, 7vw, 74px);
+    color:var(--gold);
+    margin-bottom:18px;
+    letter-spacing:-0.04em;
   }
   @keyframes fadeUp{
     from{ opacity:0; transform:translateY(24px); }
@@ -305,18 +338,18 @@
   }
   .hero p.tagline{
     font-size:18px; color:var(--text-onink-soft);
-    max-width:580px; margin:0 auto 32px;
-    line-height:1.65;
+    max-width:640px; margin:0 auto 32px;
+    line-height:1.6;
   }
   .hero-actions{
-    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
-    margin-top:8px;
+    display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+    margin-top:28px;
   }
   .btn-hero-primary{
-    background:linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-    color:var(--ink); font-weight:700; font-size:14.5px;
-    padding:13px 26px; border:none; border-radius:var(--radius);
-    box-shadow:0 4px 20px rgba(196,160,82,0.35);
+    background:linear-gradient(135deg, #f3d476 0%, #d9b65a 100%);
+    color:#111; font-weight:700; font-size:15px;
+    padding:15px 30px; border:none; border-radius:999px;
+    box-shadow:0 14px 35px rgba(209, 163, 79, 0.22);
     transition:var(--transition);
   }
   .btn-hero-primary:hover{
@@ -324,16 +357,20 @@
     box-shadow:0 8px 28px rgba(196,160,82,0.45);
   }
   .btn-hero-secondary{
-    background:transparent; color:var(--text-onink);
-    font-weight:600; font-size:14.5px;
-    padding:12px 24px; border:1px solid rgba(255,255,255,0.25);
-    border-radius:var(--radius);
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18);
+    color:var(--text-onink); font-weight:600; font-size:15px;
+    padding:15px 30px; border-radius:999px;
     transition:var(--transition);
   }
   .btn-hero-secondary:hover{
-    border-color:var(--gold-light);
+    background:rgba(255,255,255,0.16);
+    border-color:rgba(255,255,255,0.28);
+    color:var(--text-onink);
+  }
+  .btn-hero-secondary:hover{
+    background:rgba(255,255,255,0.16);
+    border-color:rgba(255,255,255,0.24);
     color:var(--gold-light);
-    background:rgba(196,160,82,0.08);
   }
 
   /* ============ SECTIONS GÉNÉRIQUES ============ */
@@ -357,6 +394,84 @@
     letter-spacing:-0.01em;
   }
   .section-head p{ margin:4px 0 0; color:var(--text-soft); font-size:15px; }
+
+  .section-row{ padding:56px 0; }
+  .section-row .section-inner{ max-width:1180px; margin:0 auto; }
+  .section-row.section-row-blue{ background:linear-gradient(180deg, #060A18 0%, #0E1632 100%); }
+  .section-row.section-row-blue .section-head{ border-color:rgba(255,255,255,0.12); }
+  .section-row.section-row-blue .section-head h2,
+  .section-row.section-row-blue .section-head p{ color:var(--text-onink); }
+  .section-row.section-row-beige{
+    background:var(--parchment);
+    border:1px solid rgba(20,24,41,0.08);
+    border-radius:24px;
+    box-shadow:0 24px 60px rgba(0,0,0,0.08);
+    margin:0 -24px 36px;
+    padding:64px 24px 72px;
+  }
+  .section-row.section-row-beige .section-inner{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .section-row.section-row-beige .section-head{
+    border-color:rgba(20,24,41,0.08);
+  }
+  .section-row.section-row-beige .section-head h2{
+    color:var(--text-dark);
+  }
+  .section-row.section-row-beige .section-head p{
+    color:var(--text-soft);
+  }
+  .bibliotheque-head{
+    background:none;
+    border:none;
+    border-radius:0;
+    padding:0;
+    box-shadow:none;
+    margin:0;
+    width:auto;
+    position:static;
+    left:0;
+  }
+  .bibliotheque-head .glyph{ margin-top:0; }
+  .bibliotheque-title{ color:var(--text-dark); margin:0 0 18px 0; font-size:clamp(34px, 4vw, 50px); line-height:1.08; }
+  .bibliotheque-subtitle{ color:var(--ink); margin:0 0 20px 0; font-size:18px; line-height:1.6; }
+  .bibliotheque-description{ color:var(--text-soft); margin:0; max-width:760px; font-size:16px; line-height:1.75; }
+  .chemin-simple{
+    text-align:center;
+    padding:72px 40px;
+    background:var(--parchment-card);
+    margin:0 auto;
+    border-radius:24px;
+    border:1px solid rgba(20,24,41,0.08);
+    box-shadow:0 18px 42px rgba(0,0,0,0.08);
+    max-width:1180px;
+  }
+  .chemin-simple p{ margin:0 0 20px 0; }
+  @media (max-width:1180px){
+    .section-row.section-row-beige {
+      margin:0 -16px 32px;
+      padding:56px 16px 64px;
+    }
+    .section-row.section-row-beige .section-inner {
+      padding:0 16px;
+    }
+    .bibliotheque-head,
+    .chemin-simple{
+      width:auto;
+      left:0;
+      padding:32px 24px;
+    }
+  }
+  @media (max-width:720px){
+    .bibliotheque-head,
+    .chemin-simple{
+      width:100%;
+      left:0;
+      padding:26px 20px;
+    }
+  }
 
   /* ============ GRILLE PDF ============ */
   .pdf-grid{
@@ -458,22 +573,22 @@
     transition:var(--transition);
   }
   .btn-primary{
-    background:linear-gradient(135deg, var(--burgundy), var(--burgundy-dark));
+    background:linear-gradient(135deg, #7C1821 0%, #8F1F28 100%);
     color:#fff;
-    box-shadow:0 2px 8px rgba(139,51,51,0.25);
+    box-shadow:0 12px 28px rgba(124,24,33,0.24);
+  }
+  .btn-ghost{
+    border-color:rgba(124,24,33,0.18);
+    color:var(--burgundy);
+    background:rgba(196,160,82,0.08);
+  }
+  .btn-ghost:hover{
+    background:rgba(196,160,82,0.16);
+    border-color:var(--gold);
   }
   .btn-primary:hover{
     transform:translateY(-1px);
-    box-shadow:0 4px 14px rgba(139,51,51,0.35);
-  }
-  .btn-ghost{
-    border-color:rgba(196,160,82,0.5);
-    color:var(--burgundy);
-    background:rgba(196,160,82,0.06);
-  }
-  .btn-ghost:hover{
-    background:rgba(196,160,82,0.14);
-    border-color:var(--gold);
+    box-shadow:0 6px 22px rgba(124,24,33,0.35);
   }
   .empty-note{
     padding:30px; text-align:center; color:var(--text-soft);
@@ -727,14 +842,13 @@
   }
   .colophon-inner{
     max-width:1180px; margin:0 auto; padding:44px 24px 30px;
-    display:grid;
-    grid-template-columns: auto 1fr auto;
-    gap:36px;
-    align-items:start;
+    display:flex; align-items:center; justify-content:space-between; gap:36px;
+    flex-wrap:wrap;
   }
   .colophon-brand{
     display:flex; align-items:center; gap:18px;
     max-width:340px;
+    flex:1 1 320px;
   }
   .colophon-logo{
     width:110px; height:110px; object-fit:contain;
@@ -747,10 +861,54 @@
     align-items:center;
     justify-content:center;
     text-align:center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 24px 22px;
+    border-radius: 24px;
+    min-width: 300px;
+    max-width: 420px;
+    flex:1 1 380px;
   }
+  .newsletter-subscribe .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--gold-light); margin-bottom:14px;
+  }
+  .newsletter-subscribe p{
+    margin:0 0 20px; color:#F4F1EA; font-size:14px; line-height:1.6;
+  }
+  .btn-newsletter{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:14px 24px;
+    background:var(--gold);
+    color:var(--ink);
+    border:1px solid var(--gold);
+    border-radius:999px;
+    font-family:var(--font-body);
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:var(--transition);
+    text-decoration:none;
+    width:100%;
+    max-width:260px;
+  }
+  .btn-newsletter:hover{
+    background:#d4a840;
+    border-color:#d4a840;
+  }
+  .colophon-inner{
+    max-width:1180px; margin:0 auto; padding:44px 24px 30px;
+    display:flex; align-items:center; justify-content:space-between; gap:36px;
+  }
+  .contact-list{align-items:flex-end;}
+  .contact-list .liens{align-items:flex-end;}
   .contact-list{
     display:flex; flex-direction:column; gap:12px;
     align-items:flex-end;
+    flex:1 1 260px;
   }
   .contact-list .liens{ display:flex; flex-direction:column; gap:14px; align-items:flex-end; }
   .contact-list .eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold-light); margin-bottom:4px; }
@@ -884,31 +1042,44 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:flex-start;
+    justify-content:center;
     text-align:center;
-    padding: 0 20px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 24px 22px;
+    border-radius: 24px;
+    min-width: 300px;
+    max-width: 420px;
+  }
+  .newsletter-subscribe .eyebrow{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:#f2d57e; margin-bottom:10px;
+  }
+  .newsletter-subscribe p{
+    margin:0 0 20px; color:#f6f3ea; font-size:14px; line-height:1.7;
   }
   .btn-newsletter{
     display:inline-flex;
     align-items:center;
     justify-content:center;
     gap:8px;
-    padding:12px 24px;
-    background:transparent;
-    color:var(--gold-light);
-    border:1px solid var(--gold-light);
-    border-radius:var(--radius);
+    padding:14px 26px;
+    background:var(--gold);
+    color:var(--ink);
+    border:1px solid var(--gold);
+    border-radius:999px;
     font-family:var(--font-body);
     font-size:15px;
-    font-weight:500;
+    font-weight:700;
     cursor:pointer;
     transition:var(--transition);
     text-decoration:none;
+    width:100%;
+    max-width:280px;
   }
   .btn-newsletter:hover{
-    background:var(--gold);
-    color:var(--ink);
-    border-color:var(--gold);
+    background:#d4a840;
+    border-color:#d4a840;
   }
   .btn-newsletter:before{
     content:'📧';
@@ -920,58 +1091,58 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <a href="#" class="brand" onclick="afficherOnglet('accueil'); return false;">
+    <a href="#accueil" class="brand">
       <span class="brand-mark">ל</span>
       <span class="brand-text">
         <div class="name">Centre de Formation Laméd</div>
-        <div class="sub">Étude &amp; transmission</div>
+        <div class="sub">ÉTUDE &amp; TRANSMISSION</div>
       </span>
     </a>
 
-    <nav class="tabs">
-      <button data-onglet="accueil" class="active" onclick="afficherOnglet('accueil')">Accueil</button>
-      <button data-onglet="articles" onclick="afficherOnglet('articles')">Articles</button>
-      <button data-onglet="etude" onclick="afficherOnglet('etude')">Étude Biblique</button>
-      <button data-onglet="vision" onclick="afficherOnglet('vision')">Notre vision</button>
-      <button data-onglet="lire-etude" onclick="afficherOnglet('lire-etude')">lire étude</button>
+    <nav class="header-links">
+      <a href="#accueil">Accueil</a>
+      <a href="#articles">Articles</a>
+      <a href="#etude">Étude biblique</a>
+      <a href="#vision">Notre Vision</a>
     </nav>
 
-    <form class="search-wrap" onsubmit="event.preventDefault(); lancerRecherche();">
-      <input id="champ-recherche" type="text" placeholder="Rechercher un mot-clé…">
-      <button type="submit" aria-label="Rechercher">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
-    </form>
-
-    <div class="lecture-wrap">
-      <button type="button" id="btn-lecture" onclick="toggleLecturePanel(event)" aria-label="Options de lecture">Aa</button>
-      <div id="panel-lecture" class="panel-lecture">
-        <div class="lecture-groupe">
-          <span class="lecture-label">Taille du texte</span>
-          <div class="lecture-taille-ctrl">
-            <button type="button" onclick="changerTaille(-10)">A-</button>
-            <span id="taille-valeur">100%</span>
-            <button type="button" onclick="changerTaille(10)">A+</button>
+    <div class="header-actions">
+      <form class="search-wrap" onsubmit="event.preventDefault(); lancerRecherche();">
+        <input id="champ-recherche" type="text" placeholder="Rechercher un mot-clé…">
+        <button type="submit" aria-label="Rechercher">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </form>
+      <div class="lecture-wrap">
+        <button type="button" id="btn-lecture" onclick="toggleLecturePanel(event)" aria-label="Options de lecture">Aa</button>
+        <div id="panel-lecture" class="panel-lecture">
+          <div class="lecture-groupe">
+            <span class="lecture-label">Taille du texte</span>
+            <div class="lecture-taille-ctrl">
+              <button type="button" onclick="changerTaille(-10)">A-</button>
+              <span id="taille-valeur">100%</span>
+              <button type="button" onclick="changerTaille(10)">A+</button>
+            </div>
           </div>
-        </div>
-        <div class="lecture-groupe">
-          <span class="lecture-label">Mode de lecture</span>
-          <div class="lecture-modes">
-            <button type="button" data-mode="normal" onclick="changerMode('normal')">Normal</button>
-            <button type="button" data-mode="sepia" onclick="changerMode('sepia')">Sépia</button>
-            <button type="button" data-mode="nuit" onclick="changerMode('nuit')">Nocturne</button>
+          <div class="lecture-groupe">
+            <span class="lecture-label">Mode de lecture</span>
+            <div class="lecture-modes">
+              <button type="button" data-mode="normal" onclick="changerMode('normal')">Normal</button>
+              <button type="button" data-mode="sepia" onclick="changerMode('sepia')">Sépia</button>
+              <button type="button" data-mode="nuit" onclick="changerMode('nuit')">Nocturne</button>
+            </div>
           </div>
-        </div>
-        <div class="lecture-groupe">
-          <span class="lecture-label">Police</span>
-          <select id="select-police" onchange="changerPolice(this.value)">
-            <option value="lora">Police du site (Lora)</option>
-            <option value="cambria">Cambria</option>
-            <option value="palatino">Palatino</option>
-            <option value="libertine">Libertine</option>
-            <option value="helvetica">Helvetica</option>
-            <option value="trebuchet">Trebuchet</option>
-          </select>
+          <div class="lecture-groupe">
+            <span class="lecture-label">Police</span>
+            <select id="select-police" onchange="changerPolice(this.value)">
+              <option value="lora">Police du site (Lora)</option>
+              <option value="cambria">Cambria</option>
+              <option value="palatino">Palatino</option>
+              <option value="libertine">Libertine</option>
+              <option value="helvetica">Helvetica</option>
+              <option value="trebuchet">Trebuchet</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -996,66 +1167,78 @@
 <!-- ================= ONGLET ACCUEIL ================= -->
 <section id="onglet-accueil" class="panel active">
 
-  <div class="hero" style="margin:0 -24px 48px; border-radius:0; background: var(--ink);">
+  <div class="hero">
     <div class="hero-inner">
-      <div class="eyebrow">Bienvenue</div>
-      <h1 style="color: #fff;">Le Centre de Formation Laméd</h1>
-      <p class="tagline" style="color: var(--text-onink-soft);">Un espace pour apprendre, approfondir et transmettre la Parole d'Èlohiym — ressources, enseignements et documents à télécharger librement.</p>
-      <div class="hero-actions">
-        <button type="button" class="btn-hero-primary" onclick="afficherOnglet('articles')">Explorer les ressources</button>
-      </div>
+      <div class="hero-hebrew">ל</div>
+      <div class="eyebrow">BIENVENUE</div>
+      <h1>Le Centre de Formation Laméd</h1>
+      <p class="tagline">Un espace chrétien pour apprendre, approfondir et transmettre la Parole — études bibliques, ressources de formation et enseignements à partager librement.</p>
+    </div>
+
+    <div class="section-inner">
+      <div id="annonce-etude"></div>
     </div>
   </div>
 
-  <div id="annonce-etude"></div>
-
-  <div class="section-head">
-    <span class="glyph">ל</span>
-    <div>
-      <h2>Bibliothèque de documents</h2>
-      <p>PDF téléchargeables gratuitement — hébergés sur Google Drive.</p>
+  <div class="section-row section-row-beige bibliothèque-section" id="ressources">
+    <div class="section-inner">
+      <div class="section-head bibliothèque-head">
+        <span class="glyph">ל</span>
+        <div>
+          <p class="bibliotheque-label">BIBLIOTHÈQUE</p>
+          <h2 class="bibliotheque-title">Documents pour étudier et transmettre</h2>
+          <p class="bibliotheque-description">Un modèle de section pour présenter vos PDF, études bibliques, fiches de formation et ressources téléchargeables.</p>
+        </div>
+      </div>
+      <div id="liste-pdf" class="pdf-grid"></div>
     </div>
   </div>
-  <div id="liste-pdf" class="pdf-grid"></div>
 
-  <div class="section-head" style="margin-top:56px;">
-    <span class="glyph">ל</span>
-    <div>
-      <h2>Enseignements en vidéo</h2>
-      <p>Dernières vidéos partagées sur notre chaîne YouTube.</p>
+  <div class="section-row section-row-blue">
+    <div class="section-inner">
+      <div class="section-head">
+        <span class="glyph">ל</span>
+        <div>
+          <h2>Enseignements en vidéo</h2>
+          <p>Dernières vidéos partagées sur notre chaîne YouTube.</p>
+        </div>
+      </div>
+      <div id="liste-videos" class="video-grid"></div>
     </div>
   </div>
-  <div id="liste-videos" class="video-grid"></div>
 
-  <!-- ================= UN CHEMIN SIMPLE POUR LA PAROLE ================= -->
-  <div class="chemin-simple" style="text-align:center; padding:64px 0; background:var(--parchment-dark); margin-top:56px; border-radius:var(--radius);">
-    <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold-light); margin-bottom:20px;">
-      APPRENDRE • APPROFONDIR • TRANSMETTRE
-    </p>
-    <h2 style="font-family:var(--font-display); font-size:clamp(24px, 3vw, 30px); color:var(--text-dark); margin-bottom:32px;">
-      Un chemin simple pour grandir dans la Parole
-    </h2>
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; max-width:900px; margin:0 auto;">
-      <div style="background:var(--parchment-card); border:1px solid var(--parchment-dark); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-card);">
-        <div style="color:var(--gold); font-weight:700; font-size:14px; margin-bottom:12px;">01</div>
-        <h3 style="margin:0 0 8px 0; font-size:18px;">Étudier</h3>
-        <p style="color:var(--text-soft); font-size:15px; line-height:1.6; margin:0;">
-          Commencer par les fondements : lecture guidée, contexte biblique et repères doctrinaux.
+  <div class="section-row section-row-beige">
+    <div class="section-inner">
+      <div class="chemin-simple">
+        <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold-light); margin-bottom:20px;">
+          APPRENDRE • APPROFONDIR • TRANSMETTRE
         </p>
-      </div>
-      <div style="background:var(--parchment-card); border:1px solid var(--parchment-dark); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-card);">
-        <div style="color:var(--gold); font-weight:700; font-size:14px; margin-bottom:12px;">02</div>
-        <h3 style="margin:0 0 8px 0; font-size:18px;">Approfondir</h3>
-        <p style="color:var(--text-soft); font-size:15px; line-height:1.6; margin:0;">
-          Relier les passages, comparer les enseignements et discerner ce qui édifie l'Église.
-        </p>
-      </div>
-      <div style="background:var(--parchment-card); border:1px solid var(--parchment-dark); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-card);">
-        <div style="color:var(--gold); font-weight:700; font-size:14px; margin-bottom:12px;">03</div>
-        <h3 style="margin:0 0 8px 0; font-size:18px;">Transmettre</h3>
-        <p style="color:var(--text-soft); font-size:15px; line-height:1.6; margin:0;">
-          Préparer des supports clairs pour partager, enseigner et accompagner d'autres disciples.
-        </p>
+        <h2 style="font-family:var(--font-display); font-size:clamp(24px, 3vw, 30px); color:var(--text-dark); margin-bottom:32px;">
+          Un chemin simple pour grandir dans la Parole
+        </h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; max-width:900px; margin:0 auto;">
+          <div style="background:var(--parchment-card); border:1px solid var(--parchment-dark); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-card);">
+            <div style="color:var(--gold); font-weight:700; font-size:14px; margin-bottom:12px;">01</div>
+            <h3 style="margin:0 0 8px 0; font-size:18px;">Étudier</h3>
+            <p style="color:var(--text-soft); font-size:15px; line-height:1.6; margin:0;">
+              Commencer par les fondements : lecture guidée, contexte biblique et repères doctrinaux.
+            </p>
+          </div>
+          <div style="background:var(--parchment-card); border:1px solid var(--parchment-dark); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-card);">
+            <div style="color:var(--gold); font-weight:700; font-size:14px; margin-bottom:12px;">02</div>
+            <h3 style="margin:0 0 8px 0; font-size:18px;">Approfondir</h3>
+            <p style="color:var(--text-soft); font-size:15px; line-height:1.6; margin:0;">
+              Relier les passages, comparer les enseignements et discerner ce qui édifie l'Église.
+            </p>
+          </div>
+          <div style="background:var(--parchment-card); border:1px solid var(--parchment-dark); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-card);">
+            <div style="color:var(--gold); font-weight:700; font-size:14px; margin-bottom:12px;">03</div>
+            <h3 style="margin:0 0 8px 0; font-size:18px;">Transmettre</h3>
+            <p style="color:var(--text-soft); font-size:15px; line-height:1.6; margin:0;">
+              Préparer des supports clairs pour partager, enseigner et accompagner d'autres disciples.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1118,10 +1301,10 @@
     <div class="newsletter-subscribe">
       <div class="eyebrow">Recevoir les nouvelles études</div>
       <p style="margin: 8px 0 16px; color: var(--text-soft); font-size: 14px;">
-        Abonnez-vous pour recevoir les dernières études par email
+        Un emplacement prêt pour connecter votre formulaire d’abonnement ou un service newsletter.
       </p>
       <div style="width:100%; display:flex; justify-content:center;">
-        <button id="btn-newsletter-footer" class="btn-newsletter" type="button" onclick="afficherModalAbonnementManuellement();">S'abonner</button>
+        <button id="btn-newsletter-footer" class="btn-newsletter" type="button" onclick="afficherModalAbonnementManuellement();">S’abonner à la newsletter</button>
       </div>
     </div>
     <div class="contact-list" id="bloc-contact">
