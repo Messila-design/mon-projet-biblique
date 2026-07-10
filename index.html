@@ -2623,9 +2623,6 @@ function marquerEtudeCommeVue(id){
     localStorage.setItem('lamed_etudes_vues', JSON.stringify(vues));
   }
   document.querySelectorAll(`[data-badge-etude-id="${id}"]`).forEach(b => b.remove());
-  if(document.getElementById('annonce-etude')){
-    afficherDerniereEtude();
-  }
 }
 
 function parseDateFr(dateStr){
@@ -2885,15 +2882,18 @@ function afficherLireEtude(){
 /* ---------- Rendu : annonce de la dernière étude sur l'accueil ---------- */
 function afficherDerniereEtude(){
   const el = document.getElementById('annonce-etude');
+  if(!el) return;
   if(!ETUDES_BIBLIQUES || ETUDES_BIBLIQUES.length === 0){ el.innerHTML = ''; return; }
+
   const etudesTriees = trierDocsParDate(ETUDES_BIBLIQUES);
-  const nouvelleEtude = etudesTriees.find(e => estEtudeNouveau(e.id));
-  if(!nouvelleEtude){ el.innerHTML = ''; return; }
+  const etudeAffichee = etudesTriees[0];
+  if(!etudeAffichee){ el.innerHTML = ''; return; }
+
   el.innerHTML = `
-    <div class="annonce-etude" onclick="marquerEtudeCommeVue('${nouvelleEtude.id}'); afficherOnglet('etude');">
+    <div class="annonce-etude" onclick="afficherOnglet('etude');">
       <span class="annonce-label">Nouvelle étude</span>
-      <span class="annonce-titre">${nouvelleEtude.titre}</span>
-      <span class="annonce-date">${nouvelleEtude.date || ''}</span>
+      <span class="annonce-titre">${etudeAffichee.titre}</span>
+      <span class="annonce-date">${etudeAffichee.date || ''}</span>
     </div>`;
 }
 
