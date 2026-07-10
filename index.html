@@ -141,6 +141,7 @@
     font-weight:600;
     transition:var(--transition);
   }
+  .header-links a.active,
   .header-links a:hover{
     color:var(--gold-light);
   }
@@ -1100,10 +1101,10 @@
     </a>
 
     <nav class="header-links">
-      <a href="#accueil">Accueil</a>
-      <a href="#articles">Articles</a>
-      <a href="#etude">Étude biblique</a>
-      <a href="#vision">Notre Vision</a>
+      <a href="#accueil" data-onglet="accueil" onclick="afficherOnglet('accueil'); return false;">Accueil</a>
+      <a href="#articles" data-onglet="articles" onclick="afficherOnglet('articles'); return false;">Articles</a>
+      <a href="#etude" data-onglet="etude" onclick="afficherOnglet('etude'); return false;">Étude biblique</a>
+      <a href="#vision" data-onglet="vision" onclick="afficherOnglet('vision'); return false;">Notre Vision</a>
     </nav>
 
     <div class="header-actions">
@@ -2916,12 +2917,38 @@ function ouvrirLienPartageRecu(){
 
 /* ---------- Navigation par onglets ---------- */
 function afficherOnglet(nom){
+  const sections = document.querySelectorAll('section.panel');
+  if(!sections.length) return;
+  const target = document.getElementById('onglet-' + nom);
+  if(!target) return;
+
   effacerRecherche(false);
-  document.querySelectorAll('section.panel').forEach(s => s.classList.remove('active'));
-  document.getElementById('onglet-' + nom).classList.add('active');
-  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.onglet === nom));
+  sections.forEach(s => s.classList.remove('active'));
+  target.classList.add('active');
+
+  document.querySelectorAll('nav.header-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.onglet === nom);
+  });
+
+  if(location.hash !== '#' + nom){
+    window.history.replaceState(null, '', '#' + nom);
+  }
   window.scrollTo({top:0, behavior:'smooth'});
 }
+
+function naviguerDepuisHash(){
+  const hash = location.hash.replace('#','');
+  const nom = hash || 'accueil';
+  const valid = ['accueil','articles','etude','vision'];
+  if(valid.includes(nom)){
+    afficherOnglet(nom);
+  } else {
+    afficherOnglet('accueil');
+  }
+}
+
+window.addEventListener('load', naviguerDepuisHash);
+window.addEventListener('hashchange', naviguerDepuisHash);
 
 /* ---------- Recherche par mot-clé ---------- */
 function lancerRecherche(){
