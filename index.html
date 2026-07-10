@@ -2909,7 +2909,7 @@ function afficherContact(){
   el.innerHTML = `
     <div class="eyebrow">Nous contacter</div>
     <div class="liens">
-      <a class="contact-link" href="mailto:${CONTACT.email}">${ICONES.mail} ${CONTACT.email}</a>
+      <a class="contact-link" href="mailto:${CONTACT.email}" onclick="window.location.href=this.href; return true;" title="Ouvrir votre client e-mail par défaut">${ICONES.mail} ${CONTACT.email}</a>
       <a class="contact-link" href="${CONTACT.facebook}" target="_blank" rel="noopener">${ICONES.facebook} Notre page Facebook</a>
       <a class="contact-link" href="${CONTACT.whatsapp}" target="_blank" rel="noopener">${ICONES.whatsapp} Notre chaîne WhatsApp</a>
     </div>
