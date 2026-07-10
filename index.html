@@ -981,14 +981,13 @@
 <!-- ================= ONGLET ACCUEIL ================= -->
 <section id="onglet-accueil" class="panel active">
 
-  <div class="hero" style="margin:0 -24px 48px; border-radius:0;">
+  <div class="hero" style="margin:0 -24px 48px; border-radius:0; background: var(--ink);">
     <div class="hero-inner">
       <div class="eyebrow">Bienvenue</div>
-      <h1>Le Centre de Formation Laméd</h1>
-      <p class="tagline">Un espace pour apprendre, approfondir et transmettre la Parole d'Èlohiym — ressources, enseignements et documents à télécharger librement.</p>
+      <h1 style="color: #fff;">Le Centre de Formation Laméd</h1>
+      <p class="tagline" style="color: var(--text-onink-soft);">Un espace pour apprendre, approfondir et transmettre la Parole d'Èlohiym — ressources, enseignements et documents à télécharger librement.</p>
       <div class="hero-actions">
         <button type="button" class="btn-hero-primary" onclick="afficherOnglet('articles')">Explorer les ressources</button>
-        <button type="button" class="btn-hero-secondary" onclick="afficherOnglet('etude')">Lire une étude</button>
       </div>
     </div>
   </div>
@@ -1101,11 +1100,18 @@
         <p>לַמֵד — Laméd signifie apprendre, enseigner et transmettre. Merci de votre visite et de votre soutien.</p>
       </div>
     </div>
-    <div class="newsletter-subscribe">
+    <div class="newsletter-subscribe" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--parchment-dark);">
       <div class="eyebrow">Recevoir les nouvelles études</div>
-      <button onclick="afficherModalAbonnementManuellement()" class="btn-newsletter">
-        <span>S'abonner à la newsletter</span>
-      </button>
+      <p style="margin: 8px 0 16px; color: var(--text-soft); font-size: 14px;">
+        Abonnez-vous pour recevoir les dernières études par email
+      </p>
+      <form id="form-abonnement" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+        <input type="email" id="newsletter-email" placeholder="Votre adresse email" 
+               style="flex: 1; min-width: 200px; max-width: 320px; padding: 11px 14px; border: 1px solid var(--parchment-dark); border-radius: var(--radius); font-family: var(--font-body); font-size: 14px; background: var(--parchment-card);">
+        <button type="submit" class="btn-newsletter" style="padding: 11px 20px; background: var(--gold); color: var(--ink); border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer;">
+          <span>S'abonner</span>
+        </button>
+      </form>
     </div>
     <div class="contact-list" id="bloc-contact">
       <div class="eyebrow">NOUS CONTACTER</div>
