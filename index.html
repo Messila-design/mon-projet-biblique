@@ -675,6 +675,26 @@
     position:relative;
     outline:none;
   }
+  .note-marque a{
+    color:inherit;
+    text-decoration:none;
+  }
+  .note-marque a:hover,
+  .note-marque a:focus{
+    color:var(--gold-light);
+    text-decoration:underline;
+  }
+  .note-backref{
+    display:inline-block;
+    margin-left:8px;
+    color:var(--text-soft);
+    font-size:12px;
+    text-decoration:none;
+  }
+  .note-backref:hover,
+  .note-backref:focus{
+    color:var(--burgundy);
+  }
   .note-marque:hover::after,
   .note-marque:focus::after{
     content: attr(data-note);
@@ -2362,10 +2382,7 @@ const ETUDES_BIBLIQUES = [
         <cite>Tehilim (Psaumes) 118:17 — BYM</cite>
       </blockquote>
       <p><em>De plus, certaines oppressions peuvent être la conséquence d'un péché non confessé. Dans ce cas, il faut immédiatement confesser ce péché :</em></p>
-      <blockquote>
-        <p>9. Si nous confessons nos péchés, il est fidèle et juste pour nous les remettre et pour nous purifier de toute injustice.</p>
-        <cite>1 Yohanan (1 Jean) 1:9 — BYM</cite>
-      </blockquote>
+      
       <p><em>Enfin, si l'oppression persiste malgré tout, il est important de demander la prière de délivrance :</em></p>
       <blockquote>
         <p>16. Confessez donc vos fautes les uns les autres, et priez les uns en faveur des autres, afin que vous soyez guéris. La supplication du juste agit avec une grande force.</p>
@@ -2485,10 +2502,6 @@ const ETUDES_BIBLIQUES = [
 
       <h4>5. La repentance, moyen pour atteindre la paix</h4>
       <p>Dans la recherche de la paix, la repentance joue un rôle essentiel. En effet, si nous avons causé du tort à quelqu'un, il faut réparer cette offense. Cette réparation passe par l'humilité : d'abord se repentir devant le Seigneur, puis aller se repentir devant la personne offensée afin de rétablir la paix. C'est pourquoi la Bible dit :</p>
-      <blockquote>
-        <p>14. Poursuivez la paix avec tous, et la sanctification, sans laquelle personne ne verra le Seigneur.</p>
-        <cite>Hébreux 12:14 — BYM</cite>
-      </blockquote>
       <p>Et si cette personne refuse la réconciliation, nous sommes déliés de toute culpabilité devant le Seigneur :</p>
       <blockquote>
         <p>Ne rendant à personne le mal pour le mal, recherchant les choses honnêtes devant tous les humains. <em>S'il est possible, autant que cela dépend de vous, soyez en paix avec tous les humains.</em></p>
@@ -2596,6 +2609,46 @@ function marquerCommeVu(id){
   document.querySelectorAll(`[data-badge-id="${id}"]`).forEach(b => b.remove());
 }
 
+function obtenirEtudesVues(){
+  try{ return JSON.parse(localStorage.getItem('lamed_etudes_vues') || '[]'); }
+  catch(e){ return []; }
+}
+function estEtudeNouveau(id){
+  return !obtenirEtudesVues().includes(id);
+}
+function marquerEtudeCommeVue(id){
+  const vues = obtenirEtudesVues();
+  if(!vues.includes(id)){
+    vues.push(id);
+    localStorage.setItem('lamed_etudes_vues', JSON.stringify(vues));
+  }
+  document.querySelectorAll(`[data-badge-etude-id="${id}"]`).forEach(b => b.remove());
+  if(document.getElementById('annonce-etude')){
+    afficherDerniereEtude();
+  }
+}
+
+function parseDateFr(dateStr){
+  if(!dateStr) return 0;
+  const parts = dateStr.split('/');
+  if(parts.length !== 3) return Date.parse(dateStr) || 0;
+  const day = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1;
+  const year = parseInt(parts[2], 10);
+  return new Date(year, month, day).getTime();
+}
+function trierDocsParDate(docs){
+  return docs.slice().sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
+}
+function trierArticlesParNouvelleListe(docs){
+  return docs.slice().sort((a, b) => {
+    const aNouveau = estNouveau(a.id) ? 1 : 0;
+    const bNouveau = estNouveau(b.id) ? 1 : 0;
+    if(aNouveau !== bNouveau) return bNouveau - aNouveau;
+    return parseDateFr(b.date) - parseDateFr(a.date);
+  });
+}
+
 /* ---------- Rendu : cartes PDF ---------- */
 function carteHtmlPdf(doc, contexte){
   contexte = contexte || 'defaut';
@@ -2604,7 +2657,7 @@ function carteHtmlPdf(doc, contexte){
   const lienVue = lienVisualisationDrive(doc.lienDrive);
   const apercu = lienApercuImageDrive(doc.lienDrive);
   return `
-    <div class="pdf-card" id="carte-${contexte}-${doc.id}">
+    <div class="pdf-card" id="carte-${contexte}-${doc.id}" onclick="marquerCommeVu('${doc.id}')">
       <div class="doc-thumb-wrap">
         <a href="${lienVue}" target="_blank" rel="noopener" onclick="marquerCommeVu('${doc.id}')">
           <img class="doc-thumb" src="${apercu}" alt="Aperçu — ${doc.titre}" loading="lazy" onerror="this.closest('.doc-thumb-wrap').remove()">
@@ -2637,7 +2690,7 @@ function afficherPdfDans(elementId, liste, contexte){
     el.innerHTML = `<div class="empty-note">Aucun document pour le moment.</div>`;
     return;
   }
-  el.innerHTML = liste.map(doc => carteHtmlPdf(doc, contexte)).join('');
+  el.innerHTML = trierArticlesParNouvelleListe(liste).map(doc => carteHtmlPdf(doc, contexte)).join('');
 }
 
 /* ---------- Rendu : onglet Articles, classé par section ---------- */
@@ -2645,7 +2698,7 @@ const ORDRE_CATEGORIES = ["La Doctrine Apostolique", "Fondamentaux", "Doctrines"
 function afficherArticlesParCategorie(){
   const el = document.getElementById('liste-articles-par-categorie');
   const blocs = ORDRE_CATEGORIES.map(cat => {
-    const docs = PDF_DOCUMENTS.filter(d => (d.categorie || 'Fondamentaux') === cat);
+    const docs = trierArticlesParNouvelleListe(PDF_DOCUMENTS.filter(d => (d.categorie || 'Fondamentaux') === cat));
     if(docs.length === 0) return '';
     return `
       <div class="categorie-bloc">
@@ -2739,6 +2792,7 @@ function ouvrirLecteur(id){
         ${toc}
       </div>
     </div>`;
+  activerNotesBasDePage(document.getElementById('lecteur-corps'));
   const overlay = document.getElementById('lecteur-pdf');
   overlay.classList.add('ouvert');
   overlay.scrollTop = 0;
@@ -2757,8 +2811,9 @@ function afficherEtudes(){
     el.innerHTML = `<div class="empty-note">Aucune étude publiée pour le moment.</div>`;
     return;
   }
-  el.innerHTML = ETUDES_BIBLIQUES.map((e, index) => {
-    const badge = index === 0 ? `<span class="badge-new">Nouvelle étude</span>` : '';
+  const etudesTriees = trierDocsParDate(ETUDES_BIBLIQUES);
+  el.innerHTML = etudesTriees.map((e, index) => {
+    const badge = estEtudeNouveau(e.id) ? `<span class="badge-new" data-badge-etude-id="${e.id}">Nouvelle étude</span>` : '';
     const { contenuAvecIds, titres } = injecterTableDesMatieres(e.contenu, e.id);
     const toc = titres.length > 0 ? `
       <nav class="etude-toc">
@@ -2766,7 +2821,7 @@ function afficherEtudes(){
         ${construireTocHtml(titres)}
       </nav>` : '';
     return `
-    <article class="etude" id="carte-etude-${e.id}">
+    <article class="etude" id="carte-etude-${e.id}" onclick="marquerEtudeCommeVue('${e.id}')">
       <div class="etude-entete">
         ${badge}
         <div class="etude-date">${e.date || ''}</div>
@@ -2777,13 +2832,14 @@ function afficherEtudes(){
         ${toc}
       </div>
       <div class="doc-reactions">
-        <button type="button" class="reaction-btn btn-partager" onclick="copierLien('etude','${e.id}', this)">
+        <button type="button" class="reaction-btn btn-partager" onclick="event.stopPropagation(); copierLien('etude','${e.id}', this)">
           ${ICONES.partager} Partager
         </button>
       </div>
     </article>
   `;
   }).join('');
+  activerNotesBasDePage(el);
 }
 
 function afficherLireEtude(){
@@ -2792,8 +2848,9 @@ function afficherLireEtude(){
     el.innerHTML = `<div class="empty-note">Aucune étude disponible pour le moment.</div>`;
     return;
   }
-  el.innerHTML = ETUDES_BIBLIQUES.map((e, index) => {
-    const badge = index === 0 ? `<span class="badge-new">Nouvelle étude</span>` : '';
+  const etudesTriees = trierDocsParDate(ETUDES_BIBLIQUES);
+  el.innerHTML = etudesTriees.map((e, index) => {
+    const badge = estEtudeNouveau(e.id) ? `<span class="badge-new" data-badge-etude-id="${e.id}">Nouvelle étude</span>` : '';
     const { contenuAvecIds, titres } = injecterTableDesMatieres(e.contenu, e.id);
     const toc = titres.length > 0 ? `
       <nav class="etude-toc">
@@ -2822,18 +2879,21 @@ function afficherLireEtude(){
     </article>
   `;
   }).join('');
+  el.querySelectorAll('article.etude').forEach(article => activerNotesBasDePage(article, article.id));
 }
 
 /* ---------- Rendu : annonce de la dernière étude sur l'accueil ---------- */
 function afficherDerniereEtude(){
   const el = document.getElementById('annonce-etude');
   if(!ETUDES_BIBLIQUES || ETUDES_BIBLIQUES.length === 0){ el.innerHTML = ''; return; }
-  const derniere = ETUDES_BIBLIQUES[0];
+  const etudesTriees = trierDocsParDate(ETUDES_BIBLIQUES);
+  const nouvelleEtude = etudesTriees.find(e => estEtudeNouveau(e.id));
+  if(!nouvelleEtude){ el.innerHTML = ''; return; }
   el.innerHTML = `
-    <div class="annonce-etude" onclick="afficherOnglet('etude')">
+    <div class="annonce-etude" onclick="marquerEtudeCommeVue('${nouvelleEtude.id}'); afficherOnglet('etude');">
       <span class="annonce-label">Nouvelle étude</span>
-      <span class="annonce-titre">${derniere.titre}</span>
-      <span class="annonce-date">${derniere.date || ''}</span>
+      <span class="annonce-titre">${nouvelleEtude.titre}</span>
+      <span class="annonce-date">${nouvelleEtude.date || ''}</span>
     </div>`;
 }
 
@@ -2938,13 +2998,16 @@ function afficherOnglet(nom){
 
 function naviguerDepuisHash(){
   const hash = location.hash.replace('#','');
-  const nom = hash || 'accueil';
   const valid = ['accueil','articles','etude','vision'];
-  if(valid.includes(nom)){
-    afficherOnglet(nom);
-  } else {
-    afficherOnglet('accueil');
+  if(valid.includes(hash)){
+    afficherOnglet(hash);
+    return;
   }
+  if(!hash){
+    afficherOnglet('accueil');
+    return;
+  }
+  // Hashs internes comme #toc-... doivent laisser le navigateur gérer le scroll.
 }
 
 window.addEventListener('load', naviguerDepuisHash);
@@ -2993,6 +3056,44 @@ function effacerRecherche(reafficherAccueil){
   }
 }
 
+function activerNotesBasDePage(conteneur, prefix){
+  if(!conteneur) return;
+  const notes = Array.from(conteneur.querySelectorAll('sup.note-marque'));
+  if(!notes.length) return;
+  const idPrefix = prefix || conteneur.id || 'note';
+
+  let notesList = conteneur.querySelector('ol.etude-notes');
+  if(!notesList){
+    notesList = document.createElement('ol');
+    notesList.className = 'etude-notes';
+    conteneur.appendChild(notesList);
+  }
+  notesList.innerHTML = '';
+
+  const noteMap = new Map();
+
+  notes.forEach((note) => {
+    const noteTexte = (note.getAttribute('data-note') || '').trim().replace(/\s+/g, ' ');
+    const existante = noteMap.get(noteTexte);
+    const numero = existante ? existante.numero : noteMap.size + 1;
+    const noteId = existante ? existante.noteId : `${idPrefix}-ref-${numero}`;
+    const noteCibleId = `${idPrefix}-cible-${numero}`;
+
+    if(!existante){
+      noteMap.set(noteTexte, { numero, noteId });
+      const noteBas = document.createElement('li');
+      noteBas.id = noteCibleId;
+      noteBas.innerHTML = `${numero}. ${noteTexte} <a class="note-backref" href="#${noteId}">↖</a>`;
+      notesList.appendChild(noteBas);
+    }
+
+    note.innerHTML = `<a href="#${noteCibleId}">${numero}</a>`;
+    note.id = noteId;
+    note.setAttribute('role', 'doc-noteref');
+    note.setAttribute('aria-describedby', noteCibleId);
+  });
+}
+
 /* ---------- Options de lecture : taille du texte, mode, police ---------- */
 let tailleTexteActuelle = parseInt(localStorage.getItem('lamed_pref_taille')) || 100;
 
@@ -3014,6 +3115,24 @@ document.addEventListener('click', function(e){
   const wrap = document.querySelector('.lecture-wrap');
   if(panel && panel.classList.contains('ouvert') && !wrap.contains(e.target)){
     panel.classList.remove('ouvert');
+  }
+
+  const tocLink = e.target.closest('a[href^="#toc-"]');
+  if(tocLink){
+    const targetId = tocLink.getAttribute('href').slice(1);
+    const targetEl = document.getElementById(targetId);
+    if(targetEl){
+      e.preventDefault();
+      const overlay = document.getElementById('lecteur-pdf');
+      if(overlay && overlay.classList.contains('ouvert') && overlay.contains(targetEl)){
+        const rectOverlay = overlay.getBoundingClientRect();
+        const rectTarget = targetEl.getBoundingClientRect();
+        const offset = rectTarget.top - rectOverlay.top + overlay.scrollTop - 20;
+        overlay.scrollTo({ top: offset, behavior: 'smooth' });
+      } else {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   }
 });
 document.addEventListener('keydown', function(e){
@@ -3185,7 +3304,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="ml-form-align-center ">
         <div class="ml-form-embedWrapper embedForm">
           <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-            <div class="ml-form-embedContent" style="">
+            <div class="ml-form-embedContent">
                 <h4>Abonnez-vous à notre Newslette</h4>
                 <p>📩 Soyez parmi les premiers à être informés de nos nouvelles publications.</p>
             </div>
