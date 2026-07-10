@@ -2976,7 +2976,7 @@ document.addEventListener('DOMContentLoaded', function(){
         <div class="ml-form-embedWrapper embedForm">
           <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
             <div class="ml-form-embedContent" style="">
-                <h4>Abonnez-vous à notre Newsletter</h4>
+                <h4>Abonnez-vous à notre Newslette</h4>
                 <p>📩 Soyez parmi les premiers à être informés de nos nouvelles publications.</p>
             </div>
 
@@ -3025,6 +3025,31 @@ document.addEventListener('DOMContentLoaded', function(){
     <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519" type="text/javascript"></script>
     <script>fetch("https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/takel");</script>
     <!-- END MailerLite embed -->
+
+    <!-- Styles d'override pour la modal (ajustés d'après l'image fournie) -->
+    <style>
+      #modal-abonnement .modal-content{ background: #fff; padding: 22px 20px; border-radius:14px; max-width:460px; box-shadow: 0 18px 40px rgba(16,20,40,0.18); color: #141829; text-align:left; }
+      #modal-abonnement .ml-form-embedContent h4{ font-size:22px; font-weight:700; margin:0 0 8px; color:#141829; }
+      #modal-abonnement .ml-form-embedContent p{ color:#6b6b74; margin:0 0 16px; font-size:14px; }
+      #modal-abonnement .ml-form-embedWrapper { background: transparent; box-shadow:none; padding:0; }
+      #modal-abonnement .ml-form-fieldRow input.form-control{ padding:12px 14px; border-radius:10px; border:1px solid #e6e6e9; font-size:15px; background:#fff; }
+      /* Stack input and button vertically; center and match widths with small gap */
+      #modal-abonnement .ml-form-formContent{ display:block; }
+      #modal-abonnement .ml-form-fieldRow.ml-last-item{ margin:0 0 12px 0; }
+      #modal-abonnement .ml-form-fieldRow.ml-last-item .ml-field-group{ width:100%; }
+      #modal-abonnement .ml-form-fieldRow.ml-last-item input.form-control{ width:100%; }
+      #modal-abonnement .ml-form-embedSubmit{ width:100%; margin:0 auto; }
+      #modal-abonnement .ml-form-embedSubmit button.primary{ background:#2b2550 !important; border:none !important; border-radius:30px !important; padding:12px 18px !important; font-weight:700 !important; font-size:15px !important; color:#fff !important; width:100% !important; box-shadow:0 6px 18px rgba(43,37,80,0.18); display:block; }
+      #modal-abonnement .ml-form-embedSubmit button.primary:hover{ background:#342a66 !important; }
+      #modal-abonnement .ml-form-successBody{ text-align:left; }
+      #modal-abonnement .modal-fermer{ color:#6b6b74; background:transparent; border:none; font-size:22px; top:12px; right:12px; }
+      @media (max-width:520px){ 
+        #modal-abonnement .modal-content{ padding:18px; border-radius:12px; }
+        #modal-abonnement .ml-form-formContent{ display:block; }
+        #modal-abonnement .ml-form-embedSubmit{ width:100%; margin-top:12px; }
+        #modal-abonnement .ml-form-embedSubmit button.primary{ width:100% !important; }
+      }
+    </style>
 
   </div>
 </div>
