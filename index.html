@@ -3243,14 +3243,14 @@ function initialiserModalAbonnement(){
     muts.forEach(function(m){
       m.addedNodes && m.addedNodes.forEach(function(node){
         if(node.nodeType === 1){
-          // si un <form> est injecté, attacher un écouteur submit
+          // si un <form> est injecté, attacher un écouteur submit (no-op)
           const form = node.tagName.toLowerCase() === 'form' ? node : node.querySelector && node.querySelector('form');
           if(form && !form.__ml_listener_attached){
             form.__ml_listener_attached = true;
+            // Ne pas marquer automatiquement l'utilisateur comme abonné au moment du submit :
+            // attendre que MailerLite appelle la callback `ml_webform_success_43549979`.
             form.addEventListener('submit', function(){
-              try{ localStorage.setItem('newsletter_subscribed', 'true'); }catch(e){}
-              // fermer modal après un court délai pour laisser MailerLite faire son travail
-              setTimeout(fermerModal, 800);
+              // no-op : laisser le script MailerLite déclencher la confirmation effective
             });
           }
         }
@@ -3323,7 +3323,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 <p>📩 Soyez parmi les premiers à être informés de nos nouvelles publications.</p>
             </div>
 
-            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe" data-code="" method="post" target="_blank">
+            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe" data-code="" method="post">
               <div class="ml-form-formContent">
                 <div class="ml-form-fieldRow ml-last-item">
                     <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
@@ -3401,18 +3401,15 @@ document.addEventListener('DOMContentLoaded', function(){
           }catch(e){}
         }
 
+        // Allow submission even if the email was previously recorded locally.
+        // We still record the email locally (without blocking) to keep a history,
+        // but do not prevent the form from being submitted nor play an error sound.
         formulaire.addEventListener('submit', function(e){
           const email = champEmail ? champEmail.value : '';
-          if(email && emailDejaInscrit(email)){
-            e.preventDefault();
-            if(e.stopImmediatePropagation) e.stopImmediatePropagation();
-            erreurEl.style.display = 'block';
-            jouerSonErreur();
-            return false;
-          } else {
-            erreurEl.style.display = 'none';
-            if(email) enregistrerEmail(email);
+          if(email) {
+            try{ enregistrerEmail(email); }catch(err){}
           }
+          // Do not prevent default — allow MailerLite to handle submission.
         });
       })();
     </script>
