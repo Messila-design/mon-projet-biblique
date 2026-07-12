@@ -3319,7 +3319,7 @@ document.addEventListener('DOMContentLoaded', function(){
         <div class="ml-form-embedWrapper embedForm">
           <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
             <div class="ml-form-embedContent">
-                <h4>Abonnez-vous à notre Newslette</h4>
+                <h4>Abonnez-vous à notre Newsletter</h4>
                 <p>📩 Soyez parmi les premiers à être informés de nos nouvelles publications.</p>
             </div>
 
@@ -3352,6 +3352,70 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
       </div>
     </div>
+
+    <script>
+      // Empêche une deuxième inscription avec le même e-mail (mémorisé dans ce navigateur),
+      // avec un signal sonore et un message d'erreur en rouge.
+      (function(){
+        const formulaire = document.querySelector('#mlb2-43549979 form.ml-block-form');
+        if(!formulaire) return;
+        const champEmail = formulaire.querySelector('input[name="fields[email]"]');
+
+        const erreurEl = document.createElement('p');
+        erreurEl.id = 'newsletter-erreur-doublon';
+        erreurEl.style.color = '#c0392b';
+        erreurEl.style.fontSize = '13px';
+        erreurEl.style.fontWeight = '600';
+        erreurEl.style.margin = '8px 0 0';
+        erreurEl.style.display = 'none';
+        erreurEl.textContent = 'Désolé, vous êtes déjà inscrit à la newsletter.';
+        const zoneSubmit = formulaire.querySelector('.ml-form-embedSubmit');
+        if(zoneSubmit) zoneSubmit.insertAdjacentElement('beforebegin', erreurEl);
+
+        function emailDejaInscrit(email){
+          try{
+            const liste = JSON.parse(localStorage.getItem('lamed_newsletter_emails') || '[]');
+            return liste.includes(email.trim().toLowerCase());
+          }catch(e){ return false; }
+        }
+        function enregistrerEmail(email){
+          try{
+            const liste = JSON.parse(localStorage.getItem('lamed_newsletter_emails') || '[]');
+            const e = email.trim().toLowerCase();
+            if(!liste.includes(e)){ liste.push(e); localStorage.setItem('lamed_newsletter_emails', JSON.stringify(liste)); }
+          }catch(e){}
+        }
+        function jouerSonErreur(){
+          try{
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = 220;
+            gain.gain.setValueAtTime(0.15, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.4);
+          }catch(e){}
+        }
+
+        formulaire.addEventListener('submit', function(e){
+          const email = champEmail ? champEmail.value : '';
+          if(email && emailDejaInscrit(email)){
+            e.preventDefault();
+            if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+            erreurEl.style.display = 'block';
+            jouerSonErreur();
+            return false;
+          } else {
+            erreurEl.style.display = 'none';
+            if(email) enregistrerEmail(email);
+          }
+        });
+      })();
+    </script>
 
     <script>
       // Callback appelé par MailerLite quand l'abonnement est réussi
