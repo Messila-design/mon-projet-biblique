@@ -1106,6 +1106,11 @@
     content:'📧';
     font-size:16px;
   }
+  .newsletter-disabled .newsletter-subscribe,
+  .newsletter-disabled #modal-abonnement,
+  .newsletter-disabled button.btn-newsletter {
+    display: none !important;
+  }
 </style>
 </head>
 <body>
@@ -1325,7 +1330,7 @@
         Un emplacement prêt pour connecter votre formulaire d’abonnement ou un service newsletter.
       </p>
       <div style="width:100%; display:flex; justify-content:center;">
-        <button id="btn-newsletter-footer" class="btn-newsletter" type="button" onclick="afficherModalAbonnementManuellement();">S’abonner à la newsletter</button>
+        <button id="btn-newsletter-footer" class="btn-newsletter" type="button" disabled>Newsletter temporairement désactivée</button>
       </div>
     </div>
     <div class="contact-list" id="bloc-contact">
@@ -3206,8 +3211,10 @@ ouvrirLienPartageRecu();
 
 /* ---------- Modal d'abonnement pour les nouveaux visiteurs ---------- */
 let modalAbonnement, formAbonnement;
+let newsletterDesactivee = true; // Newsletter disabled until further notice
 
 function afficherModal(){
+  if(newsletterDesactivee) return;
   if(modalAbonnement) modalAbonnement.style.display = 'flex';
 }
 
@@ -3274,6 +3281,18 @@ function afficherModalAbonnementManuellement(){
 // Initialiser au chargement du DOM
 document.addEventListener('DOMContentLoaded', function(){
   initialiserModalAbonnement();
+
+  if (newsletterDesactivee) {
+    const btnFooter = document.getElementById('btn-newsletter-footer');
+    if (btnFooter) {
+      btnFooter.disabled = true;
+      btnFooter.textContent = 'Newsletter temporairement désactivée';
+      btnFooter.classList.add('btn-newsletter-disabled');
+      btnFooter.removeAttribute('onclick');
+    }
+    document.body.classList.add('newsletter-disabled');
+    return;
+  }
   
   // Afficher la modal après 10 secondes si :
   // - elle n'a pas déjà été affichée dans cette session
