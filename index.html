@@ -9,6 +9,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- MailerLite Universal -->
+<script>
+  (function(w,d,e,u,f,l,n){
+    w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},
+    l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);
+  })(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+  ml('account', '2498680');
+</script>
+<!-- End MailerLite Universal -->
+
 <!--
 ====================================================================
   GUIDE RAPIDE — À LIRE AVANT DE MODIFIER CE FICHIER
@@ -3076,11 +3087,12 @@ function activerNotesBasDePage(conteneur, prefix){
   if(!notes.length) return;
   const idPrefix = prefix || conteneur.id || 'note';
 
-  let notesList = conteneur.querySelector('ol.etude-notes');
+  const hoteNotes = conteneur.querySelector('.etude-corps') || conteneur;
+  let notesList = hoteNotes.querySelector('ol.etude-notes');
   if(!notesList){
     notesList = document.createElement('ol');
     notesList.className = 'etude-notes';
-    conteneur.appendChild(notesList);
+    hoteNotes.appendChild(notesList);
   }
   notesList.innerHTML = '';
 
@@ -3238,19 +3250,18 @@ function initialiserModalAbonnement(){
     if(e.key === 'Escape' && modalAbonnement.style.display === 'flex') fermerModal();
   });
 
-  // Observer l'insertion du formulaire MailerLite (ou d'un formulaire) pour détecter l'abonnement
+  // Observer désactivé : on laisse le formulaire MailerLite Universal gérer la soumission.
+  // On garde uniquement la fermeture automatique de la modal après confirmation (détection via le clic).
   const observer = new MutationObserver(function(muts){
     muts.forEach(function(m){
       m.addedNodes && m.addedNodes.forEach(function(node){
         if(node.nodeType === 1){
-          // si un <form> est injecté, attacher un écouteur submit
-          const form = node.tagName.toLowerCase() === 'form' ? node : node.querySelector && node.querySelector('form');
+          const form = node.tagName && node.tagName.toLowerCase() === 'form' ? node : (node.querySelector ? node.querySelector('form') : null);
           if(form && !form.__ml_listener_attached){
             form.__ml_listener_attached = true;
             form.addEventListener('submit', function(){
               try{ localStorage.setItem('newsletter_subscribed', 'true'); }catch(e){}
-              // fermer modal après un court délai pour laisser MailerLite faire son travail
-              setTimeout(fermerModal, 800);
+              setTimeout(fermerModal, 1200);
             });
           }
         }
@@ -3274,7 +3285,13 @@ function afficherModalAbonnementManuellement(){
 // Initialiser au chargement du DOM
 document.addEventListener('DOMContentLoaded', function(){
   initialiserModalAbonnement();
-  
+
+  // MailerLite Universal : détecter l'inscription réussie et fermer la modal
+  document.addEventListener('ml-form-success', function(e){
+    try{ localStorage.setItem('newsletter_subscribed', 'true'); }catch(_){}
+    setTimeout(fermerModal, 1500);
+  }, true);
+
   // Afficher la modal après 10 secondes si :
   // - elle n'a pas déjà été affichée dans cette session
   // - l'utilisateur n'est pas déjà abonné (localStorage 'newsletter_subscribed')
@@ -3292,169 +3309,22 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="modal-content" style="max-width: 520px; width: 96%;">
     <button id="fermer-modal" class="modal-fermer">&times;</button>
 
-    <!-- BEGIN MailerLite embed (fourni) -->
-    <style type="text/css">@import url("https://assets.mlcdn.com/fonts.css?version=1783523");</style>
-    <style type="text/css">
-    /* LOADER */
-    .ml-form-embedSubmitLoad { display: inline-block; width: 20px; height: 20px; }
-    .g-recaptcha { transform: scale(1); -webkit-transform: scale(1); transform-origin: 0 0; -webkit-transform-origin: 0 0; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
-    .ml-form-embedSubmitLoad:after { content: " "; display: block; width: 11px; height: 11px; margin: 1px; border-radius: 50%; border: 4px solid #fff; border-color: #ffffff #ffffff #ffffff transparent; animation: ml-form-embedSubmitLoad 1.2s linear infinite; }
-    @keyframes ml-form-embedSubmitLoad { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    /* minimal embed scoping to avoid global overrides */
-    #mlb2-43549979.ml-form-embedContainer { box-sizing: border-box; display: table; margin: 0 auto; position: static; width: 100% !important; }
-    /* rest of MailerLite styles (trimmed for brevity) */
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper { background-color: #f6f6f6; border-width: 0px; border-color: transparent; border-radius: 4px; border-style: solid; box-sizing: border-box; display: inline-block !important; margin: 0; padding: 0; position: relative; }
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper.embedPopup, #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper.embedDefault { width: 400px; }
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper.embedForm { max-width: 480px; width: 100%; }
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody, #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper .ml-form-successBody { padding: 20px 20px 0 20px; }
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedContent h4 { color: #000000; font-family: 'Open Sans', Arial, Helvetica, sans-serif; font-size: 22px; font-weight: 700; margin: 0 0 10px 0; text-align: left; }
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input { background-color: #ffffff !important; color: #333333 !important; border-color: #cccccc; border-radius: 4px !important; padding: 10px 10px !important; width: 100% !important; box-sizing: border-box !important; }
-    #mlb2-43549979.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button { background-color: #272757 !important; color: #ffffff !important; border-radius: 20px !important; padding: 10px !important; width: 100% !important; }
-    @media only screen and (max-width: 520px){ #mlb2-43549979 .ml-form-embedWrapper.embedDefault, #mlb2-43549979 .ml-form-embedWrapper.embedPopup { width: 100% !important; } }
-    </style>
+    <!-- MailerLite Universal embed -->
+    <div class="ml-embedded" data-form="i7RsrP"></div>
+    <!-- End MailerLite Universal embed -->
 
-    <div id="mlb2-43549979" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-43549979">
-      <div class="ml-form-align-center ">
-        <div class="ml-form-embedWrapper embedForm">
-          <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-            <div class="ml-form-embedContent">
-                <h4>Abonnez-vous à notre Newsletter</h4>
-                <p>📩 Soyez parmi les premiers à être informés de nos nouvelles publications.</p>
-            </div>
-
-            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe" data-code="" method="post" target="_blank">
-              <div class="ml-form-formContent">
-                <div class="ml-form-fieldRow ml-last-item">
-                    <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                      <input aria-label="email" aria-required="true" type="email" class="form-control" name="fields[email]" placeholder="Votre e-mail" autocomplete="email">
-                    </div>
-                  </div>
-              </div>
-              <input type="hidden" name="ml-submit" value="1">
-              <div class="ml-form-embedSubmit">
-                  <button type="submit" class="primary">S'abonner</button>
-                <button disabled="disabled" style="display: none;" type="button" class="loading">
-                  <div class="ml-form-embedSubmitLoad"></div>
-                  <span class="sr-only">Loading...</span>
-                </button>
-              </div>
-              <input type="hidden" name="anticsrf" value="true">
-            </form>
-          </div>
-
-          <div class="ml-form-successBody row-success" style="display: none">
-            <div class="ml-form-successContent">
-                <h4>Merci !</h4>
-                <p><strong>Votre abonnement est confirmé.</strong><br>Nous sommes heureux de vous compter parmi nos abonnés.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      // Empêche une deuxième inscription avec le même e-mail (mémorisé dans ce navigateur),
-      // avec un signal sonore et un message d'erreur en rouge.
-      (function(){
-        const formulaire = document.querySelector('#mlb2-43549979 form.ml-block-form');
-        if(!formulaire) return;
-        const champEmail = formulaire.querySelector('input[name="fields[email]"]');
-
-        const erreurEl = document.createElement('p');
-        erreurEl.id = 'newsletter-erreur-doublon';
-        erreurEl.style.color = '#c0392b';
-        erreurEl.style.fontSize = '13px';
-        erreurEl.style.fontWeight = '600';
-        erreurEl.style.margin = '8px 0 0';
-        erreurEl.style.display = 'none';
-        erreurEl.textContent = 'Désolé, vous êtes déjà inscrit à la newsletter.';
-        const zoneSubmit = formulaire.querySelector('.ml-form-embedSubmit');
-        if(zoneSubmit) zoneSubmit.insertAdjacentElement('beforebegin', erreurEl);
-
-        function emailDejaInscrit(email){
-          try{
-            const liste = JSON.parse(localStorage.getItem('lamed_newsletter_emails') || '[]');
-            return liste.includes(email.trim().toLowerCase());
-          }catch(e){ return false; }
-        }
-        function enregistrerEmail(email){
-          try{
-            const liste = JSON.parse(localStorage.getItem('lamed_newsletter_emails') || '[]');
-            const e = email.trim().toLowerCase();
-            if(!liste.includes(e)){ liste.push(e); localStorage.setItem('lamed_newsletter_emails', JSON.stringify(liste)); }
-          }catch(e){}
-        }
-        function jouerSonErreur(){
-          try{
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = 220;
-            gain.gain.setValueAtTime(0.15, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
-            osc.stop(ctx.currentTime + 0.4);
-          }catch(e){}
-        }
-
-        formulaire.addEventListener('submit', function(e){
-          const email = champEmail ? champEmail.value : '';
-          if(email && emailDejaInscrit(email)){
-            e.preventDefault();
-            if(e.stopImmediatePropagation) e.stopImmediatePropagation();
-            erreurEl.style.display = 'block';
-            jouerSonErreur();
-            return false;
-          } else {
-            erreurEl.style.display = 'none';
-            if(email) enregistrerEmail(email);
-          }
-        });
-      })();
-    </script>
-
-    <script>
-      // Callback appelé par MailerLite quand l'abonnement est réussi
-      function ml_webform_success_43549979() {
-        try{ localStorage.setItem('newsletter_subscribed', 'true'); }catch(e){}
-        var $ = ml_jQuery || jQuery;
-        $('.ml-subscribe-form-43549979 .row-success').show();
-        $('.ml-subscribe-form-43549979 .row-form').hide();
-        // fermer la modal après un court délai pour laisser l'UI afficher
-        setTimeout(function(){ if(typeof fermerModal === 'function') fermerModal(); }, 800);
-      }
-    </script>
-
-    <script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519" type="text/javascript"></script>
-    <script>fetch("https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/takel");</script>
-    <!-- END MailerLite embed -->
-
-    <!-- Styles d'override pour la modal (ajustés d'après l'image fournie) -->
+    <!-- Styles d'override pour la modal (MailerLite Universal) -->
     <style>
       #modal-abonnement .modal-content{ background: #fff; padding: 22px 20px; border-radius:14px; max-width:460px; box-shadow: 0 18px 40px rgba(16,20,40,0.18); color: #141829; text-align:left; }
-      #modal-abonnement .ml-form-embedContent h4{ font-size:22px; font-weight:700; margin:0 0 8px; color:#141829; }
-      #modal-abonnement .ml-form-embedContent p{ color:#6b6b74; margin:0 0 16px; font-size:14px; }
-      #modal-abonnement .ml-form-embedWrapper { background: transparent; box-shadow:none; padding:0; }
-      #modal-abonnement .ml-form-fieldRow input.form-control{ padding:12px 14px; border-radius:10px; border:1px solid #e6e6e9; font-size:15px; background:#fff; }
-      /* Stack input and button vertically; center and match widths with small gap */
-      #modal-abonnement .ml-form-formContent{ display:block; }
-      #modal-abonnement .ml-form-fieldRow.ml-last-item{ margin:0 0 12px 0; }
-      #modal-abonnement .ml-form-fieldRow.ml-last-item .ml-field-group{ width:100%; }
-      #modal-abonnement .ml-form-fieldRow.ml-last-item input.form-control{ width:100%; }
-      #modal-abonnement .ml-form-embedSubmit{ width:100%; margin:0 auto; }
-      #modal-abonnement .ml-form-embedSubmit button.primary{ background:#2b2550 !important; border:none !important; border-radius:30px !important; padding:12px 18px !important; font-weight:700 !important; font-size:15px !important; color:#fff !important; width:100% !important; box-shadow:0 6px 18px rgba(43,37,80,0.18); display:block; }
-      #modal-abonnement .ml-form-embedSubmit button.primary:hover{ background:#342a66 !important; }
-      #modal-abonnement .ml-form-successBody{ text-align:left; }
       #modal-abonnement .modal-fermer{ color:#6b6b74; background:transparent; border:none; font-size:22px; top:12px; right:12px; }
-      @media (max-width:520px){ 
+      #modal-abonnement .ml-embedded{ margin: 0; }
+      #modal-abonnement .ml-embedded input[type="email"],
+      #modal-abonnement .ml-embedded input[type="text"]{ padding:12px 14px; border-radius:10px; border:1px solid #e6e6e9; font-size:15px; background:#fff; width:100%; box-sizing:border-box; }
+      #modal-abonnement .ml-embedded button[type="submit"],
+      #modal-abonnement .ml-embedded .ml-embedded-submit{ background:#2b2550 !important; border:none !important; border-radius:30px !important; padding:12px 18px !important; font-weight:700 !important; font-size:15px !important; color:#fff !important; width:100% !important; box-shadow:0 6px 18px rgba(43,37,80,0.18); display:block; cursor:pointer; }
+      #modal-abonnement .ml-embedded button[type="submit"]:hover{ background:#342a66 !important; }
+      @media (max-width:520px){
         #modal-abonnement .modal-content{ padding:18px; border-radius:12px; }
-        #modal-abonnement .ml-form-formContent{ display:block; }
-        #modal-abonnement .ml-form-embedSubmit{ width:100%; margin-top:12px; }
-        #modal-abonnement .ml-form-embedSubmit button.primary{ width:100% !important; }
       }
     </style>
 
