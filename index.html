@@ -4,7 +4,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de newsletter</title>
+<title>Le Centre de Formation Laméd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!--
+====================================================================
+  GUIDE RAPIDE — À LIRE AVANT DE MODIFIER CE FICHIER
+====================================================================
+  Tout ce que vous devez changer se trouve dans le bloc JavaScript
+  intitulé "ZONE DE CONFIGURATION" (cherchez CTRL+F "ZONE DE CONFIG").
+
+  1. AJOUTER UN PDF (stocké sur Google Drive) :
+     a. Mettez votre PDF sur Google Drive.
+     b. Clic droit → Partager → "Accessible à toute personne
+        disposant du lien" → Lecteur.
+     c. Copiez le lien (ex: https://drive.google.com/file/d/ABC123/view?usp=sharing)
+     d. Collez-le tel quel dans "lienDrive" ci-dessous. Le site se
+        charge de le transformer en lien de visualisation et de
+        téléchargement automatiquement — aucun bidouillage requis.
+
+  2. AJOUTER UNE VIDÉO YOUTUBE : collez simplement l'URL de la vidéo
+     (celle de la barre d'adresse ou le lien "Partager").
+
+  3. AJOUTER UNE ÉTUDE BIBLIQUE : dupliquez un bloc { ... } et
+     changez le titre, la date et le texte.
+
+  4. VISION, E-MAIL, FACEBOOK, WHATSAPP : modifiez directement les
+     valeurs dans les objets VISION et CONTACT.
+
+  Aucune autre partie du fichier n'a besoin d'être touchée.
+====================================================================
+-->
+
+<style>
+  :root{
+    --ink:#0D1122;
+    --ink-soft:#141A33;
+    --ink-line:#232A4C;
+    --parchment:#F6F1E6;
+    --parchment-dark:#E9E2D5;
+    --parchment-card:#FEF9F1;
+    --gold:#D1B55A;
+    --gold-light:#ECD38C;
+    --gold-glow:rgba(209,181,90,0.22);
+    --burgundy:#7C1821;
+    --burgundy-dark:#631418;
+    --text-dark:#121725;
+    --text-soft:#5D5862;
+    --text-onink:#F5EFE0;
+    --text-onink-soft:#B8B2A8;
+    --font-display:'Cormorant Garamond', Georgia, serif;
+    --font-body:'Lora', Georgia, serif;
+    --font-mono:'Inter', -apple-system, sans-serif;
+    --radius:6px;
+    --shadow-card: 0 2px 8px rgba(20,24,41,0.06), 0 12px 32px rgba(20,24,41,0.08);
+    --shadow-hover: 0 8px 24px rgba(20,24,41,0.12), 0 20px 48px rgba(20,24,41,0.1);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --transition: 0.28s var(--ease);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    min-height:100vh;
+    background: radial-gradient(circle at top, rgba(84, 121, 171, 0.15), transparent 18%),
+      linear-gradient(180deg, #030811 0%, #081226 38%, #0b1630 100%);
+    color:var(--text-dark);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    margin:0 0 .4em 0;
+    font-weight:700;
+    letter-spacing:.01em;
+  }
+  a{ color:inherit; }
+  button{ font-family:var(--font-body); cursor:pointer; }
+  .lamed{ font-family:var(--font-display); font-weight:900; }
+
+  /* ============ EN-TÊTE / NAVIGATION ============ */
+  header.site-header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(20,24,41,0.92);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(196,160,82,0.18);
+    box-shadow:0 4px 24px rgba(0,0,0,0.18);
+  }
+  .header-inner{
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:24px;
+    padding:12px 24px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    color:var(--text-onink);
+    text-decoration:none;
+    flex-shrink:0;
   }
   .brand-mark{
     width:56px; height:56px;
@@ -1003,11 +1106,6 @@
     content:'📧';
     font-size:16px;
   }
-  .newsletter-disabled .newsletter-subscribe,
-  .newsletter-disabled #modal-abonnement,
-  .newsletter-disabled button.btn-newsletter {
-    display: none !important;
-  }
 </style>
 </head>
 <body>
@@ -1227,7 +1325,7 @@
         Un emplacement prêt pour connecter votre formulaire d’abonnement ou un service newsletter.
       </p>
       <div style="width:100%; display:flex; justify-content:center;">
-        <button id="btn-newsletter-footer" class="btn-newsletter" type="button" disabled>Newsletter temporairement désactivée</button>
+        <button id="btn-newsletter-footer" class="btn-newsletter" type="button" onclick="afficherModalAbonnementManuellement();">S’abonner à la newsletter</button>
       </div>
     </div>
     <div class="contact-list" id="bloc-contact">
@@ -2209,52 +2307,6 @@ const VIDEOS_YOUTUBE = [
 // (bandeau sur l'accueil + badge "Nouvelle étude" dans cet onglet).
 const ETUDES_BIBLIQUES = [
   {
-    id: "gardez-nos-convictions",
-    titre: "Exhortation : Gardez nos convictions",
-    date: "12/07/2026",
-    contenu: `
-      <p><em>Bonjour, bonsoir à tous,</em></p>
-      <p>J’aimerais partager avec vous sur le sujet : garder nos convictions. En ces temps qui sont les derniers et qui sont très difficiles, la foi judéo-chrétienne est de plus en plus menacée. La Parole du Seigneur nous avait avertis à ce sujet.</p>
-      <p>Mais ce qui nous permettra de rester debout, ce n’est pas ce que je sens ou ce que je connais, mais ce à quoi « je crois ». C’est là l’espérance de tout croyant : la foi. Elle n’est pas seulement abstraite, mais elle est scripturaire. L’apôtre Paul disait aux Romains : « Ainsi la foi est issue de ce qu’on entend, et l’on entend au moyen de la parole d’Elohîm. » (Romains 10 : 17)<sup class="note-marque" tabindex="0" data-note="Tous les versets sont tirés de la Bible de Yéhoshoua (BYM).">1</sup>.</p>
-
-      <h3>1. Qu’appelle-t-on conviction ?</h3>
-      <p>La confiance ou la certitude que nous avons dans quelque chose.</p>
-
-      <h3>2. Quel est le lien qui existe entre conviction et chrétienté ?</h3>
-      <p>Le lien qui existe entre les deux est la certitude basée sur la Parole d’Èlohiym que la Bible appelle la foi : « Or la foi est une substance des choses qu’on espère, une conviction de celles qu’on ne voit pas. » (Hébreux 11 : 1).</p>
-
-      <h3>3. Existe-t-il des convictions chrétiennes ?</h3>
-      <p>Bien évidemment. Ce sont toutes les valeurs morales qui nous ont été enseignées par notre ’Èlohiym et Seigneur Yehowshuw‘a ha-Mashiyah (Jésus-Christ) et transmises par le moyen de ses apôtres : « Toute Écriture est inspirée d’Elohîm et utile pour la doctrine, pour la conviction, pour la correction, pour l’éducation dans la justice, afin que l’humain d’Elohîm soit complet, accompli pour toute bonne œuvre. » (2 Timothée 3 : 16-17).</p>
-      <p>Plus tard, elles sont appelées par les premiers disciples la doctrine des apôtres ou la doctrine apostolique : « Et ils persévéraient tous dans la doctrine des apôtres, dans la communion fraternelle, dans la fraction du pain et dans les prières. » (Actes 2 : 42 BYM)<sup class="note-marque" tabindex="0" data-note="Pour éviter que le disciple du Seigneur ne tombe dans des erreurs doctrinales, il doit toujours se limiter à ce que le Seigneur Yehowshuw‘a ha-Mashiyah et les apôtres ont enseigné. Par exemple, il peut se dire : est-ce que le Seigneur ou les apôtres ont déjà enseigné cela ? Si oui, quelle référence me renvoie vers cette affirmation ?">2</sup>. Elle est la base de notre mode de vie et la source de toutes nos inspirations et de notre foi.</p>
-      <p>« Ainsi la foi vient de ce qu’on entend, et l’on entend au moyen de la parole d’Elohîm. » (Romains 10 : 17).</p>
-
-      <h3>4. Est-ce la responsabilité d’un chrétien de veiller sur ces convictions ou celle du Saint-Esprit ?</h3>
-      <p>C’est le devoir de chaque chrétien de garder dans son cœur toutes les Paroles que notre Maître Yehowshuw‘a ha-Mashiyah a enseignées : « Étant donc allés, faites de toutes les nations des disciples, les baptisant pour le Nom du Père et du Fils et du Saint-Esprit, leur enseignant à garder tout ce que je vous ai ordonné. Et voici, moi, je suis avec vous tous les jours jusqu’à l’achèvement de l’âge. Amen ! » (Matthieu 28 : 19-20).</p>
-      <p>Ce n’est pas la responsabilité du Saint-Esprit, dont l’une des fonctions consiste à nous rappeler les paroles du Maître : « Mais le Paraklètos, le Saint-Esprit, que le Père enverra en mon nom, lui, vous enseignera toutes choses et il vous rappellera toutes les choses que je vous ai dites. » (Jean 14 : 26)<sup class="note-marque" tabindex="0" data-note="En ce qui nous concerne les illuminations, toutes éclairages que nous pouvons recevoir ne doivent pas remettre en cause l’enseignement du Seigneur et celui des apôtres.">3</sup>.</p>
-
-      <h3>5. Quelles peuvent être les causes d’un renoncement à ses convictions ?</h3>
-      <p>L’une des raisons qui peut pousser un être humain à renoncer à ses propres convictions, c’est le manque de confiance et d’assurance dans ce à quoi il croit, ainsi que les avis contraires des autres qui viennent ébranler ces croyances.</p>
-
-      <h3>6. Quelles conséquences peuvent naître d’un abandon de ses convictions ?</h3>
-      <p>Les conséquences qui découleront de l’abandon de ses convictions — que la Bible appelle l’apostasie — sont :</p>
-      <ul>
-        <li><strong>a.</strong> Le rejet total de ses croyances pour mener une vie désordonnée fortifiée par l’incrédulité : « Car mieux valait pour eux n’avoir pas connu la voie de la justice, que de l’avoir connue et se détourner du saint commandement qui leur avait été donné. Mais ce qu’on dit par un proverbe véritable leur est arrivé : Le chien est retourné à son propre vomissement, et la truie lavée s’est vautrée dans le bourbier. » (2 Pierre 2 : 21-22).</li>
-        <li><strong>b.</strong> L’abandon de ses convictions pour épouser d’autres convictions : « Mais l’Esprit dit expressément que, dans les derniers temps, certains s’éloigneront de la foi, s’attachant à des esprits trompeurs et à des doctrines de démons. » (1 Timothée 4 : 1).</li>
-        <li><strong>c.</strong> L’apostat sera rejeté par le Seigneur et souffrira dans le lieu de tourment éternel, bien évidemment s’il ne se repent pas avant de mourir : « Car il est juste devant Elohîm qu’il rende la tribulation à ceux qui vous oppressent, et à vous qui êtes oppressés, le repos avec nous, lors de la révélation du Seigneur Yéhoshoua du ciel avec les anges de sa puissance, dans une flamme de feu, exerçant la vengeance sur ceux qui ne connaissent pas Elohîm et sur ceux qui n’obéissent pas à l’Évangile de notre Seigneur Yéhoshoua Mashiah. » (2 Thessaloniciens 1 : 6-8).</li>
-      </ul>
-
-      <h3>7. Comment veiller sur ces convictions en tant que chrétien ?</h3>
-      <p>Il faut connaître par cœur la doctrine apostolique. Cette connaissance s’acquiert par trois écoles de formation :</p>
-      <h4>a. Les recherches personnelles</h4>
-      <p>Tout disciple doit parfaire sa foi en la complétant par un ensemble de connaissances qui viennent confirmer les écrits apostoliques : « Or, pour cette même raison aussi, y apportant en outre tout empressement, fournissez à votre foi la vertu, et à la vertu la connaissance, et à la connaissance le contrôle de soi, et au contrôle de soi la patience, et à la patience la piété, et à la piété l’amour fraternel, et à l’amour fraternel l’amour. » (2 Pierre 1 : 5-7).</p>
-      <h4>b. Les formations bibliques</h4>
-      <p>Il s’agit des temps de formation qui sont donnés dans les églises, dans les maisons, les séminaires chrétiens et sur les réseaux sociaux : « Ils persévéraient tous dans la doctrine des apôtres, dans la communion fraternelle, dans la fraction du pain et dans les prières. » (Actes 2 : 42). Peu importe les prédicateurs, le disciple doit vérifier tout enseignement minutieusement à la lumière de ce que le Seigneur et les apôtres ont laissé de leur vivant : « Or ceux-ci avaient l’esprit plus noble que ceux de Thessalonique. Ils reçurent la parole avec tout empressement, examinant tous les jours les Écritures pour voir s’il en était bien ainsi. » (Actes 17 : 11).</p>
-      <h4>c. Formation par le Seigneur</h4>
-      <p>Il s’agit de toutes les illuminations que le Seigneur nous donne pendant nos différentes lectures et méditations : « Mais le Paraklètos, le Saint-Esprit, que le Père enverra en mon nom, lui, vous enseignera toutes choses et il vous rappellera toutes les choses que je vous ai dites. » (Jean 14 : 26).</p>
-
-    `
-  },
-  {
     id: "corruption-morale",
     titre: "LA CORRUPTION MORALE",
     date: "08/07/2026",
@@ -3154,10 +3206,8 @@ ouvrirLienPartageRecu();
 
 /* ---------- Modal d'abonnement pour les nouveaux visiteurs ---------- */
 let modalAbonnement, formAbonnement;
-let newsletterDesactivee = true; // Newsletter disabled until further notice
 
 function afficherModal(){
-  if(newsletterDesactivee) return;
   if(modalAbonnement) modalAbonnement.style.display = 'flex';
 }
 
@@ -3193,14 +3243,14 @@ function initialiserModalAbonnement(){
     muts.forEach(function(m){
       m.addedNodes && m.addedNodes.forEach(function(node){
         if(node.nodeType === 1){
-          // si un <form> est injecté, attacher un écouteur submit (no-op)
+          // si un <form> est injecté, attacher un écouteur submit
           const form = node.tagName.toLowerCase() === 'form' ? node : node.querySelector && node.querySelector('form');
           if(form && !form.__ml_listener_attached){
             form.__ml_listener_attached = true;
-            // Ne pas marquer automatiquement l'utilisateur comme abonné au moment du submit :
-            // attendre que MailerLite appelle la callback `ml_webform_success_43549979`.
             form.addEventListener('submit', function(){
-              // no-op : laisser le script MailerLite déclencher la confirmation effective
+              try{ localStorage.setItem('newsletter_subscribed', 'true'); }catch(e){}
+              // fermer modal après un court délai pour laisser MailerLite faire son travail
+              setTimeout(fermerModal, 800);
             });
           }
         }
@@ -3224,18 +3274,6 @@ function afficherModalAbonnementManuellement(){
 // Initialiser au chargement du DOM
 document.addEventListener('DOMContentLoaded', function(){
   initialiserModalAbonnement();
-
-  if (newsletterDesactivee) {
-    const btnFooter = document.getElementById('btn-newsletter-footer');
-    if (btnFooter) {
-      btnFooter.disabled = true;
-      btnFooter.textContent = 'Newsletter temporairement désactivée';
-      btnFooter.classList.add('btn-newsletter-disabled');
-      btnFooter.removeAttribute('onclick');
-    }
-    document.body.classList.add('newsletter-disabled');
-    return;
-  }
   
   // Afficher la modal après 10 secondes si :
   // - elle n'a pas déjà été affichée dans cette session
@@ -3285,7 +3323,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 <p>📩 Soyez parmi les premiers à être informés de nos nouvelles publications.</p>
             </div>
 
-            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe" data-code="" method="post">
+            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe" data-code="" method="post" target="_blank">
               <div class="ml-form-formContent">
                 <div class="ml-form-fieldRow ml-last-item">
                     <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
@@ -3363,15 +3401,18 @@ document.addEventListener('DOMContentLoaded', function(){
           }catch(e){}
         }
 
-        // Allow submission even if the email was previously recorded locally.
-        // We still record the email locally (without blocking) to keep a history,
-        // but do not prevent the form from being submitted nor play an error sound.
         formulaire.addEventListener('submit', function(e){
           const email = champEmail ? champEmail.value : '';
-          if(email) {
-            try{ enregistrerEmail(email); }catch(err){}
+          if(email && emailDejaInscrit(email)){
+            e.preventDefault();
+            if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+            erreurEl.style.display = 'block';
+            jouerSonErreur();
+            return false;
+          } else {
+            erreurEl.style.display = 'none';
+            if(email) enregistrerEmail(email);
           }
-          // Do not prevent default — allow MailerLite to handle submission.
         });
       })();
     </script>
