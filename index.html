@@ -3219,8 +3219,28 @@ ouvrirLienPartageRecu();
 /* ---------- Modal d'abonnement pour les nouveaux visiteurs ---------- */
 let modalAbonnement, formAbonnement;
 
+function deplacerFormulaireDansModal(){
+  // Déplace le formulaire MailerLite Universal (initialisé hors-écran) dans la modal visible.
+  const source = document.getElementById('ml-embedded-source');
+  const host = document.getElementById('ml-embedded-host');
+  if(!source || !host) return;
+  const form = source.querySelector('.ml-embedded');
+  if(!form || host.contains(form)) return;
+  host.appendChild(form);
+  // Si le formulaire n'a pas encore été hydraté par MailerLite, retenter brièvement.
+  let tentatives = 0;
+  const verifier = setInterval(function(){
+    tentatives++;
+    const aDesChamps = host.querySelector('input,form,button');
+    if(aDesChamps || tentatives > 20){
+      clearInterval(verifier);
+    }
+  }, 100);
+}
+
 function afficherModal(){
   if(modalAbonnement) modalAbonnement.style.display = 'flex';
+  deplacerFormulaireDansModal();
 }
 
 function fermerModal(){
@@ -3309,9 +3329,8 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="modal-content" style="max-width: 520px; width: 96%;">
     <button id="fermer-modal" class="modal-fermer">&times;</button>
 
-    <!-- MailerLite Universal embed -->
-    <div class="ml-embedded" data-form="i7RsrP"></div>
-    <!-- End MailerLite Universal embed -->
+    <!-- Conteneur cible pour le formulaire MailerLite (injecté à l'ouverture) -->
+    <div id="ml-embedded-host"></div>
 
     <!-- Styles d'override pour la modal (MailerLite Universal) -->
     <style>
@@ -3329,6 +3348,12 @@ document.addEventListener('DOMContentLoaded', function(){
     </style>
 
   </div>
+</div>
+
+<!-- Conteneur source (caché) : MailerLite Universal initialise le formulaire ici,
+     puis on le déplace dans la modal à l'ouverture pour qu'il soit visible. -->
+<div id="ml-embedded-source" style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; overflow:hidden;">
+  <div class="ml-embedded" data-form="i7RsrP"></div>
 </div>
 
 </body>
