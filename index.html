@@ -1203,6 +1203,40 @@
   /* Masquer l'ancien bouton Partager */
   .reaction-btn.btn-partager { display: none !important; }
 
+  /* ============ STYLE POUR L'ILLUSTRATION ============ */
+  .etude-illustration {
+    margin: 24px 0;
+    text-align: center;
+  }
+
+  .etude-illustration img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    display: block;
+    margin: 0 auto;
+  }
+
+  .image-credit {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #777777;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .image-credit a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .image-credit a:hover {
+    color: var(--burgundy);
+    text-decoration: underline;
+  }
+
   /* ============ STYLE POUR L'IMPRESSION ============ */
   @media print {
     header, footer, nav, .header-actions, .search-wrap, .lecture-wrap,
@@ -2566,6 +2600,16 @@ const ETUDES_BIBLIQUES = [
     contenu: `
       <p><em>Bonjour bonsoir à tous,</em></p>
       <p>J'aimerais nous partager quelques réflexions sur <em>la corruption morale</em>.</p>
+
+      <div class="etude-illustration">
+        <img src="https://via.placeholder.com/800x400?text=Illustration+Corruption+Morale" alt="Illustration - La corruption morale" loading="lazy">
+        <p class="image-credit">
+          <a href="https://consultqd.clevelandclinic.org/behind-closed-doors-how-providers-can-help-stop-the-cycle-of-emotional-abuse-in-older-adults">
+            illustration extrait du site : https://consultqd.clevelandclinic.org/behind-closed-doors-how-providers-can-help-stop-the-cycle-of-emotional-abuse-in-older-adults
+          </a>
+        </p>
+      </div>
+
       <p>Prenons comme texte de base 1 Corinthiens 5:9-11 :</p>
       <blockquote>
         <p>Je vous ai écrit dans la lettre de ne pas vous mêler<sup class="note-marque" tabindex="0" data-note="Du grec συναναμίγνυμι (sunanamignumi) : « s'associer étroitement avec », « fréquenter assidûment » — voir l'étude du mot ci-dessous.">1</sup> avec les hommes qui se prostituent, mais non pas d'une manière absolue avec les hommes qui se prostituent de ce monde, ou avec les cupides, ou les ravisseurs, ou les idolâtres — autrement, vous devez donc sortir du monde. Mais maintenant, ce que je vous ai écrit, c'est de ne pas vous mêler<sup class="note-marque" tabindex="0" data-note="Même mot grec συναναμίγνυμι (sunanamignumi) qu'à la note 1, répété ici dans le second commandement de l'apôtre Paulus.">2</sup> avec quelqu'un qui se nomme frère, s'il est un homme qui se prostitue, ou cupide, ou idolâtre, ou railleur, ou ivrogne, ou ravisseur, de ne pas même manger avec un tel homme.</p>
