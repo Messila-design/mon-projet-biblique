@@ -572,6 +572,18 @@
     animation:surlignagePulse 1.3s ease-in-out 2;
     border-color:var(--gold) !important;
   }
+  
+  /* Effet visuel pour article ciblé par lien direct (#article=ID) */
+  .pdf-card.article-cible{
+    box-shadow: 0 0 0 4px var(--gold) !important;
+    border-left: 3px solid var(--gold) !important;
+    animation: pulseArticle 2s ease-in-out;
+  }
+  
+  @keyframes pulseArticle{
+    0%, 100% { box-shadow: 0 0 0 0 rgba(209, 181, 90, 0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(209, 181, 90, 0); }
+  }
   .categorie-bloc{ margin-bottom:44px; }
   .categorie-titre{
     font-size:20px; color:var(--burgundy);
@@ -1021,16 +1033,25 @@
   .modal-fermer{
     position:absolute;
     top:16px; right:16px;
-    background:none;
-    border:none;
-    font-size:28px;
-    color:var(--text-soft);
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.24);
+    border-radius:50%;
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    color:var(--text-onink-soft);
     cursor:pointer;
-    padding:4px 8px;
+    padding:0;
     line-height:1;
+    transition:all 0.3s ease;
   }
   .modal-fermer:hover{
-    color:var(--gold);
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
   }
   .modal-content h2{
     color:var(--gold-dark);
@@ -3395,7 +3416,6 @@ function afficherOnglet(nom){
   if(location.hash !== '#' + nom){
     window.history.replaceState(null, '', '#' + nom);
   }
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function naviguerDepuisHash(){
@@ -3409,6 +3429,22 @@ function naviguerDepuisHash(){
     afficherOnglet('accueil');
     return;
   }
+  
+  // Gestion des liens directs vers un article : #article=ID
+  const articleMatch = hash.match(/^article=(.+)$/);
+  if (articleMatch) {
+    const articleId = articleMatch[1];
+    // Trouver toutes les cartes PDF correspondantes (dans tous les contextes)
+    document.querySelectorAll(`[id^="carte-"][id$="-${articleId}"]`).forEach(el => {
+      el.classList.add('article-cible');
+      // Scroller vers la carte avec un léger délai pour l'animation
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    });
+    return;
+  }
+  
   // Hashs internes comme #toc-... doivent laisser le navigateur gérer le scroll.
 }
 
@@ -3445,8 +3481,6 @@ function lancerRecherche(){
       <div>${e.date || ''}</div>
     </div>
   `).join('');
-
-  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function effacerRecherche(reafficherAccueil){
