@@ -1041,7 +1041,8 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:22px;
+    font-size:18px;
+    font-weight:bold;
     color:var(--text-onink-soft);
     cursor:pointer;
     padding:0;
@@ -3746,7 +3747,18 @@ document.addEventListener('DOMContentLoaded', function(){
     <!-- Styles d'override pour la modal (MailerLite Universal) -->
     <style>
       #modal-abonnement .modal-content{ background: #fff; padding: 22px 20px; border-radius:14px; max-width:460px; box-shadow: 0 18px 40px rgba(16,20,40,0.18); color: #141829; text-align:left; }
-      #modal-abonnement .modal-fermer{ color:#6b6b74; background:transparent; border:none; font-size:22px; top:12px; right:12px; }
+      #modal-abonnement .modal-fermer{ 
+        position:absolute; top:12px; right:12px;
+        background:rgba(255,255,255,0.12);
+        border:1px solid rgba(255,255,255,0.24);
+        border-radius:50%;
+        width:36px; height:36px;
+        display:flex; align-items:center; justify-content:center;
+        font-size:18px; font-weight:bold; color:#6b6b74;
+        cursor:pointer; padding:0; line-height:1;
+        transition:all 0.3s ease;
+      }
+      #modal-abonnement .modal-fermer:hover{ background:var(--ink); border-color:var(--ink); color:#fff; }
       #modal-abonnement .ml-embedded{ margin: 0; }
       #modal-abonnement .ml-embedded input[type="email"],
       #modal-abonnement .ml-embedded input[type="text"]{ padding:12px 14px; border-radius:10px; border:1px solid #e6e6e9; font-size:15px; background:#fff; width:100%; box-sizing:border-box; }
