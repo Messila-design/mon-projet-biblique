@@ -799,6 +799,12 @@
   .etude-layout{
     display:grid; grid-template-columns:1fr 230px; gap:44px; align-items:start;
   }
+  .etude-toc-layout{
+    display:grid; grid-template-columns:1fr 230px; gap:44px; align-items:start;
+  }
+  @media (max-width:900px){
+    .etude-toc-layout{ grid-template-columns:1fr; }
+  }
   .etude-toc{
     position:sticky; top:90px;
     border-left:2px solid var(--gold);
@@ -3263,7 +3269,7 @@ function afficherEtudes(){
           <h3>${e.titre}</h3>
           <div class="etude-date">${e.date || ''}</div>
         </div>
-        <div class="etude-content">
+        <div class="etude-toc-layout">
           <div class="etude-corps">${contenuAvecIds}</div>
           ${toc}
         </div>
@@ -3321,7 +3327,7 @@ function afficherLireEtude(){
           <h3>${e.titre}</h3>
           <div class="etude-date">Publié le ${e.date || '—'}</div>
         </div>
-        <div class="etude-content">
+        <div class="etude-toc-layout">
           <div class="etude-corps">${contenuAvecIds}</div>
           ${toc}
         </div>
