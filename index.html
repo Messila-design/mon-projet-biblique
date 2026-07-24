@@ -1375,6 +1375,210 @@
       background: transparent !important;
     }
   }
+
+  /* ============ MENU LATÉRAL OFF-CANVAS ============ */
+  /* Bouton Hamburger - visible sur tous les écrans */
+  .hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 10px;
+    background: var(--gold);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(209, 181, 90, 0.35);
+    transition: all 0.3s ease;
+    margin-left: auto;
+  }
+  .hamburger-btn:hover {
+    background: var(--gold-light);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(209, 181, 90, 0.45);
+  }
+  .hamburger-line {
+    width: 22px;
+    height: 2px;
+    background-color: var(--ink);
+    margin: 4px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  .hamburger-btn.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .hamburger-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger-btn.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Overlay */
+  .off-canvas-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(8, 12, 28, 0.55);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .off-canvas-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Drawer */
+  .off-canvas-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    background: rgba(20, 24, 41, 0.98);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 6px 0 28px rgba(0, 0, 0, 0.45);
+    transform: translateX(-100%);
+    transition: transform 0.32s ease;
+    overflow-y: auto;
+    z-index: 10000;
+  }
+  .off-canvas-overlay.active .off-canvas-drawer {
+    transform: translateX(0);
+  }
+
+  /* Contenu du Drawer */
+  .drawer-nav {
+    padding: 20px;
+    color: var(--text-onink);
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .close-drawer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--text-onink);
+    cursor: pointer;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  .close-drawer:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--gold-light);
+    transform: rotate(90deg);
+  }
+  .close-drawer svg {
+    width: 20px;
+    height: 20px;
+  }
+  .drawer-nav-list {
+    list-style: none;
+    margin: 60px 0 40px;
+    padding: 0;
+    flex-grow: 1;
+  }
+  .drawer-nav-list li {
+    margin-bottom: 12px;
+  }
+  .drawer-nav-list a {
+    color: var(--text-onink-soft);
+    text-decoration: none;
+    font-size: 17px;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    display: block;
+  }
+  .drawer-nav-list a:hover {
+    background: rgba(209, 181, 90, 0.15);
+    color: var(--gold-light);
+    transform: translateX(5px);
+  }
+
+  /* Section Réseaux Sociaux */
+  .drawer-social {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: auto;
+  }
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .social-icon:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    border-color: var(--gold);
+  }
+  .social-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Ligne de séparation sous le logo - visible sur mobile seulement */
+  .header-separator {
+    display: none;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(196, 160, 82, 0.25), transparent);
+    margin: 8px 0;
+  }
+
+  /* Affichage sur mobile */
+  @media (max-width: 980px) {
+    .header-links {
+      display: none;
+    }
+    .header-actions {
+      display: none;
+    }
+    .header-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+    .header-separator {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+    }
+    .hamburger-btn {
+      margin: 0 0 16px 0;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -1388,6 +1592,16 @@
         <div class="sub">ÉTUDE &amp; TRANSMISSION</div>
       </span>
     </a>
+
+    <!-- Bouton Hamburger -->
+    <button class="hamburger-btn" aria-label="Ouvrir le menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <!-- Ligne de séparation -->
+    <div class="header-separator"></div>
 
     <nav class="header-links">
       <a href="#accueil" data-onglet="accueil" onclick="afficherOnglet('accueil'); return false;">Accueil</a>
@@ -1438,6 +1652,45 @@
     </div>
   </div>
 </header>
+
+<!-- MENU LATÉRAL OFF-CANVAS -->
+<div class="off-canvas-overlay">
+  <div class="off-canvas-drawer">
+    <button class="close-drawer" aria-label="Fermer le menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <nav class="drawer-nav">
+      <ul class="drawer-nav-list">
+        <li><a href="#accueil" data-onglet="accueil" onclick="afficherOnglet('accueil'); fermerMenuLateral(); return false;">Accueil</a></li>
+        <li><a href="#articles" data-onglet="articles" onclick="afficherOnglet('articles'); fermerMenuLateral(); return false;">Articles</a></li>
+        <li><a href="#etude" data-onglet="etude" onclick="afficherOnglet('etude'); fermerMenuLateral(); return false;">Étude biblique</a></li>
+        <li><a href="#vision" data-onglet="vision" onclick="afficherOnglet('vision'); fermerMenuLateral(); return false;">Notre Vision</a></li>
+      </ul>
+
+      <!-- RÉSEAUX SOCIAUX -->
+      <div class="drawer-social">
+        <a href="https://www.youtube.com/c/DICOBIBLIQUE" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="social-icon youtube">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FF0000">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/DICO.BIBLIQUE/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#1877F2">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+        <a href="https://whatsapp.com/channel/0029Vb1mc5jE50UkkTcL8p0C" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-icon whatsapp">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#25D366">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 015.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
 
 <!-- ================= RÉSULTATS DE RECHERCHE ================= -->
 <main>
@@ -3915,6 +4168,56 @@ window.addEventListener('hashchange', initialiserPartageEtudes);
 
 // Réinitialiser après le chargement dynamique des études et articles
 setTimeout(initialiserPartageEtudes, 500);
+
+// ============ MENU LATÉRAL ============
+function fermerMenuLateral() {
+  const overlay = document.querySelector('.off-canvas-overlay');
+  const hamburgerBtn = document.querySelector('.hamburger-btn');
+  if (overlay) overlay.classList.remove('active');
+  if (hamburgerBtn) hamburgerBtn.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburgerBtn = document.querySelector('.hamburger-btn');
+  const closeBtn = document.querySelector('.close-drawer');
+  const offCanvasOverlay = document.querySelector('.off-canvas-overlay');
+  const navLinks = document.querySelectorAll('.drawer-nav-list a');
+
+  if (!hamburgerBtn || !closeBtn || !offCanvasOverlay) return;
+
+  // Ouvrir le menu
+  hamburgerBtn.addEventListener('click', function() {
+    offCanvasOverlay.classList.add('active');
+    hamburgerBtn.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Fermer le menu
+  closeBtn.addEventListener('click', function() {
+    offCanvasOverlay.classList.remove('active');
+    hamburgerBtn.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  // Fermer au clic sur un lien
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      offCanvasOverlay.classList.remove('active');
+      hamburgerBtn.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Fermer au clic sur l'overlay
+  offCanvasOverlay.addEventListener('click', function(e) {
+    if (e.target === offCanvasOverlay) {
+      offCanvasOverlay.classList.remove('active');
+      hamburgerBtn.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+});
 </script>
 
 </body>
