@@ -668,6 +668,39 @@
     transition:opacity .3s var(--ease); font-family:var(--font-sans);
   }
   .newsletter-form button:hover{ opacity:.9; }
+  .newsletter-popup{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:none;
+    place-items:center;
+    pointer-events:none;
+  }
+  .newsletter-popup.is-open{ display:grid; }
+  .newsletter-popup-content{
+    position:relative;
+    width:min(480px, calc(100vw - 32px));
+    pointer-events:auto;
+  }
+  .newsletter-popup-close{
+    position:absolute;
+    z-index:1;
+    top:-12px;
+    right:-12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:32px;
+    height:32px;
+    border:1px solid var(--hairline);
+    border-radius:50%;
+    background:var(--card);
+    color:var(--foreground);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .newsletter-popup-close:hover{ background:var(--primary); color:var(--primary-foreground); }
 
   /* ---------- À propos ---------- */
   #apropos .apropos-grid{ display:grid; align-items:center; gap:64px; grid-template-columns:1fr; }
@@ -912,9 +945,6 @@
         <h2>La lettre de Laméd</h2>
         <p>Une fois par mois, nos dernières études et publications, sans bruit.</p>
       </div>
-      <div id="newsletter-form-slot">
-        <div class="ml-embedded" data-form="i7RsrP"></div>
-      </div>
     </div>
   </section>
 
@@ -967,6 +997,15 @@
   </section>
 
 </main>
+
+<div id="newsletter-popup" class="newsletter-popup" role="dialog" aria-modal="true" aria-label="Inscription à la newsletter" hidden>
+  <div class="newsletter-popup-content">
+    <button type="button" class="newsletter-popup-close" id="newsletter-popup-close" aria-label="Fermer">×</button>
+    <div id="newsletter-form-slot">
+      <div class="ml-embedded" data-form="i7RsrP"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Modale vidéo YouTube -->
 <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-label="Vidéo YouTube" hidden>
@@ -1998,6 +2037,7 @@ rendreArticles();
 rendreVideos();
 rendreArchives();
 afficherArchivesContenu();
+initNewsletterPopup();
 initVideoModal();
 
 /* ---------- Système d'onglets ---------- */
@@ -2115,6 +2155,53 @@ function afficherArchivesContenu(){
 
 function ouvrirArchiveEtude(id){
   location.hash = 'etude=' + encodeURIComponent(id);
+}
+
+/* ---------- Formulaire MailerLite après 10 secondes ---------- */
+function initNewsletterPopup(){
+  const popup = document.getElementById('newsletter-popup');
+  const closeBtn = document.getElementById('newsletter-popup-close');
+  const formHost = document.getElementById('newsletter-form-slot');
+  if(!popup || !closeBtn || !formHost) return;
+
+  let confirmationVisible = false;
+
+  function verifierConfirmation(){
+    confirmationVisible = Array.from(formHost.querySelectorAll('.row-success, .ml-form-successBody')).some(element => {
+      const style = window.getComputedStyle(element);
+      return style.display !== 'none' && style.visibility !== 'hidden' && element.offsetParent !== null;
+    });
+  }
+
+  const observateur = new MutationObserver(() => requestAnimationFrame(verifierConfirmation));
+  observateur.observe(formHost, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class', 'style', 'hidden']
+  });
+  document.addEventListener('ml-form-success', () => { confirmationVisible = true; }, true);
+
+  try {
+    if(sessionStorage.getItem('lamed-newsletter-dismissed') === '1') return;
+  } catch(_){ /* sessionStorage indisponible */ }
+
+  const timer = setTimeout(() => {
+    popup.hidden = false;
+    popup.classList.add('is-open');
+  }, 10000);
+
+  function close(){
+    popup.classList.remove('is-open');
+    popup.hidden = true;
+    try { sessionStorage.setItem('lamed-newsletter-dismissed', '1'); } catch(_){}
+    clearTimeout(timer);
+  }
+
+  closeBtn.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && popup.classList.contains('is-open') && !confirmationVisible) close();
+  });
 }
 
 /* ---------- Modale vidéo YouTube ---------- */
