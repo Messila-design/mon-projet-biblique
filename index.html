@@ -21,12 +21,11 @@
 
 <!-- MailerLite Universal -->
 <script>
-  (function(w,d,e,u,f,l,n){
-    w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},
-    l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);
-  })(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-  ml('account', '2498680');
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2498680');
 </script>
 <!-- End MailerLite Universal -->
 
@@ -611,99 +610,6 @@
     letter-spacing:.06em;
   }
 
-  /* ---------- Modale Newsletter (sans blur) ---------- */
-  .newsletter-modal{
-    position:fixed;
-    inset:0;
-    z-index:1000;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(16,30,60,0.35);
-  }
-  .newsletter-modal.is-open{
-    display:flex;
-  }
-  .newsletter-modal-dialog{
-    position:relative;
-    width:min(480px, calc(100vw - 32px));
-    background:var(--card);
-    color:var(--foreground);
-    border-radius:16px;
-    border:1px solid var(--hairline);
-    box-shadow:0 24px 60px rgba(16,30,60,0.25);
-    padding:32px;
-  }
-  .newsletter-modal-close{
-    position:absolute;
-    top:12px;
-    right:12px;
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    border:1px solid var(--hairline);
-    background:var(--card);
-    color:var(--foreground);
-    font-size:18px;
-    line-height:1;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:background .2s var(--ease), color .2s var(--ease);
-  }
-  .newsletter-modal-close:hover{
-    background:var(--primary);
-    color:var(--primary-foreground);
-  }
-  .newsletter-modal-dialog .eyebrow{
-    margin-bottom:8px;
-  }
-  .newsletter-modal-dialog h2{
-    margin:8px 0 12px;
-    font-family:var(--font-serif);
-    font-weight:400;
-    font-size:28px;
-    line-height:1.2;
-  }
-  .newsletter-modal-dialog p{
-    margin:0 0 20px;
-    font-size:14px;
-    line-height:1.7;
-    color:var(--muted-foreground);
-  }
-  .newsletter-modal-form{
-    display:flex;
-    gap:8px;
-    width:100%;
-  }
-  .newsletter-modal-form input{
-    flex:1;
-    border-radius:999px;
-    border:1px solid var(--hairline);
-    padding:12px 20px;
-    font-size:14px;
-    font-family:var(--font-sans);
-    background:var(--card);
-    color:var(--foreground);
-  }
-  .newsletter-modal-form input:focus{
-    outline:none;
-    border-color:var(--primary);
-  }
-  .newsletter-modal-form button{
-    border-radius:999px;
-    background:var(--primary);
-    color:var(--primary-foreground);
-    padding:12px 22px;
-    font-size:14px;
-    font-weight:500;
-    border:none;
-    cursor:pointer;
-    font-family:var(--font-sans);
-    transition:opacity .2s var(--ease);
-  }
-  .newsletter-modal-form button:hover{ opacity:.9; }
   .etude-retour{ display:inline-block; margin-bottom:40px; }
   .etude-article-img{ overflow:hidden; border-radius:12px; border:1px solid var(--hairline); box-shadow:var(--shadow-card); margin:0 auto 40px; max-width:760px; }
   .etude-article-img img{ width:100%; object-fit:cover; }
@@ -838,10 +744,6 @@
     .newsletter-inner{ padding:64px 16px; gap:32px; }
     .newsletter-form{ flex-direction:column; max-width:none; }
     .newsletter-form input, .newsletter-form button{ width:100%; }
-    .newsletter-modal{ padding:16px; }
-    .newsletter-modal-dialog{ width:100%; padding:28px 20px 20px; }
-    .newsletter-modal-form{ flex-direction:column; }
-    .newsletter-modal-form input, .newsletter-modal-form button{ width:100%; }
     .video-modal{ padding:16px; }
     .video-modal-close{ top:-40px; }
     .footer-inner{ padding:48px 16px; }
@@ -1010,11 +912,9 @@
         <h2>La lettre de Laméd</h2>
         <p>Une fois par mois, nos dernières études et publications, sans bruit.</p>
       </div>
-      <form class="newsletter-form" id="form-newsletter">
-        <label for="newsletter-email" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Adresse e-mail</label>
-        <input id="newsletter-email" type="email" placeholder="Votre adresse e-mail" required>
-        <button type="submit">S'abonner</button>
-      </form>
+      <div id="newsletter-form-slot">
+        <div class="ml-embedded" data-form="i7RsrP"></div>
+      </div>
     </div>
   </section>
 
@@ -1067,21 +967,6 @@
   </section>
 
 </main>
-
-<!-- Modale Newsletter (affichage automatique 10s, fermeture par X, sans blur) -->
-<div id="newsletter-modal" class="newsletter-modal" role="dialog" aria-modal="true" aria-labelledby="newsletter-modal-title" hidden>
-  <div class="newsletter-modal-dialog">
-    <button type="button" class="newsletter-modal-close" id="newsletter-modal-close" aria-label="Fermer">×</button>
-    <p class="eyebrow">Correspondance</p>
-    <h2 id="newsletter-modal-title">La lettre de Laméd</h2>
-    <p>Recevez chaque mois nos dernières études et publications, directement dans votre boîte mail.</p>
-    <form class="newsletter-modal-form" id="newsletter-modal-form">
-      <label for="newsletter-modal-email" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Adresse e-mail</label>
-      <input id="newsletter-modal-email" type="email" placeholder="Votre adresse e-mail" required>
-      <button type="submit">S'abonner</button>
-    </form>
-  </div>
-</div>
 
 <!-- Modale vidéo YouTube -->
 <div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-label="Vidéo YouTube" hidden>
@@ -1881,15 +1766,18 @@ function activerNotesBasDePage(conteneur, prefix){
     const noteTexte = (note.getAttribute('data-note') || '').trim().replace(/\s+/g, ' ');
     const existante = noteMap.get(noteTexte);
     const numero = existante ? existante.numero : noteMap.size + 1;
-    const noteId = existante ? existante.noteId : `${idPrefix}-ref-${numero}`;
+    const nombreReferences = existante ? existante.nombreReferences + 1 : 1;
+    const noteId = `${idPrefix}-ref-${numero}-${nombreReferences}`;
     const noteCibleId = `${idPrefix}-cible-${numero}`;
 
     if(!existante){
-      noteMap.set(noteTexte, { numero, noteId });
+      noteMap.set(noteTexte, { numero, nombreReferences });
       const noteBas = document.createElement('li');
       noteBas.id = noteCibleId;
       noteBas.innerHTML = `${numero}. ${noteTexte} <a class="note-backref" href="#${noteId}">↖</a>`;
       hoteNotes.appendChild(noteBas);
+    } else {
+      existante.nombreReferences = nombreReferences;
     }
 
     note.innerHTML = `<a href="#${noteCibleId}">${numero}</a>`;
@@ -1899,7 +1787,13 @@ function activerNotesBasDePage(conteneur, prefix){
   });
 }
 
+let nettoyerSurbrillanceToc = null;
+
 function activerSurbrillanceToc(container){
+  if(nettoyerSurbrillanceToc){
+    nettoyerSurbrillanceToc();
+    nettoyerSurbrillanceToc = null;
+  }
   const liens = container.querySelectorAll('.etude-toc-col a[data-toc-target]');
   if(!liens.length) return;
   const ids = Array.from(liens).map(a => a.getAttribute('data-toc-target'));
@@ -1913,6 +1807,7 @@ function activerSurbrillanceToc(container){
     liens.forEach(a => a.classList.toggle('active', a.getAttribute('data-toc-target') === actif));
   }
   window.addEventListener('scroll', activer, { passive: true });
+  nettoyerSurbrillanceToc = () => window.removeEventListener('scroll', activer);
   activer();
 }
 
@@ -2103,43 +1998,7 @@ rendreArticles();
 rendreVideos();
 rendreArchives();
 afficherArchivesContenu();
-initNewsletterModal();
 initVideoModal();
-
-/* ---------- Abonnement newsletter MailerLite ---------- */
-const MAILERLITE_URL = 'https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe';
-
-function inscrireNewsletterMl(email){
-  return fetch(MAILERLITE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      'fields[email]': email,
-      'ml-submit': '1',
-      'anticsrf': 'true'
-    })
-  }).then(r => r.json()).then(data => {
-    if(data && data.success === true) return true;
-    throw new Error('MailerLite a refusé l\'inscription.');
-  });
-}
-
-// Formulaire de la page Newsletter
-document.getElementById('form-newsletter').addEventListener('submit', function(e){
-  e.preventDefault();
-  const input = document.getElementById('newsletter-email');
-  const email = (input && input.value || '').trim();
-  if(!email){ if(input) input.focus(); return; }
-  const btn = this.querySelector('button[type="submit"]');
-  if(btn){ btn.disabled = true; btn.textContent = 'Enregistrement…'; }
-  inscrireNewsletterMl(email).then(() => {
-    this.reset();
-    if(btn){ btn.textContent = 'Merci ! Inscription confirmée ✓'; btn.disabled = false; }
-  }).catch(() => {
-    if(btn){ btn.textContent = 'S\'abonner'; btn.disabled = false; }
-    alert('Une erreur est survenue. Veuillez réessayer.');
-  });
-});
 
 /* ---------- Système d'onglets ---------- */
 function afficherOnglet(id){
@@ -2256,50 +2115,6 @@ function afficherArchivesContenu(){
 
 function ouvrirArchiveEtude(id){
   location.hash = 'etude=' + encodeURIComponent(id);
-}
-
-/* ---------- Modale Newsletter (auto 10s, sans blur, fermeture X) ---------- */
-function initNewsletterModal(){
-  const modal = document.getElementById('newsletter-modal');
-  const closeBtn = document.getElementById('newsletter-modal-close');
-  const form = document.getElementById('newsletter-modal-form');
-  if(!modal || !closeBtn) return;
-
-  try {
-    if(sessionStorage.getItem('lamed-newsletter-dismissed') === '1') return;
-  } catch(_){ /* sessionStorage indisponible */ }
-
-  const timer = setTimeout(() => {
-    modal.hidden = false;
-    modal.classList.add('is-open');
-  }, 10000);
-
-  function close(){
-    modal.classList.remove('is-open');
-    modal.hidden = true;
-    try { sessionStorage.setItem('lamed-newsletter-dismissed', '1'); } catch(_){}
-    clearTimeout(timer);
-  }
-
-  if(form){
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      const input = document.getElementById('newsletter-modal-email');
-      const email = (input && input.value || '').trim();
-      if(!email){ if(input) input.focus(); return; }
-      const btn = this.querySelector('button[type="submit"]');
-      if(btn){ btn.disabled = true; btn.textContent = 'Enregistrement…'; }
-      inscrireNewsletterMl(email).then(() => {
-        close();
-      }).catch(() => {
-        if(btn){ btn.textContent = 'S\'abonner'; btn.disabled = false; }
-        alert('Une erreur est survenue. Veuillez réessayer.');
-      });
-    });
-  }
-
-  closeBtn.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
 }
 
 /* ---------- Modale vidéo YouTube ---------- */
