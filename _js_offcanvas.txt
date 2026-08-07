@@ -1,0 +1,98 @@
+﻿// ============ MENU LATÉRAL OFF-CANVAS ============
+function menuLateralEstOuvert(){
+  const drawer = document.getElementById('menu-lateral');
+  return !!(drawer && drawer.classList.contains('active'));
+}
+
+function ouvrirMenuLateral(){
+  const overlay = document.getElementById('menu-overlay');
+  const drawer = document.getElementById('menu-lateral');
+  const hamburgerBtn = document.getElementById('btn-menu-lateral');
+  if(!overlay || !drawer) return;
+
+  overlay.hidden = false;
+  drawer.hidden = false;
+  // Force reflow pour déclencher les transitions CSS
+  void overlay.offsetWidth;
+
+  overlay.classList.add('active');
+  drawer.classList.add('active');
+  document.body.classList.add('menu-open');
+
+  if(hamburgerBtn){
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.setAttribute('aria-label', 'Fermer le menu principal');
+  }
+  const closeBtn = document.getElementById('btn-fermer-menu');
+  if(closeBtn) closeBtn.focus();
+}
+
+function fermerMenuLateral(){
+  const overlay = document.getElementById('menu-overlay');
+  const drawer = document.getElementById('menu-lateral');
+  const hamburgerBtn = document.getElementById('btn-menu-lateral');
+
+  if(overlay) overlay.classList.remove('active');
+  if(drawer) drawer.classList.remove('active');
+  document.body.classList.remove('menu-open');
+
+  if(hamburgerBtn){
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.setAttribute('aria-label', 'Ouvrir le menu principal');
+  }
+
+  // Masquer après l'animation (la page reste visible pendant toute la fermeture)
+  const masquer = function(){
+    if(overlay && !overlay.classList.contains('active')) overlay.hidden = true;
+    if(drawer && !drawer.classList.contains('active')) drawer.hidden = true;
+  };
+  if(drawer){
+    const onEnd = function(e){
+      if(e.propertyName === 'transform'){
+        drawer.removeEventListener('transitionend', onEnd);
+        masquer();
+      }
+    };
+    drawer.addEventListener('transitionend', onEnd);
+  }
+  setTimeout(masquer, 400);
+
+  if(hamburgerBtn && document.activeElement && document.activeElement.closest && document.activeElement.closest('#menu-lateral, #menu-overlay, #btn-fermer-menu')){
+    hamburgerBtn.focus();
+  } else if(hamburgerBtn && document.activeElement === document.getElementById('btn-fermer-menu')){
+    hamburgerBtn.focus();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  const hamburgerBtn = document.getElementById('btn-menu-lateral');
+  const closeBtn = document.getElementById('btn-fermer-menu');
+  const overlay = document.getElementById('menu-overlay');
+
+  if(!hamburgerBtn || !closeBtn || !overlay) return;
+
+  hamburgerBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if(menuLateralEstOuvert()) fermerMenuLateral();
+    else ouvrirMenuLateral();
+  });
+
+  closeBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    fermerMenuLateral();
+  });
+
+  // Clic sur le voile sombre → fermeture (page reste en arrière-plan)
+  overlay.addEventListener('click', function(){
+    fermerMenuLateral();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && menuLateralEstOuvert()){
+      fermerMenuLateral();
+    }
+  });
+});
+</script>

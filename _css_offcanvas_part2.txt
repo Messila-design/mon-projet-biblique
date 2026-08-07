@@ -1,0 +1,263 @@
+﻿  }
+  .hamburger-btn[aria-expanded="true"] .hamburger-line:nth-child(3){
+    transform:translateY(-7px) rotate(-45deg);
+  }
+
+  /* Voile sombre — page toujours visible en arrière-plan (élément frère du drawer) */
+  .off-canvas-overlay{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    min-height:100vh;
+    min-height:100dvh;
+    background:rgba(8,12,28,0.55);
+    z-index:9999;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity 0.32s var(--ease), visibility 0.32s var(--ease);
+    -webkit-tap-highlight-color:transparent;
+    border:0;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    display:block;
+    appearance:none;
+    -webkit-appearance:none;
+    font:inherit;
+    color:inherit;
+  }
+  .off-canvas-overlay[hidden],
+  .off-canvas-drawer[hidden]{
+    display:none !important;
+  }
+  .off-canvas-overlay.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+  }
+
+  /* Volet latéral — glisse de gauche à droite, en superposition fixe */
+  .off-canvas-drawer{
+    position:fixed;
+    top:0;
+    left:0;
+    width:min(320px, 86vw);
+    height:100%;
+    height:100vh;
+    height:100dvh;
+    background:rgba(20,24,41,0.98);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-right:1px solid rgba(196,160,82,0.18);
+    box-shadow:6px 0 28px rgba(0,0,0,0.45);
+    transform:translateX(-100%);
+    transition:transform 0.34s var(--ease);
+    overflow-y:auto;
+    overflow-x:hidden;
+    z-index:10000;
+    -webkit-overflow-scrolling:touch;
+    pointer-events:none;
+    visibility:hidden;
+  }
+  .off-canvas-drawer.active{
+    transform:translateX(0);
+    pointer-events:auto;
+    visibility:visible;
+  }
+
+  .drawer-nav{
+    padding:20px 20px 28px;
+    color:var(--text-onink);
+    position:relative;
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+  }
+  .close-drawer{
+    position:absolute;
+    top:16px;
+    right:16px;
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.18);
+    color:var(--text-onink);
+    cursor:pointer;
+    padding:8px;
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    transition:background 0.28s var(--ease), border-color 0.28s var(--ease), transform 0.28s var(--ease);
+    z-index:2;
+  }
+  .close-drawer:hover{
+    background:rgba(255,255,255,0.1);
+    border-color:var(--gold-light);
+    transform:rotate(90deg);
+  }
+  .close-drawer:focus-visible{
+    outline:2px solid var(--gold-light);
+    outline-offset:2px;
+  }
+  .close-drawer svg{
+    width:20px;
+    height:20px;
+  }
+
+  .drawer-nav-list{
+    list-style:none;
+    margin:56px 0 0;
+    padding:0;
+  }
+  .drawer-nav-list li{ margin-bottom:6px; }
+  .drawer-nav-list a{
+    color:var(--text-onink-soft);
+    text-decoration:none;
+    font-family:var(--font-display);
+    font-size:clamp(17px, 2.4vw, 19px);
+    font-weight:600;
+    padding:12px 14px;
+    border-radius:var(--radius);
+    transition:background 0.28s var(--ease), color 0.28s var(--ease), transform 0.28s var(--ease);
+    display:block;
+  }
+  .drawer-nav-list a:hover,
+  .drawer-nav-list a:focus-visible,
+  .drawer-nav-list a.active{
+    background:rgba(209,181,90,0.15);
+    color:var(--gold-light);
+    transform:translateX(4px);
+    outline:none;
+  }
+  .drawer-nav-list a.active{
+    border-left:3px solid var(--gold);
+    padding-left:11px;
+  }
+
+  /* Section « Notre vision » dans le volet */
+  .drawer-vision{
+    margin-top:28px;
+    padding:18px 16px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .drawer-vision-label{
+    display:block;
+    font-family:var(--font-mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold-light);
+    margin-bottom:10px;
+  }
+  .drawer-vision p{
+    margin:0 0 14px;
+    font-size:14px;
+    line-height:1.55;
+    color:var(--text-onink-soft);
+  }
+  .drawer-vision-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:var(--gold-light);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:color 0.28s var(--ease);
+  }
+  .drawer-vision-link:hover{
+    color:var(--gold);
+  }
+
+  /* Réseaux sociaux — juste sous « Notre vision » */
+  .drawer-social{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:16px;
+    padding:12px 0 8px;
+    margin-top:0;
+  }
+  .social-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    transition:transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s var(--ease);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.12);
+  }
+  .social-icon:hover{
+    transform:translateY(-3px) scale(1.06);
+    box-shadow:0 6px 20px rgba(0,0,0,0.4);
+    border-color:var(--gold);
+  }
+  .social-icon svg{
+    width:24px;
+    height:24px;
+  }
+
+  body.menu-open{
+    overflow:hidden;
+    touch-action:none;
+  }
+
+  /* Alignement en-tête desktop : liens / actions centrés verticalement */
+  @media (min-width:981px){
+    .header-inner{
+      align-items:center;
+    }
+    .header-links,
+    .header-actions{
+      align-self:center;
+    }
+  }
+
+  /* Tablettes & mobiles */
+  @media (max-width:980px){
+    .header-links{ display:none; }
+    .header-actions{ display:none; }
+    .header-inner{
+      flex-direction:column;
+      align-items:flex-start;
+      gap:0;
+      padding:12px 16px 14px;
+    }
+    .header-brand-block{ width:100%; }
+    .header-separator{
+      min-width:0;
+      width:100%;
+      margin:10px 0 12px;
+    }
+  }
+
+  @media (max-width:480px){
+    .off-canvas-drawer{
+      width:min(300px, 92vw);
+    }
+    .hamburger-btn{
+      width:44px;
+      height:44px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Logo → séparateur → burger (sous le logo) -->
+    <div class="header-brand-block">
+      <a href="#accueil" class="brand" onclick="afficherOnglet('accueil'); return false;">
+        <span class="brand-mark">ל</span>
+        <span class="brand-text">
+          <div class="name">Centre de Formation Laméd</div>
+          <div class="sub">ÉTUDE &amp; TRANSMISSION</div>
+        </span>

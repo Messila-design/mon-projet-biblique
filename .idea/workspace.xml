@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="83bd8a96-afe7-44b4-8bc4-5461695ebe86" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/_css_offcanvas_part2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_html_drawer.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_js_offcanvas.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_new_version_ref.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_patch_foi.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/_verify_foi.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/cocoparisienne-mountaineer-2100050_1920.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/encoded.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/encoded_clean.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/grand-rouleau-isaie-great-isaiah-scroll.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/image_b64.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/mur-occidental-pexels-8446694.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/rouleau-isaie-panoramique-alex-gutman.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/torah-rcascoh-israel-5191727_1920.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/yves-moret-wCGdRGUyZ1w-unsplash.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.html.backup" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/verify.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3HKdvqgi1H8wBX6q0Jhbk3mMLDV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "KEY_CHAT_IN_TOOLWINDOW": "false",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "javascript.preferred.runtime.type.id": "node",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.8665.341" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="83bd8a96-afe7-44b4-8bc4-5461695ebe86" name="Changes" comment="" />
+      <created>1785620929478</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1785620929478</updated>
+      <workItem from="1785620929926" duration="709000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

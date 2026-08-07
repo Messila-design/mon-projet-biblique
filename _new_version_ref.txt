@@ -1,0 +1,140 @@
+﻿===== HEADER_HTML =====
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Logo → séparateur → burger (sous le logo) -->
+    <div class="header-brand-block">
+      <a href="#accueil" class="brand" onclick="afficherOnglet('accueil'); return false;">
+        <span class="brand-mark">ל</span>
+        <span class="brand-text">
+          <div class="name">Centre de Formation Laméd</div>
+          <div class="sub">ÉTUDE &amp; TRANSMISSION</div>
+        </span>
+      </a>
+      <div class="header-separator" aria-hidden="true"></div>
+      <button type="button" class="hamburger-btn" id="btn-menu-lateral"
+        aria-label="Ouvrir le menu principal"
+        aria-controls="menu-lateral"
+        aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+
+    <nav class="header-links" aria-label="Navigation principale">
+      <a href="#accueil" data-onglet="accueil" onclick="afficherOnglet('accueil'); return false;">Accueil</a>
+      <a href="#articles" data-onglet="articles" onclick="afficherOnglet('articles'); return false;">Articles</a>
+      <a href="#etude" data-onglet="etude" onclick="afficherOnglet('etude'); return false;">Étude biblique</a>
+      <a href="#vision" data-onglet="vision" onclick="afficherOnglet('vision'); return false;">Notre Vision</a>
+    </nav>
+
+    <div class="header-actions">
+      <form class="search-wrap" onsubmit="event.preventDefault(); lancerRecherche();">
+        <input id="champ-recherche" type="text" placeholder="Rechercher un mot-clé…">
+        <button type="submit" aria-label="Rechercher">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </form>
+      <div class="lecture-wrap">
+        <button type="button" id="btn-lecture" onclick="toggleLecturePanel(event)" aria-label="Options de lecture">Aa</button>
+        <div id="panel-lecture" class="panel-lecture">
+          <div class="lecture-groupe">
+            <span class="lecture-label">Taille du texte</span>
+            <div class="lecture-taille-ctrl">
+              <button type="button" onclick="changerTaille(-10)">A-</button>
+              <span id="taille-valeur">100%</span>
+              <button type="button" onclick="changerTaille(10)">A+</button>
+            </div>
+          </div>
+          <div class="lecture-groupe">
+            <span class="lecture-label">Mode de lecture</span>
+            <div class="lecture-modes">
+              <button type="button" data-mode="normal" onclick="changerMode('normal')">Normal</button>
+              <button type="button" data-mode="sepia" onclick="changerMode('sepia')">Sépia</button>
+              <button type="button" data-mode="nuit" onclick="changerMode('nuit')">Nocturne</button>
+            </div>
+          </div>
+          <div class="lecture-groupe">
+            <span class="lecture-label">Police</span>
+            <select id="select-police" onchange="changerPolice(this.value)">
+              <option value="lora">Police du site (Lora)</option>
+              <option value="cambria">Cambria</option>
+              <option value="palatino">Palatino</option>
+              <option value="libertine">Libertine</option>
+              <option value="helvetica">Helvetica</option>
+              <option value="trebuchet">Trebuchet</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+===== END HEADER_HTML =====
+
+===== DRAWER_HTML =====
+<aside class="off-canvas-drawer" id="menu-lateral" role="dialog" aria-modal="true" aria-label="Menu principal" hidden>
+  <!-- 1. Bouton de fermeture (X) -->
+  <button type="button" class="close-drawer" id="btn-fermer-menu" aria-label="Fermer le menu" onclick="fermerMenuLateral()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="drawer-nav">
+    <!-- 2. Onglets de navigation (tous les onglets du site) -->
+    <nav aria-label="Navigation du menu">
+      <ul class="drawer-nav-list">
+        <li><a href="#accueil" data-onglet="accueil" onclick="afficherOnglet('accueil'); fermerMenuLateral(); return false;">Accueil</a></li>
+        <li><a href="#articles" data-onglet="articles" onclick="afficherOnglet('articles'); fermerMenuLateral(); return false;">Articles</a></li>
+        <li><a href="#etude" data-onglet="etude" onclick="afficherOnglet('etude'); fermerMenuLateral(); return false;">Étude biblique</a></li>
+        <li><a href="#vision" data-onglet="vision" onclick="afficherOnglet('vision'); fermerMenuLateral(); return false;">Notre Vision</a></li>
+      </ul>
+    </nav>
+
+    <!-- 3. Section « Notre vision » (remplie depuis VISION) -->
+    <section class="drawer-vision" aria-labelledby="drawer-vision-titre">
+      <span class="drawer-vision-label" id="drawer-vision-titre">Notre vision</span>
+      <p id="drawer-vision-extrait"></p>
+      <a href="#vision" class="drawer-vision-link" onclick="afficherOnglet('vision'); fermerMenuLateral(); return false;">
+        Découvrir notre vision →
+      </a>
+    </section>
+
+    <!-- 4. Réseaux sociaux -->
+    <div class="drawer-social" id="drawer-social" aria-label="Réseaux sociaux">
+      <a href="https://www.youtube.com/c/DICOBIBLIQUE" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="social-icon youtube">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#FF0000">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/DICO.BIBLIQUE/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#1877F2">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+      <a href="https://whatsapp.com/channel/0029Vb1mc5jE50UkkTcL8p0C" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-icon whatsapp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#25D366">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</aside>
+
+===== END DRAWER_HTML =====
+
+===== OVERLAY_HTML =====
+NOT FOUND: <button class="off-canvas-overlay"
+
+===== END OVERLAY_HTML =====
+
+===== CSS_OFFCANVAS =====
+NOT FOUND: /* ============ OFF-CANVAS
+
+===== END CSS_OFFCANVAS =====
+
+===== JS_FUNCTIONS =====
+===== END JS_FUNCTIONS =====

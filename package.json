@@ -1,0 +1,10 @@
+{
+  "name": "lamed_code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node check.js"
+  },
+  "private": true
+}
