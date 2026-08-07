@@ -676,7 +676,12 @@
     place-items:center;
     pointer-events:none;
   }
-  .newsletter-popup.is-open{ display:grid; }
+  .newsletter-popup.is-open{
+    display:grid;
+    background:rgba(16,30,60,0.10);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+  }
   .newsletter-popup-content{
     position:relative;
     width:min(480px, calc(100vw - 32px));
@@ -2166,11 +2171,21 @@ function initNewsletterPopup(){
 
   let confirmationVisible = false;
 
+  function marquerAbonne(){
+    try {
+      localStorage.setItem('lamed-newsletter-subscribed', '1');
+      sessionStorage.setItem('lamed-newsletter-dismissed', '1');
+    } catch(_){}
+  }
+
   function verifierConfirmation(){
+    const confirmationPrecedente = confirmationVisible;
     confirmationVisible = Array.from(formHost.querySelectorAll('.row-success, .ml-form-successBody')).some(element => {
       const style = window.getComputedStyle(element);
       return style.display !== 'none' && style.visibility !== 'hidden' && element.offsetParent !== null;
     });
+    popup.classList.toggle('is-confirmed', confirmationVisible);
+    if(confirmationVisible && !confirmationPrecedente) marquerAbonne();
   }
 
   const observateur = new MutationObserver(() => requestAnimationFrame(verifierConfirmation));
@@ -2180,10 +2195,17 @@ function initNewsletterPopup(){
     attributes: true,
     attributeFilter: ['class', 'style', 'hidden']
   });
-  document.addEventListener('ml-form-success', () => { confirmationVisible = true; }, true);
+  document.addEventListener('ml-form-success', () => {
+    confirmationVisible = true;
+    popup.classList.add('is-confirmed');
+    marquerAbonne();
+  }, true);
 
   try {
-    if(sessionStorage.getItem('lamed-newsletter-dismissed') === '1') return;
+    if(
+      sessionStorage.getItem('lamed-newsletter-dismissed') === '1' ||
+      localStorage.getItem('lamed-newsletter-subscribed') === '1'
+    ) return;
   } catch(_){ /* sessionStorage indisponible */ }
 
   const timer = setTimeout(() => {
@@ -2193,6 +2215,7 @@ function initNewsletterPopup(){
 
   function close(){
     popup.classList.remove('is-open');
+    popup.classList.remove('is-confirmed');
     popup.hidden = true;
     try { sessionStorage.setItem('lamed-newsletter-dismissed', '1'); } catch(_){}
     clearTimeout(timer);
