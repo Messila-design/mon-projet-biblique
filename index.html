@@ -202,7 +202,7 @@
     margin-top:40px; display:grid; gap:24px;
     grid-template-columns:1fr;
   }
-  @media (min-width:768px){ .youtube-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (min-width:768px){ .youtube-grid{ grid-template-columns:repeat(2, minmax(0, 360px)); max-width:752px; } }
   .youtube-card{
     border:1px solid var(--hairline); border-radius:12px; overflow:hidden;
     background:var(--card); box-shadow:var(--shadow-card);
@@ -259,11 +259,11 @@
   nav.header-nav a:hover{ color:var(--foreground); }
   nav.header-nav a.active, nav.footer-nav a.active{ color:var(--foreground); font-weight:600; }
   .nav-newsletter{
-    border:1px solid var(--hairline); border-radius:999px; padding:8px 20px;
-    font-weight:500; color:var(--foreground) !important; transition:all .3s var(--ease);
+    flex-shrink:0; border:1px solid var(--primary); border-radius:999px; padding:8px 20px;
+    background:var(--primary); color:var(--primary-foreground); cursor:pointer;
+    font:500 14px var(--font-sans); transition:opacity .3s var(--ease);
   }
-  .nav-newsletter:hover{ background:var(--primary); color:var(--primary-foreground) !important; }
-
+  .nav-newsletter:hover{ opacity:.88; }
   @media (min-width:1024px){
     .header-inner{
       height:80px; padding:0 24px; flex-direction:row;
@@ -400,7 +400,7 @@
   #videos .videos-head{ border-bottom:1px solid var(--hairline); padding-bottom:24px; }
   #videos .videos-head h2{ margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; }
   .videos-grid{ margin-top:48px; display:grid; gap:32px; grid-template-columns:1fr; }
-  @media (min-width:768px){ .videos-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:768px){ .videos-grid{ grid-template-columns:repeat(2, minmax(0, 360px)); max-width:752px; } }
   .video-card{
     display:flex; flex-direction:column; gap:20px; text-align:left;
     background:var(--card); border:1px solid var(--hairline); border-radius:var(--radius);
@@ -644,69 +644,20 @@
   .etude-article-corps figure.etude-figure-inline figcaption{ margin-top:12px; font-size:13px; color:var(--muted-foreground); }
 
   /* ---------- Newsletter ---------- */
-  #newsletter{ background:var(--primary); color:var(--primary-foreground); }
-  .newsletter-inner{
-    max-width:1152px; margin:0 auto; padding:80px 24px;
-    display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:40px;
-  }
-  @media (min-width:768px){ .newsletter-inner{ flex-direction:row; align-items:center; } }
-  .newsletter-copy{ max-width:42ch; }
-  .newsletter-copy .eyebrow{ color:rgba(251,252,253,0.5); }
-  .newsletter-copy h2{ margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:30px; }
-  .newsletter-copy p{ margin:16px 0 0; font-size:14px; line-height:1.7; color:rgba(251,252,253,0.7); }
-  .newsletter-form{ display:flex; gap:8px; width:100%; max-width:420px; }
-  .newsletter-form input{
-    flex:1; border-radius:999px; border:1px solid rgba(251,252,253,0.2);
-    background:rgba(251,252,253,0.05); padding:12px 24px; font-size:14px;
-    color:var(--primary-foreground); font-family:var(--font-sans);
-  }
-  .newsletter-form input::placeholder{ color:rgba(251,252,253,0.4); }
-  .newsletter-form input:focus{ outline:none; border-color:rgba(251,252,253,0.5); }
-  .newsletter-form button{
-    border-radius:999px; background:var(--primary-foreground); color:var(--primary);
-    padding:12px 24px; font-size:14px; font-weight:500; border:none; cursor:pointer;
-    transition:opacity .3s var(--ease); font-family:var(--font-sans);
-  }
-  .newsletter-form button:hover{ opacity:.9; }
   .newsletter-popup{
-    position:fixed;
-    inset:0;
-    z-index:1000;
-    display:none;
-    place-items:center;
-    pointer-events:none;
+    position:fixed; inset:0; z-index:1000; display:none; place-items:center;
+    padding:24px; background:rgba(16,30,60,0.18);
+    backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
   }
-  .newsletter-popup.is-open{
-    display:grid;
-    background:rgba(16,30,60,0.10);
-    backdrop-filter:blur(5px);
-    -webkit-backdrop-filter:blur(5px);
-  }
-  .newsletter-popup-content{
-    position:relative;
-    width:min(480px, calc(100vw - 32px));
-    pointer-events:auto;
-  }
+  .newsletter-popup.is-open{ display:grid; }
+  .newsletter-popup-content{ position:relative; width:min(480px, 100%); }
+  .newsletter-popup-content .ml-embedded{ width:100%; }
   .newsletter-popup-close{
-    position:absolute;
-    z-index:1;
-    top:-12px;
-    right:-12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:32px;
-    height:32px;
-    border:1px solid var(--hairline);
-    border-radius:50%;
-    background:var(--card);
-    color:var(--foreground);
-    font-size:18px;
-    line-height:1;
-    cursor:pointer;
+    position:absolute; z-index:1; top:16px; right:16px; width:32px; height:32px;
+    border:1px solid var(--hairline); border-radius:50%; background:var(--card); color:var(--foreground);
+    font-size:18px; line-height:1; cursor:pointer;
   }
   .newsletter-popup-close:hover{ background:var(--primary); color:var(--primary-foreground); }
-
   /* ---------- À propos ---------- */
   #apropos .apropos-grid{ display:grid; align-items:center; gap:64px; grid-template-columns:1fr; }
   @media (min-width:768px){ #apropos .apropos-grid{ grid-template-columns:1fr 1fr; } }
@@ -719,10 +670,8 @@
   /* ---------- Footer ---------- */
   footer.site-footer{ border-top:1px solid var(--hairline); }
   .footer-inner{ max-width:1152px; margin:0 auto; padding:56px 24px; }
-  .footer-top{
-    display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:32px;
-  }
-  @media (min-width:768px){ .footer-top{ flex-direction:row; align-items:center; } }
+  .footer-top{ display:flex; flex-direction:column; align-items:flex-start; gap:32px; }
+  @media (min-width:768px){ .footer-top{ flex-direction:row; align-items:center; justify-content:space-between; } }
   .footer-brand{ display:flex; align-items:center; gap:16px; }
   .footer-brand .glyph{ font-family:var(--font-serif); font-size:36px; line-height:1; }
   .footer-brand .name{ font-family:var(--font-serif); font-size:24px; }
@@ -779,9 +728,6 @@
     .etude-article-corps th, .etude-article-corps td{ min-width:140px; padding:10px 12px; }
     .archives-folders{ margin-top:32px; gap:16px; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); }
     .archive-folder{ padding:20px 12px; }
-    .newsletter-inner{ padding:64px 16px; gap:32px; }
-    .newsletter-form{ flex-direction:column; max-width:none; }
-    .newsletter-form input, .newsletter-form button{ width:100%; }
     .video-modal{ padding:16px; }
     .video-modal-close{ top:-40px; }
     .footer-inner{ padding:48px 16px; }
@@ -806,7 +752,7 @@
       <a href="#articles">Articles</a>
       <a href="#apropos">À propos</a>
       <a href="#archives">Mémoire</a>
-      <a href="#newsletter" class="nav-newsletter">Newsletter</a>
+      <button type="button" class="nav-newsletter" data-newsletter-open>Newsletter</button>
     </nav>
   </div>
 </header>
@@ -942,17 +888,6 @@
     </div>
   </section>
 
-  <!-- Newsletter -->
-  <section id="newsletter" class="onglet">
-    <div class="newsletter-inner">
-      <div class="newsletter-copy">
-        <p class="eyebrow">04 — Correspondance</p>
-        <h2>La lettre de Laméd</h2>
-        <p>Une fois par mois, nos dernières études et publications, sans bruit.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- À propos -->
   <section id="apropos" class="onglet">
     <div class="section-inner">
@@ -1006,9 +941,7 @@
 <div id="newsletter-popup" class="newsletter-popup" role="dialog" aria-modal="true" aria-label="Inscription à la newsletter" hidden>
   <div class="newsletter-popup-content">
     <button type="button" class="newsletter-popup-close" id="newsletter-popup-close" aria-label="Fermer">×</button>
-    <div id="newsletter-form-slot">
-      <div class="ml-embedded" data-form="i7RsrP"></div>
-    </div>
+    <div class="ml-embedded" data-form="i7RsrP"></div>
   </div>
 </div>
 
@@ -2162,69 +2095,47 @@ function ouvrirArchiveEtude(id){
   location.hash = 'etude=' + encodeURIComponent(id);
 }
 
-/* ---------- Formulaire MailerLite après 10 secondes ---------- */
+/* ---------- Fenêtre d'inscription à la newsletter ---------- */
 function initNewsletterPopup(){
   const popup = document.getElementById('newsletter-popup');
   const closeBtn = document.getElementById('newsletter-popup-close');
-  const formHost = document.getElementById('newsletter-form-slot');
-  if(!popup || !closeBtn || !formHost) return;
+  const openButtons = document.querySelectorAll('[data-newsletter-open]');
+  if(!popup || !closeBtn || !openButtons.length) return;
 
-  let confirmationVisible = false;
+  let dernierElementActif = null;
+  let timer = null;
 
-  function marquerAbonne(){
-    try {
-      localStorage.setItem('lamed-newsletter-subscribed', '1');
-      sessionStorage.setItem('lamed-newsletter-dismissed', '1');
-    } catch(_){}
-  }
-
-  function verifierConfirmation(){
-    const confirmationPrecedente = confirmationVisible;
-    confirmationVisible = Array.from(formHost.querySelectorAll('.row-success, .ml-form-successBody')).some(element => {
-      const style = window.getComputedStyle(element);
-      return style.display !== 'none' && style.visibility !== 'hidden' && element.offsetParent !== null;
-    });
-    popup.classList.toggle('is-confirmed', confirmationVisible);
-    if(confirmationVisible && !confirmationPrecedente) marquerAbonne();
-  }
-
-  const observateur = new MutationObserver(() => requestAnimationFrame(verifierConfirmation));
-  observateur.observe(formHost, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['class', 'style', 'hidden']
-  });
-  document.addEventListener('ml-form-success', () => {
-    confirmationVisible = true;
-    popup.classList.add('is-confirmed');
-    marquerAbonne();
-  }, true);
-
-  try {
-    if(
-      sessionStorage.getItem('lamed-newsletter-dismissed') === '1' ||
-      localStorage.getItem('lamed-newsletter-subscribed') === '1'
-    ) return;
-  } catch(_){ /* sessionStorage indisponible */ }
-
-  const timer = setTimeout(() => {
+  function ouvrir(){
+    if(timer) clearTimeout(timer);
+    timer = null;
+    dernierElementActif = document.activeElement;
     popup.hidden = false;
     popup.classList.add('is-open');
-  }, 10000);
-
-  function close(){
-    popup.classList.remove('is-open');
-    popup.classList.remove('is-confirmed');
-    popup.hidden = true;
-    try { sessionStorage.setItem('lamed-newsletter-dismissed', '1'); } catch(_){}
-    clearTimeout(timer);
+    closeBtn.focus();
   }
 
-  closeBtn.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape' && popup.classList.contains('is-open') && !confirmationVisible) close();
+  function fermer(){
+    popup.classList.remove('is-open');
+    popup.hidden = true;
+    if(dernierElementActif && typeof dernierElementActif.focus === 'function') dernierElementActif.focus();
+  }
+
+  function placerCroixDansCadre(){
+    const cadre = popup.querySelector('.ml-form-embedWrapper');
+    if(!cadre || closeBtn.parentElement === cadre) return;
+    cadre.style.position = 'relative';
+    cadre.appendChild(closeBtn);
+  }
+
+  openButtons.forEach(button => button.addEventListener('click', ouvrir));
+  closeBtn.addEventListener('click', fermer);
+  const observateurFormulaire = new MutationObserver(placerCroixDansCadre);
+  observateurFormulaire.observe(popup, { childList:true, subtree:true });
+  placerCroixDansCadre();
+  document.addEventListener('keydown', (event) => {
+    if(event.key === 'Escape' && popup.classList.contains('is-open')) fermer();
   });
+  timer = setTimeout(ouvrir, 10000);
 }
 
 /* ---------- Modale vidéo YouTube ---------- */
