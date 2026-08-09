@@ -1038,11 +1038,34 @@ window.ARTICLES_CONTENU = {
 /* Convertit un manuscrit texte en lecture en ligne. Les titres et questions
    restent ainsi cohérents pour chaque nouvel article importé. */
 window.formaterArticleTexte = function(texte) {
+  const estTempsDesNations = texte.includes('I. INTRODUCTION : COMPRENDRE LE CADRE PROPHETIQUE ET CHRONOLOGIQUE');
   const echapper = function(valeur) {
     return valeur.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   };
   const ajouterNoteBym = function(valeur) {
+    if(estTempsDesNations) return valeur.replace(/\s*—\s*BYM1\b/g, ' — BYM');
     return valeur.replace(/\s*—\s*BYM1\b/g, ' — BYM<sup class="note-marque" tabindex="0" data-note="BYM : Bible de Yéhoshoua ha-Mashiyah, version citée dans cet article.">1</sup>');
+  };
+  const ajouterNotesTempsDesNations = function(valeur) {
+    const ajouter = function(texte, repere, numero) {
+      const marque = '<sup class="note-marque" tabindex="0" data-note="' + echapper(texte) + '">' + numero + '</sup>';
+      return valeur.includes(repere) ? valeur.replace(repere, repere + marque) : valeur;
+    };
+
+    valeur = ajouter('Verset biblique tiré de la version la Bible de Yéhoshoua.', 'Hébreux 1 : 1-2', 1);
+    valeur = ajouter('Nom généralement traduit par Paul. Il s’agit de la prononciation de son nom latin (Paulus), l’apôtre étant citoyen romain de naissance (Actes 22 : 28) et écrivant dans le contexte de l’Empire romain. Le texte grec du Nouveau Testament utilise la translittération Paulos (Παῦλος).', 'Paulus', 2);
+    valeur = ajouter('Cette approche est une lecture spirituelle et non une chronologie littérale. Elle ne doit donc pas être prise au sens mathématiques ou temporel absolu. Nous n’avons nullement la prétention de fixer une date, mais de proposer une clé de compréhension spirituelle pour discerner les temps dans lesquels nous vivons.', 'début de la 4ème', 3);
+    valeur = ajouter('Nom généralement traduit par Jérusalem.', 'capitale Yeroushalaïm', 4);
+    valeur = ajouter('Nom généralement traduit par Assyrie.', '’Ashshuwr', 5);
+    valeur = ajouter('Le fait qu’Èlohiym s’est tourné vers les nations ne veut pas dire que l’Église a remplacé Yisra’él. Bien au contraire, ils sont toujours dans le plan d’Èlohiym (Romains 11 : 1-36).', 'au travers de l’Église', 6);
+    valeur = ajouter('Nom généralement traduit par Daniel.', 'Ce fut le prophète Daniy’él', 7);
+    valeur = ajouter('Nom généralement traduit par Timothée.', 'Timotheos', 8);
+    valeur = ajouter('La grande mer correspond à la mer méditerranée.', 'grande mer', 9);
+    valeur = ajouter('Texte extrait du site : https://wol.jw.org/fr/wol/d/r30/lp-f/1988208', 'les étrangers parlaient des Mèdes et des Perses [...]', 10);
+    valeur = ajouter('La majorité des spécialistes identifient Yavan avec les Ioniens, un des grands groupes grecs de l’Antiquité. Dans le contexte biblique, il renvoie au roi Alexandre le Grand.', 'roi de Yavan', 11);
+    valeur = ajouter('Voici le lien pour accéder au site : https://test.afriksoir.net/cote-divoire-jesus-baoule-vien-detre-libere/?_gl=1*mmb78a*_ga*MTEyODQ1MDI4NS4xNzgzMDEwNzg5*_ga_', 'Jésus d’une église', 12);
+    valeur = ajouter('Voici le lien de l’extrait de texte: https://www.leparisien.fr/faits-divers/gourou-dune-secte-le-jesus-de-siberie-condamne-a-12-ans-pour-extorsion-et-pression-psychologique-04-07-2025-YW5FDMMBHVDL3FBTDXC6N2BQ34.php?ts=1783011605953', 'réincarnation du Christ', 13);
+    return ajouter('Site qui nous renseigne sur la persécution des chrétiens dans le monde : https://www.portesouvertes.fr', 'Portes Ouvertes', 14);
   };
   const lignes = texte.replace(/\r\n?/g, '\n').split('\n');
   const html = [];
@@ -1055,7 +1078,7 @@ window.formaterArticleTexte = function(texte) {
   lignes.forEach(function(brut) {
     const ligne = brut.trim();
     if(!ligne) { fermerListe(); return; }
-    const contenu = ajouterNoteBym(echapper(ligne));
+    const contenu = ajouterNotesTempsDesNations(ajouterNoteBym(echapper(ligne)));
 
     if(/^[IVXLC]+\.\s+/.test(ligne)) {
       fermerListe();
@@ -1083,8 +1106,8 @@ window.formaterArticleTexte = function(texte) {
     fermerListe();
     const citation = ligne.match(/^«\s*(.*?)\s*»\s*(?:\.?\s*\((.+)\))?\s*[.;]?$/);
     if(citation) {
-      const texteCitation = echapper(citation[1]);
-      const reference = citation[2] ? '<cite>' + ajouterNoteBym(echapper(citation[2])) + '</cite>' : '';
+      const texteCitation = ajouterNotesTempsDesNations(echapper(citation[1]));
+      const reference = citation[2] ? '<cite>' + ajouterNotesTempsDesNations(ajouterNoteBym(echapper(citation[2]))) + '</cite>' : '';
       html.push('<blockquote><p>« ' + texteCitation + ' »</p>' + reference + '</blockquote>');
       return;
     }
