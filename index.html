@@ -1802,6 +1802,22 @@ function activerNotesBasDePage(conteneur, prefix){
   const notes = Array.from(conteneur.querySelectorAll('sup.note-marque'));
   if(!notes.length) return;
   const idPrefix = prefix || conteneur.id || 'note';
+  const ajouterTexteAvecLiens = function(element, texte) {
+    const urlPattern = /(?:https?:\/\/|www\.)[^\s<>"']+/g;
+    let dernierePosition = 0;
+    let occurrence;
+    while((occurrence = urlPattern.exec(texte)) !== null) {
+      element.append(document.createTextNode(texte.slice(dernierePosition, occurrence.index)));
+      const lien = document.createElement('a');
+      lien.href = occurrence[0].startsWith('www.') ? `https://${occurrence[0]}` : occurrence[0];
+      lien.textContent = occurrence[0];
+      lien.target = '_blank';
+      lien.rel = 'noopener noreferrer';
+      element.append(lien);
+      dernierePosition = occurrence.index + occurrence[0].length;
+    }
+    element.append(document.createTextNode(texte.slice(dernierePosition)));
+  };
 
   const hoteNotes = conteneur.querySelector('.etude-notes-col ol') || conteneur.querySelector('ol.etude-notes') || conteneur;
   hoteNotes.innerHTML = '';
@@ -1820,7 +1836,14 @@ function activerNotesBasDePage(conteneur, prefix){
       noteMap.set(noteTexte, { numero, nombreReferences });
       const noteBas = document.createElement('li');
       noteBas.id = noteCibleId;
-      noteBas.innerHTML = `${numero}. ${noteTexte} <a class="note-backref" href="#${noteId}">↖</a>`;
+      noteBas.append(document.createTextNode(`${numero}. `));
+      ajouterTexteAvecLiens(noteBas, noteTexte);
+      noteBas.append(document.createTextNode(' '));
+      const retour = document.createElement('a');
+      retour.className = 'note-backref';
+      retour.href = `#${noteId}`;
+      retour.textContent = '↖';
+      noteBas.append(retour);
       hoteNotes.appendChild(noteBas);
     } else {
       existante.nombreReferences = nombreReferences;
