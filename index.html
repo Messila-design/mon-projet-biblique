@@ -617,12 +617,13 @@
   #etude-article h1{ margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2; max-width:760px; text-align:left; }
   @media (min-width:768px){ #etude-article h1{ font-size:44px; } }
   .article-card-header{ max-width:760px; margin:0 auto 24px; text-align:left; }
-  .article-card-header h1{ margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2; text-align:left; }
+  .article-card-header h1{ margin:12px 0 0; font-family:var(--font-serif); font-weight:700 !important; font-size:36px; line-height:1.2; text-align:left; }
   @media (min-width:768px){ .article-card-header h1{ font-size:44px; } }
   .article-card-header p{ margin:16px 0 32px; font-size:16px; line-height:1.7; color:var(--muted-foreground); max-width:760px; }
   .etude-article-corps{ margin-top:40px; line-height:1.8; color:var(--foreground); }
   .etude-article-corps p{ margin:0 0 24px; }
-  .etude-article-corps h3, .etude-article-corps h4{ font-family:var(--font-serif); font-weight:400; margin:40px 0 16px; }
+  /* Les titres et les questions sont volontairement en gras, pour toutes les lectures présentes et à venir. */
+  .etude-article-corps h3, .etude-article-corps h4{ font-family:var(--font-serif); font-weight:700; margin:40px 0 16px; }
   .etude-article-corps h3{ font-size:26px; }
   .etude-article-corps h4{ font-size:20px; }
   .etude-article-corps ul, .etude-article-corps ol{ margin:0 0 24px; padding-left:24px; }
@@ -1541,6 +1542,7 @@ const ETUDES_BIBLIQUES = [
 ];
 
 const ARTICLES = [
+  { title: "Les temps des Nations", category: "Prophéties bibliques", description: "Un parcours biblique et chronologique sur le temps accordé aux nations, les prophéties de Daniel et l'accomplissement du Royaume d'Èlohiym.", date: "09/08/2026", image: "images/clock-ticks-sands-slip-sun-sets-success-awaits-generative-ai.jpg", lien: "https://drive.google.com/file/d/1cJNqtcp2wFzZfEfkMH63nwg3amUIqqKO/view?usp=sharing" },
   { title: "La doctrine apostolique : La Foi en 'Èlohiym", category: "La Doctrine Apostolique", description: "Nature, source et facettes de la foi biblique : espérance de salut, don spirituel, doctrine apostolique, foi agissante et preuves historiques.", date: "26/07/2026", lien: "https://drive.google.com/file/d/18IKxknb-F7nKfnPzCYGExUIT7yX1vO8m/view?usp=drive_link" },
   { title: "Les Traditions", category: "Doctrines", description: "La Torah d'Elohîm, l'Évangile du Mashiah, le culte des ancêtres et les philosophies grecques : distinguer les traditions divines des traditions humaines.", date: "07/07/2026", lien: "https://drive.google.com/file/d/1Tur3vGlONQdSOlXY2fRfXltyN2c5VlNz/view?usp=drive_link" },
   { title: "La Repentance des œuvres mortes", category: "La Doctrine Apostolique", description: "Premier volet de la Doctrine apostolique : ce qu'est vraiment la repentance, comment elle se manifeste, et ce qui se passe pour celui qui refuse de s'y soumettre.", date: "07/07/2026", lien: "https://drive.google.com/file/d/1sgskRVnKABRtbX5JHpUCuh5ObApin7Vn/view?usp=drive_link" },
@@ -1619,7 +1621,7 @@ function rendrePublications(){
 
   ARTICLES.forEach(a => {
     flux.push({
-      image: IMAGE_DEFAUT,
+      image: a.image || IMAGE_DEFAUT,
       category: a.category || 'Article',
       date: a.date,
       read: '',
@@ -1956,6 +1958,32 @@ function afficherArticle(title){
 
   const contenuInterne = (window.ARTICLES_CONTENU || {})[article.title];
   const idPrefixe = 'art-' + slugifier(article.title);
+
+  if(!contenuInterne && article.source && !article.sourceIndisponible){
+    if(!article.chargementEnCours){
+      article.chargementEnCours = true;
+      fetch(article.source)
+        .then(reponse => {
+          if(!reponse.ok) throw new Error('Le manuscrit ne peut pas être chargé.');
+          return reponse.text();
+        })
+        .then(texte => {
+          window.ARTICLES_CONTENU = window.ARTICLES_CONTENU || {};
+          window.ARTICLES_CONTENU[article.title] = window.formaterArticleTexte(texte);
+          article.chargementEnCours = false;
+          afficherArticle(title);
+        })
+        .catch(() => {
+          article.chargementEnCours = false;
+          article.sourceIndisponible = true;
+          afficherArticle(title);
+        });
+    }
+    container.innerHTML = '<div class="article-card"><p>Chargement de l’article…</p></div>';
+    afficherOnglet('lire-article');
+    window.scrollTo(0, 0);
+    return;
+  }
 
   const driveMatch = (article.lien || '').match(/\/d\/([^/]+)/);
   const fileId = driveMatch ? driveMatch[1] : '';
