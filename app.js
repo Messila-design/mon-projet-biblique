@@ -1,4 +1,5 @@
-﻿/* ====================================================================
+
+/* ====================================================================
    ZONE DE CONFIGURATION — modifiez ici pour ajouter votre contenu
    ==================================================================== */
 
@@ -517,6 +518,7 @@ const ETUDES_BIBLIQUES = [
 ];
 
 const ARTICLES = [
+  { title: "Les temps des Nations", category: "Prophéties bibliques", description: "Un parcours biblique et chronologique sur le temps accordé aux nations, les prophéties de Daniel et l'accomplissement du Royaume d'Èlohiym.", date: "09/08/2026", image: "images/clock-ticks-sands-slip-sun-sets-success-awaits-generative-ai.jpg", lien: "https://drive.google.com/file/d/1cJNqtcp2wFzZfEfkMH63nwg3amUIqqKO/view?usp=sharing" },
   { title: "La doctrine apostolique : La Foi en 'Èlohiym", category: "La Doctrine Apostolique", description: "Nature, source et facettes de la foi biblique : espérance de salut, don spirituel, doctrine apostolique, foi agissante et preuves historiques.", date: "26/07/2026", lien: "https://drive.google.com/file/d/18IKxknb-F7nKfnPzCYGExUIT7yX1vO8m/view?usp=drive_link" },
   { title: "Les Traditions", category: "Doctrines", description: "La Torah d'Elohîm, l'Évangile du Mashiah, le culte des ancêtres et les philosophies grecques : distinguer les traditions divines des traditions humaines.", date: "07/07/2026", lien: "https://drive.google.com/file/d/1Tur3vGlONQdSOlXY2fRfXltyN2c5VlNz/view?usp=drive_link" },
   { title: "La Repentance des œuvres mortes", category: "La Doctrine Apostolique", description: "Premier volet de la Doctrine apostolique : ce qu'est vraiment la repentance, comment elle se manifeste, et ce qui se passe pour celui qui refuse de s'y soumettre.", date: "07/07/2026", lien: "https://drive.google.com/file/d/1sgskRVnKABRtbX5JHpUCuh5ObApin7Vn/view?usp=drive_link" },
@@ -567,10 +569,19 @@ function parseDatePublicationFr(d){
 
 function rendrePublications(){
   const grid = document.getElementById('pubs-grid');
+  if(!grid) return;
 
   const IMAGE_DEFAUT = 'images/pub-1.jpg';
 
-  const flux = [];
+  const flux = PUBLICATIONS.map(p => ({
+    image: p.image || IMAGE_DEFAUT,
+    category: p.category || 'Publication',
+    date: p.date || '',
+    read: p.read || '',
+    title: p.title,
+    excerpt: p.excerpt || '',
+    lien: p.lien || '#'
+  }));
 
   ETUDES_BIBLIQUES.forEach(e => {
     flux.push({
@@ -586,7 +597,7 @@ function rendrePublications(){
 
   ARTICLES.forEach(a => {
     flux.push({
-      image: IMAGE_DEFAUT,
+      image: a.image || IMAGE_DEFAUT,
       category: a.category || 'Article',
       date: a.date,
       read: '',
@@ -616,8 +627,7 @@ function rendrePublications(){
 }
 
 function parseDateFr(d){
-  const [j, m, a] = d.split('/').map(Number);
-  return new Date(a, m - 1, j);
+  return parseDatePublicationFr(d);
 }
 
 function extraireExtrait(html, longueur){
@@ -664,6 +674,7 @@ function afficherEtude(id){
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
+          ${construireActionsPartage(etude.titre)}
         </div>
         ${notesHtml}
       </div>
@@ -672,6 +683,7 @@ function afficherEtude(id){
 
   activerNotesBasDePage(container, etude.id);
   activerSurbrillanceToc(container);
+  activerActionsPartage(container);
   definirMetaPartage({
     titre: 'Laméd — ' + etude.titre + ' · Études bibliques',
     description: extraireExtrait(etude.contenu || '', 160),
@@ -688,6 +700,31 @@ function slugifier(texte){
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-');
+}
+
+function construireActionsPartage(titre){
+  const url = window.location.href;
+  const message = `Je vous recommande cette lecture : ${titre} — ${url}`;
+  const urlEncodee = encodeURIComponent(url);
+  const messageEncode = encodeURIComponent(message);
+  const sujetEmail = encodeURIComponent(titre);
+  return `
+    <section class="share-actions" aria-label="Partager cette lecture">
+      <p class="share-actions-title">Partager cette lecture</p>
+      <div class="share-actions-links">
+        <a class="share-action" href="https://api.whatsapp.com/send?text=${messageEncode}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 .1 5.3.1 11.9c0 2.1.5 4.1 1.5 5.9L0 24l6.4-1.7a12 12 0 0 0 5.6 1.4h.1c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.1-3.5-8.3Zm-8.4 18.2h-.1a10 10 0 0 1-5.1-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a10 10 0 1 1 8.6 4.7Zm5.5-7.5c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2s-.8 1-.9 1.2c-.2.2-.3.2-.6.1a8.2 8.2 0 0 1-2.5-1.6 9.2 9.2 0 0 1-1.7-2.2c-.2-.3 0-.4.1-.6l.5-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4Z"/></svg><span class="sr-only">WhatsApp</span></a>
+        <a class="share-action" href="https://www.facebook.com/sharer/sharer.php?u=${urlEncodee}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23.1 10.1 24v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.6 4.5-4.6 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 1-2 1.9v2.3h3.4l-.5 3.5h-2.9V24C19.6 23.1 24 18.1 24 12.1Z"/></svg><span class="sr-only">Facebook</span></a>
+        <a class="share-action" href="https://x.com/intent/post?text=${messageEncode}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L2.9 2h6.3l4.4 5.8L18.9 2Zm-1.1 18h1.7L8.3 3.9H6.5L17.8 20Z"/></svg><span class="sr-only">X</span></a>
+        <a class="share-action" href="mailto:?subject=${sujetEmail}&body=${messageEncode}" aria-label="Partager par e-mail" title="E-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="sr-only">E-mail</span></a>
+        <button class="share-action" type="button" data-share-print aria-label="Imprimer" title="Imprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg><span class="sr-only">Imprimer</span></button>
+      </div>
+    </section>`;
+}
+
+function activerActionsPartage(conteneur){
+  conteneur.querySelectorAll('[data-share-print]').forEach(bouton => {
+    bouton.addEventListener('click', () => window.print());
+  });
 }
 
 function injecterTableDesMatieres(contenu, idPrefixe){
@@ -741,6 +778,22 @@ function activerNotesBasDePage(conteneur, prefix){
   const notes = Array.from(conteneur.querySelectorAll('sup.note-marque'));
   if(!notes.length) return;
   const idPrefix = prefix || conteneur.id || 'note';
+  const ajouterTexteAvecLiens = function(element, texte) {
+    const urlPattern = /(?:https?:\/\/|www\.)[^\s<>"']+/g;
+    let dernierePosition = 0;
+    let occurrence;
+    while((occurrence = urlPattern.exec(texte)) !== null) {
+      element.append(document.createTextNode(texte.slice(dernierePosition, occurrence.index)));
+      const lien = document.createElement('a');
+      lien.href = occurrence[0].startsWith('www.') ? `https://${occurrence[0]}` : occurrence[0];
+      lien.textContent = occurrence[0];
+      lien.target = '_blank';
+      lien.rel = 'noopener noreferrer';
+      element.append(lien);
+      dernierePosition = occurrence.index + occurrence[0].length;
+    }
+    element.append(document.createTextNode(texte.slice(dernierePosition)));
+  };
 
   const hoteNotes = conteneur.querySelector('.etude-notes-col ol') || conteneur.querySelector('ol.etude-notes') || conteneur;
   hoteNotes.innerHTML = '';
@@ -751,15 +804,25 @@ function activerNotesBasDePage(conteneur, prefix){
     const noteTexte = (note.getAttribute('data-note') || '').trim().replace(/\s+/g, ' ');
     const existante = noteMap.get(noteTexte);
     const numero = existante ? existante.numero : noteMap.size + 1;
-    const noteId = existante ? existante.noteId : `${idPrefix}-ref-${numero}`;
+    const nombreReferences = existante ? existante.nombreReferences + 1 : 1;
+    const noteId = `${idPrefix}-ref-${numero}-${nombreReferences}`;
     const noteCibleId = `${idPrefix}-cible-${numero}`;
 
     if(!existante){
-      noteMap.set(noteTexte, { numero, noteId });
+      noteMap.set(noteTexte, { numero, nombreReferences });
       const noteBas = document.createElement('li');
       noteBas.id = noteCibleId;
-      noteBas.innerHTML = `${numero}. ${noteTexte} <a class="note-backref" href="#${noteId}">↖</a>`;
+      noteBas.append(document.createTextNode(`${numero}. `));
+      ajouterTexteAvecLiens(noteBas, noteTexte);
+      noteBas.append(document.createTextNode(' '));
+      const retour = document.createElement('a');
+      retour.className = 'note-backref';
+      retour.href = `#${noteId}`;
+      retour.textContent = '↖';
+      noteBas.append(retour);
       hoteNotes.appendChild(noteBas);
+    } else {
+      existante.nombreReferences = nombreReferences;
     }
 
     note.innerHTML = `<a href="#${noteCibleId}">${numero}</a>`;
@@ -769,7 +832,13 @@ function activerNotesBasDePage(conteneur, prefix){
   });
 }
 
+let nettoyerSurbrillanceToc = null;
+
 function activerSurbrillanceToc(container){
+  if(nettoyerSurbrillanceToc){
+    nettoyerSurbrillanceToc();
+    nettoyerSurbrillanceToc = null;
+  }
   const liens = container.querySelectorAll('.etude-toc-col a[data-toc-target]');
   if(!liens.length) return;
   const ids = Array.from(liens).map(a => a.getAttribute('data-toc-target'));
@@ -783,6 +852,7 @@ function activerSurbrillanceToc(container){
     liens.forEach(a => a.classList.toggle('active', a.getAttribute('data-toc-target') === actif));
   }
   window.addEventListener('scroll', activer, { passive: true });
+  nettoyerSurbrillanceToc = () => window.removeEventListener('scroll', activer);
   activer();
 }
 
@@ -888,6 +958,32 @@ function afficherArticle(title){
   const contenuInterne = (window.ARTICLES_CONTENU || {})[article.title];
   const idPrefixe = 'art-' + slugifier(article.title);
 
+  if(!contenuInterne && article.source && !article.sourceIndisponible){
+    if(!article.chargementEnCours){
+      article.chargementEnCours = true;
+      fetch(article.source)
+        .then(reponse => {
+          if(!reponse.ok) throw new Error('Le manuscrit ne peut pas être chargé.');
+          return reponse.text();
+        })
+        .then(texte => {
+          window.ARTICLES_CONTENU = window.ARTICLES_CONTENU || {};
+          window.ARTICLES_CONTENU[article.title] = window.formaterArticleTexte(texte);
+          article.chargementEnCours = false;
+          afficherArticle(title);
+        })
+        .catch(() => {
+          article.chargementEnCours = false;
+          article.sourceIndisponible = true;
+          afficherArticle(title);
+        });
+    }
+    container.innerHTML = '<div class="article-card"><p>Chargement de l’article…</p></div>';
+    afficherOnglet('lire-article');
+    window.scrollTo(0, 0);
+    return;
+  }
+
   const driveMatch = (article.lien || '').match(/\/d\/([^/]+)/);
   const fileId = driveMatch ? driveMatch[1] : '';
   const viewerUrl = fileId
@@ -922,6 +1018,7 @@ function afficherArticle(title){
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
+          ${construireActionsPartage(article.title)}
           <div class="article-actions">${boutonTelecharger}</div>
         </div>
         ${notesHtml}
@@ -932,6 +1029,7 @@ function afficherArticle(title){
 
     activerNotesBasDePage(articleEl, idPrefixe);
     activerSurbrillanceToc(articleEl);
+    activerActionsPartage(articleEl);
     definirMetaPartage({
       titre: 'Laméd — ' + article.title + ' · Réflexions',
       description: article.description || article.category || '',
@@ -954,9 +1052,12 @@ function afficherArticle(title){
         <div class="article-article-img">
           <iframe src="${viewerUrl}" title="${article.title}" loading="lazy" allow="autoplay"></iframe>
         </div>` : ''}
+      ${construireActionsPartage(article.title)}
       <div class="article-actions">${boutonTelecharger}</div>
     </div>
   `;
+
+  activerActionsPartage(container);
 
   definirMetaPartage({
     titre: 'Laméd — ' + article.title + ' · Réflexions',
@@ -973,43 +1074,8 @@ rendreArticles();
 rendreVideos();
 rendreArchives();
 afficherArchivesContenu();
-initNewsletterModal();
+initNewsletterPopup();
 initVideoModal();
-
-/* ---------- Abonnement newsletter MailerLite ---------- */
-const MAILERLITE_URL = 'https://assets.mailerlite.com/jsonp/2498680/forms/192497221949720269/subscribe';
-
-function inscrireNewsletterMl(email){
-  return fetch(MAILERLITE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      'fields[email]': email,
-      'ml-submit': '1',
-      'anticsrf': 'true'
-    })
-  }).then(r => r.json()).then(data => {
-    if(data && data.success === true) return true;
-    throw new Error('MailerLite a refusé l\'inscription.');
-  });
-}
-
-// Formulaire de la page Newsletter
-document.getElementById('form-newsletter').addEventListener('submit', function(e){
-  e.preventDefault();
-  const input = document.getElementById('newsletter-email');
-  const email = (input && input.value || '').trim();
-  if(!email){ if(input) input.focus(); return; }
-  const btn = this.querySelector('button[type="submit"]');
-  if(btn){ btn.disabled = true; btn.textContent = 'Enregistrement…'; }
-  inscrireNewsletterMl(email).then(() => {
-    this.reset();
-    if(btn){ btn.textContent = 'Merci ! Inscription confirmée ✓'; btn.disabled = false; }
-  }).catch(() => {
-    if(btn){ btn.textContent = 'S\'abonner'; btn.disabled = false; }
-    alert('Une erreur est survenue. Veuillez réessayer.');
-  });
-});
 
 /* ---------- Système d'onglets ---------- */
 function afficherOnglet(id){
@@ -1101,6 +1167,7 @@ function afficherArchivesContenu(){
     dossiers[cle].items.sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
   });
   const cles = Object.keys(dossiers).sort((a, b) => b.localeCompare(a));
+  const fragment = document.createDocumentFragment();
   cles.forEach(cle => {
     const d = dossiers[cle];
     const nom = MOIS[d.mois] + ' ' + d.annee;
@@ -1118,56 +1185,56 @@ function afficherArchivesContenu(){
             <span style="display:block; font-size:12px; color:var(--muted-foreground); margin-top:4px;">${e.date}</span>
           </li>`).join('')}
       </ul>`;
-    grid.parentElement.insertBefore(block, grid.nextSibling);
+    fragment.appendChild(block);
   });
+  grid.after(fragment);
 }
 
 function ouvrirArchiveEtude(id){
   location.hash = 'etude=' + encodeURIComponent(id);
 }
 
-/* ---------- Modale Newsletter (auto 10s, sans blur, fermeture X) ---------- */
-function initNewsletterModal(){
-  const modal = document.getElementById('newsletter-modal');
-  const closeBtn = document.getElementById('newsletter-modal-close');
-  const form = document.getElementById('newsletter-modal-form');
-  if(!modal || !closeBtn) return;
+/* ---------- Fenêtre d'inscription à la newsletter ---------- */
+function initNewsletterPopup(){
+  const popup = document.getElementById('newsletter-popup');
+  const closeBtn = document.getElementById('newsletter-popup-close');
+  const openButtons = document.querySelectorAll('[data-newsletter-open]');
+  if(!popup || !closeBtn || !openButtons.length) return;
 
-  try {
-    if(sessionStorage.getItem('lamed-newsletter-dismissed') === '1') return;
-  } catch(_){ /* sessionStorage indisponible */ }
+  let dernierElementActif = null;
+  let timer = null;
 
-  const timer = setTimeout(() => {
-    modal.hidden = false;
-    modal.classList.add('is-open');
-  }, 10000);
-
-  function close(){
-    modal.classList.remove('is-open');
-    modal.hidden = true;
-    try { sessionStorage.setItem('lamed-newsletter-dismissed', '1'); } catch(_){}
-    clearTimeout(timer);
+  function ouvrir(){
+    if(timer) clearTimeout(timer);
+    timer = null;
+    dernierElementActif = document.activeElement;
+    popup.hidden = false;
+    popup.classList.add('is-open');
+    closeBtn.focus();
   }
 
-  if(form){
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      const input = document.getElementById('newsletter-modal-email');
-      const email = (input && input.value || '').trim();
-      if(!email){ if(input) input.focus(); return; }
-      const btn = this.querySelector('button[type="submit"]');
-      if(btn){ btn.disabled = true; btn.textContent = 'Enregistrement…'; }
-      inscrireNewsletterMl(email).then(() => {
-        close();
-      }).catch(() => {
-        if(btn){ btn.textContent = 'S\'abonner'; btn.disabled = false; }
-        alert('Une erreur est survenue. Veuillez réessayer.');
-      });
-    });
+  function fermer(){
+    popup.classList.remove('is-open');
+    popup.hidden = true;
+    if(dernierElementActif && typeof dernierElementActif.focus === 'function') dernierElementActif.focus();
   }
 
-  closeBtn.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+  function placerCroixDansCadre(){
+    const cadre = popup.querySelector('.ml-form-embedWrapper');
+    if(!cadre || closeBtn.parentElement === cadre) return;
+    cadre.style.position = 'relative';
+    cadre.appendChild(closeBtn);
+  }
+
+  openButtons.forEach(button => button.addEventListener('click', ouvrir));
+  closeBtn.addEventListener('click', fermer);
+  const observateurFormulaire = new MutationObserver(placerCroixDansCadre);
+  observateurFormulaire.observe(popup, { childList:true, subtree:true });
+  placerCroixDansCadre();
+  document.addEventListener('keydown', (event) => {
+    if(event.key === 'Escape' && popup.classList.contains('is-open')) fermer();
+  });
+  timer = setTimeout(ouvrir, 10000);
 }
 
 /* ---------- Modale vidéo YouTube ---------- */
