@@ -63,6 +63,20 @@
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  html.theme-night{
+    color-scheme:dark;
+    --background:#101722;
+    --foreground:#F2F5F9;
+    --primary:#E1E8F2;
+    --primary-foreground:#101722;
+    --secondary:#182332;
+    --muted-foreground:#B8C4D3;
+    --hairline:rgba(225,232,242,0.16);
+    --card:#15202E;
+    --shadow-card:0 1px 2px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.24);
+    --shadow-card-hover:0 4px 12px rgba(0,0,0,0.28), 0 18px 40px rgba(0,0,0,0.32);
+  }
+
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   .onglet[hidden]{ display:none; }
@@ -148,20 +162,51 @@
     font-size:18px; line-height:1;
   }
   .font-size-tools button:hover{ background:var(--secondary); }
+  .font-size-tools button:disabled{
+    opacity:.45; cursor:not-allowed;
+  }
   .font-size-tools .font-current{
     font-size:12px; min-width:32px; text-align:center;
     color:var(--muted-foreground); font-family:var(--font-sans);
   }
-  html.fs-up .etude-article-corps p,
-  html.fs-up .etude-article-corps li{ font-size:18px; line-height:1.85; }
-  html.fs-up .etude-article-corps blockquote p{ font-size:21px; }
-  html.fs-up .etude-article-corps h3{ font-size:30px; }
-  html.fs-up .etude-article-corps h4{ font-size:22px; }
-  html.fs-down .etude-article-corps p,
-  html.fs-down .etude-article-corps li{ font-size:14px; line-height:1.65; }
-  html.fs-down .etude-article-corps blockquote p{ font-size:16px; }
-  html.fs-down .etude-article-corps h3{ font-size:22px; }
-  html.fs-down .etude-article-corps h4{ font-size:17px; }
+  .theme-toggle{
+    min-height:40px; display:inline-flex; align-items:center; gap:8px;
+    padding:8px 12px; border:1px solid var(--hairline); border-radius:999px;
+    background:var(--card); color:var(--foreground); cursor:pointer;
+    font:500 13px var(--font-sans); transition:background .2s var(--ease), color .2s var(--ease);
+  }
+  .theme-toggle:hover, .theme-toggle[aria-pressed="true"]{
+    background:var(--primary); color:var(--primary-foreground);
+  }
+  .theme-toggle .theme-icon{ font-size:18px; line-height:1; }
+  .font-size-tools button:focus-visible, .theme-toggle:focus-visible{
+    outline:2px solid var(--foreground); outline-offset:2px;
+  }
+  html[data-font-size="1"] .etude-article-corps p,
+  html[data-font-size="1"] .etude-article-corps li{ font-size:18px; line-height:1.85; }
+  html[data-font-size="1"] .etude-article-corps blockquote p{ font-size:21px; }
+  html[data-font-size="1"] .etude-article-corps h3{ font-size:30px; }
+  html[data-font-size="1"] .etude-article-corps h4{ font-size:22px; }
+  html[data-font-size="2"] .etude-article-corps p,
+  html[data-font-size="2"] .etude-article-corps li{ font-size:20px; line-height:1.9; }
+  html[data-font-size="2"] .etude-article-corps blockquote p{ font-size:23px; }
+  html[data-font-size="2"] .etude-article-corps h3{ font-size:34px; }
+  html[data-font-size="2"] .etude-article-corps h4{ font-size:25px; }
+  html[data-font-size="3"] .etude-article-corps p,
+  html[data-font-size="3"] .etude-article-corps li{ font-size:22px; line-height:1.95; }
+  html[data-font-size="3"] .etude-article-corps blockquote p{ font-size:25px; }
+  html[data-font-size="3"] .etude-article-corps h3{ font-size:38px; }
+  html[data-font-size="3"] .etude-article-corps h4{ font-size:28px; }
+  html[data-font-size="-1"] .etude-article-corps p,
+  html[data-font-size="-1"] .etude-article-corps li{ font-size:14px; line-height:1.65; }
+  html[data-font-size="-1"] .etude-article-corps blockquote p{ font-size:16px; }
+  html[data-font-size="-1"] .etude-article-corps h3{ font-size:22px; }
+  html[data-font-size="-1"] .etude-article-corps h4{ font-size:17px; }
+  html[data-font-size="-2"] .etude-article-corps p,
+  html[data-font-size="-2"] .etude-article-corps li{ font-size:12px; line-height:1.6; }
+  html[data-font-size="-2"] .etude-article-corps blockquote p{ font-size:14px; }
+  html[data-font-size="-2"] .etude-article-corps h3{ font-size:20px; }
+  html[data-font-size="-2"] .etude-article-corps h4{ font-size:15px; }
 
   /* ---------- Lecture d'un article ---------- */
   .article-article-wrap{ max-width:1200px; padding:48px 24px; }
@@ -813,9 +858,16 @@
       <span class="reading-tools-label">Taille</span>
       <div class="font-size-tools" role="group" aria-label="Ajustement de la taille de police">
         <button type="button" id="font-size-down" aria-label="Diminuer la taille">−</button>
-        <span class="font-current" id="font-size-current">Aa</span>
+        <span class="font-current" id="font-size-current" aria-live="polite">Aa</span>
         <button type="button" id="font-size-up" aria-label="Augmenter la taille">+</button>
       </div>
+    </div>
+    <div class="reading-tools-group">
+      <span class="reading-tools-label">Lecture</span>
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Activer le mode nuit">
+        <span class="theme-icon" aria-hidden="true">&#9790;</span>
+        <span id="theme-toggle-label">Nuit</span>
+      </button>
     </div>
   </div>
 </div>
