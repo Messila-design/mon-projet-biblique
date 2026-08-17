@@ -1337,15 +1337,21 @@ function initTaillePolice(){
   const current = document.getElementById('font-size-current');
   if(!up || !down) return;
 
+  const MIN_NIVEAU = -2;
+  const MAX_NIVEAU = 3;
   let niveau = 0;
   try { niveau = parseInt(localStorage.getItem('lamed-fs') || '0', 10) || 0; } catch(_){}
   appliquer(niveau);
 
   function appliquer(n){
-    niveau = Math.max(-1, Math.min(1, n));
-    html.classList.toggle('fs-up', niveau >= 1);
-    html.classList.toggle('fs-down', niveau <= -1);
-    if(current) current.textContent = niveau >= 1 ? 'A+' : (niveau <= -1 ? 'A−' : 'Aa');
+    niveau = Math.max(MIN_NIVEAU, Math.min(MAX_NIVEAU, n));
+    html.dataset.fontSize = String(niveau);
+    if(current){
+      current.textContent = niveau > 0 ? 'A' + '+'.repeat(niveau) : (niveau < 0 ? 'A' + '−'.repeat(Math.abs(niveau)) : 'Aa');
+      current.setAttribute('aria-label', niveau === 0 ? 'Taille de texte normale' : 'Taille de texte ajustée de ' + Math.abs(niveau) + ' niveau' + (Math.abs(niveau) > 1 ? 'x' : ''));
+    }
+    up.disabled = niveau === MAX_NIVEAU;
+    down.disabled = niveau === MIN_NIVEAU;
     try { localStorage.setItem('lamed-fs', String(niveau)); } catch(_){}
   }
 
@@ -1353,6 +1359,29 @@ function initTaillePolice(){
   down.addEventListener('click', () => appliquer(niveau - 1));
 }
 
+/* ---------- Lecture nocturne ---------- */
+function initModeNuit(){
+  const html = document.documentElement;
+  const toggle = document.getElementById('theme-toggle');
+  const label = document.getElementById('theme-toggle-label');
+  if(!toggle) return;
+
+  let actif = false;
+  try { actif = localStorage.getItem('lamed-mode-nuit') === 'true'; } catch(_){}
+  appliquer(actif);
+
+  function appliquer(estActif){
+    actif = Boolean(estActif);
+    html.classList.toggle('theme-night', actif);
+    toggle.setAttribute('aria-pressed', String(actif));
+    toggle.setAttribute('aria-label', actif ? 'Désactiver le mode nuit' : 'Activer le mode nuit');
+    if(label) label.textContent = actif ? 'Jour' : 'Nuit';
+    try { localStorage.setItem('lamed-mode-nuit', String(actif)); } catch(_){}
+  }
+
+  toggle.addEventListener('click', () => appliquer(!actif));
+}
+
 initRecherche();
 initTaillePolice();
-
+initModeNuit();
