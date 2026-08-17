@@ -44,6 +44,175 @@ const PUBLICATIONS = [
 
 const ETUDES_BIBLIQUES = [
   {
+    id: "yehowshoua-ressuscite-un-dimanche",
+    titre: "Yehowshou‘a est-il ressuscité un dimanche ?",
+    date: "17/08/2026",
+    image: "images/bible_images-jesus-8853521_1920.png",
+    contenu: `
+      <p>« Car ainsi l'Elohîm a tant aimé le monde qu'il a donné son Fils, l'unique, afin que quiconque croit en lui ne périsse pas, mais qu'il ait la vie éternelle. » Ce passage très connu, tiré de l’Évangile de Yôhanan (Jean), illustre le plan de Salut qu’Èlohiym a donné à l’humanité il y a deux millénaires pour qu’elle soit sauvée.</p>
+      <p>Ce Salut trouve son accomplissement dans la mort et la résurrection du Seigneur <em>Yehowshou‘a ha-Mashiya’h</em> (Jésus-Christ), événements attestés par les Écritures et placés au cœur de la prédication apostolique. Cependant, cette résurrection, sur laquelle repose l’espérance de millions de chrétiens, a-t-elle réellement eu lieu un dimanche ?</p>
+      <p>À travers cette étude biblique, nous examinerons d’abord les données scripturaires relatives à la mort et à la résurrection du Seigneur, afin de déterminer si les Écritures permettent d’enseigner qu’il est ressuscité un dimanche, comme l’enseigne une tradition catholique ancienne<sup class="note-marque" tabindex="0" data-note="La tradition examinée dans cette étude place généralement la crucifixion le vendredi et la résurrection le dimanche. Les sources anciennes citées ci-dessous sont rapportées pour présenter cet argument historique.">1</sup>.</p>
+
+      <h3>1. Les arguments en faveur de sa crucifixion le vendredi</h3>
+      <p>Entre les II<sup>e</sup> et IV<sup>e</sup> siècles après l’ascension de notre Seigneur, plusieurs auteurs affirment dans leurs écrits que le Seigneur est mort un vendredi (communément appelé « Vendredi saint ») et qu'il est ressuscité le dimanche matin :</p>
+      <ul>
+        <li>Tout d'abord, Justin Martyr écrit vers le milieu du II<sup>e</sup> siècle, dans sa <em>Première Apologie</em>, chapitre 67<sup class="note-marque" tabindex="0" data-note="Justin Martyr (vers 100-165), Première Apologie, chapitre 67. Dans ce passage, il associe la crucifixion à la veille du samedi et l’apparition du Seigneur à ses disciples au jour suivant.">2</sup> :</li>
+      </ul>
+      <blockquote>
+        <p>For He was crucified on the day before that of Saturn (Saturday) ; and on the day after that of Saturn, which is the day of the Sun, having appeared to His apostles and disciples [...]</p>
+      </blockquote>
+      <p>En français, il peut se traduire ainsi :</p>
+      <blockquote>
+        <p>Car il fut crucifié la veille du jour de Saturne (samedi) ; et le lendemain de Saturne, qui est le jour du Soleil, il apparut à ses apôtres et à ses disciples.</p>
+      </blockquote>
+      <ul>
+        <li>Ensuite, la <em>Didascalia Apostolorum</em>, texte du III<sup>e</sup> siècle, mentionne<sup class="note-marque" tabindex="0" data-note="La Didascalia Apostolorum est un texte chrétien ancien, généralement daté du IIIe siècle. L’extrait cité présente le vendredi comme jour de la crucifixion.">3</sup> :</li>
+      </ul>
+      <blockquote>
+        <p>[...] and they crucified Him on the same Friday. He suffered, then, at the sixth hour on Friday.</p>
+      </blockquote>
+      <p>Ce texte peut être traduit ainsi :</p>
+      <blockquote>
+        <p>Et ils le crucifièrent le même vendredi. Il souffrit donc à la sixième heure du vendredi.</p>
+      </blockquote>
+      <ul>
+        <li>Enfin, les <em>Constitutions apostoliques</em>, texte du IV<sup>e</sup> siècle, rapportent<sup class="note-marque" tabindex="0" data-note="Les Constitutions apostoliques sont une compilation ecclésiale antique, généralement datée de la fin du IVe siècle. Le passage évoqué relie le sixième jour de la semaine à la passion du Seigneur.">4</sup> :</li>
+      </ul>
+      <blockquote>
+        <p>[...] But He commanded us to fast on the fourth and sixth days of the week; the former on account of His being betrayed, and the latter on account of His passion.</p>
+      </blockquote>
+      <p>Ce texte peut être traduit de la manière suivante :</p>
+      <blockquote>
+        <p>Mais il nous a ordonné de jeûner le quatrième et le sixième jour de la semaine ; le premier à cause de sa trahison, et le second à cause de sa passion (crucifixion).</p>
+      </blockquote>
+
+      <h3>2. Et voici les arguments en faveur du dimanche matin</h3>
+      <p>Beaucoup d’arguments affirment que le Seigneur est ressuscité le dimanche matin :</p>
+      <ul>
+        <li>D'une part, l’Épître de Barnabé (15 : 9) déclare<sup class="note-marque" tabindex="0" data-note="Épître de Barnabé, 15:9. Cet écrit chrétien ancien associe le « huitième jour » à la résurrection de Jésus.">5</sup> :</li>
+      </ul>
+      <blockquote>
+        <p>Wherefore, also, we keep the eighth day with joyfulness, the day also on which Jesus rose again from the dead.</p>
+      </blockquote>
+      <p>Cet extrait peut être traduit ainsi :</p>
+      <blockquote>
+        <p>C'est pourquoi, nous célébrons aussi le huitième jour avec joie, jour où Jésus est ressuscité des morts.</p>
+      </blockquote>
+      <p>Le huitième jour est celui qui vient après le Shabbat, assimilé au samedi, soit le dimanche.</p>
+      <ul>
+        <li>D'autre part, Justin Martyr affirme à nouveau, dans sa <em>Première Apologie</em>, chapitre 67<sup class="note-marque" tabindex="0" data-note="Justin Martyr (vers 100-165), Première Apologie, chapitre 67. Dans ce même chapitre, il explique le rassemblement chrétien du dimanche par le premier jour de la création et par la résurrection.">6</sup> :</li>
+      </ul>
+      <blockquote>
+        <p>But Sunday is the day on which we all hold our common assembly, because it is the first day on which God, having wrought a change in the darkness and matter, made the world ; and Jesus-Christ our Saviour on the same day rose from the dead.</p>
+      </blockquote>
+      <p>Ce texte peut être traduit ainsi :</p>
+      <blockquote>
+        <p>Mais le dimanche est le jour où nous tenons tous notre assemblée commune, car c’est le premier jour où Dieu, après avoir opéré un changement dans les ténèbres et la matière, a créé le monde ; et Jésus-Christ notre Sauveur est ressuscité des morts le même jour.</p>
+      </blockquote>
+      <p>En somme, l'ensemble de ces textes traditionnels avance que le Seigneur est mort sur la croix un vendredi et qu'il est ressuscité le dimanche matin.</p>
+
+      <h3>3. Les limites de ces thèses traditionnelles</h3>
+      <p>Ces arguments, bien que datant de plusieurs siècles, présentent cependant d’importantes limites.</p>
+      <p>Premièrement, la manière de compter les jours varie selon les cultures. Pour les Hébreux, le jour commence au coucher du soleil, vers 18 h, et se termine au coucher suivant :</p>
+      <blockquote>
+        <p>Elohîm appela la lumière jour, et il appela la ténèbre nuit. Le soir apparut, et le matin apparut : jour un.</p>
+        <cite>Genèse 1 : 5<sup class="note-marque" tabindex="0" data-note="Genèse 1:5 est invoqué ici pour rappeler la succession « soir, puis matin » qui structure le récit de la création et le repère hébraïque du jour.">7</sup></cite>
+      </blockquote>
+      <p>Chez les Romains, en revanche, le jour va de minuit à minuit. Or, le Seigneur annonce qu’il demeurera trois jours et trois nuits dans le cœur de la terre :</p>
+      <blockquote>
+        <p>Car comme Yônah fut dans le ventre du grand poisson trois jours et trois nuits, ainsi le Fils de l’humain sera trois jours et trois nuits dans le cœur de la terre.</p>
+        <cite>Matthieu 12 : 40<sup class="note-marque" tabindex="0" data-note="Matthieu 12:40 est le passage central de l’argument chronologique : il emploie l’expression « trois jours et trois nuits » à propos du séjour du Fils de l’humain dans le cœur de la terre.">8</sup></cite>
+      </blockquote>
+      <p>Pour établir correctement le jour de sa résurrection, il convient donc de se référer au modèle hébraïque.</p>
+      <p>Deuxièmement, le laps de temps allant du vendredi soir au dimanche matin ne totalise pas trois jours complets selon le comput hébraïque. En effet :</p>
+      <ul>
+        <li>De vendredi 18 h à samedi 18 h : premier jour ;</li>
+        <li>De samedi 18 h à dimanche 18 h : deuxième jour.</li>
+      </ul>
+      <p>Ainsi, l'intervalle traditionnel du vendredi soir au dimanche matin ne représente qu'une journée et demie, ce qui contredit explicitement l'énoncé biblique des « trois jours et trois nuits ».</p>
+      <p>Troisièmement, les Évangiles indiquent que les femmes se sont rendues au tombeau à l’aube d’un shabbat avec des aromates pour oindre le corps, mais que le Seigneur n’y était déjà plus. Il existe toutefois une confusion fréquente autour du mot « shabbat ». En effet, durant cette semaine spécifique, il n’y avait pas un seul shabbat, mais deux<sup class="note-marque" tabindex="0" data-note="Cette étude distingue un repos annuel lié à la fête et le shabbat hebdomadaire. Les passages de Marc 16, Luc 23-24 et Matthieu 28 sont cités ci-dessous pour exposer cette lecture.">9</sup>.</p>
+      <p>Les textes bibliques le confirment :</p>
+      <blockquote>
+        <p>Et le shabbat étant passé, Myriam, la Magdeleine, Myriam, celle de Yaacov et Shelomit achetèrent des aromates pour venir l’oindre. Et très tôt le matin d'un des shabbats, elles viennent au sépulcre, le soleil étant levé.</p>
+        <cite>Marc 16 : 1-2<sup class="note-marque" tabindex="0" data-note="Marc 16:1-2 mentionne l’achat des aromates après le shabbat, puis la venue des femmes au sépulcre très tôt le matin.">10</sup></cite>
+      </blockquote>
+      <blockquote>
+        <p>Et s'en étant retournées, elles préparèrent des aromates et des baumes. Et le jour du shabbat, elles se reposèrent en effet selon le commandement.</p>
+        <cite>Luc 23 : 56<sup class="note-marque" tabindex="0" data-note="Luc 23:56 rapporte à la fois la préparation des aromates et le repos observé le jour du shabbat.">11</sup></cite>
+      </blockquote>
+      <blockquote>
+        <p>Mais l'un des shabbats, elles se rendirent au sépulcre à l'aube profonde, apportant les aromates qu'elles avaient préparés, et certaines avec elles.</p>
+        <cite>Luc 24 : 1<sup class="note-marque" tabindex="0" data-note="Luc 24:1 décrit la venue des femmes au sépulcre à l’aube, avec les aromates préparés.">12</sup></cite>
+      </blockquote>
+      <blockquote>
+        <p>Mais après les shabbats, à l'aube d'un des shabbats, Myriam, la Magdeleine et l'autre Myriam, allèrent voir la tombe.</p>
+        <cite>Matthieu 28 : 1<sup class="note-marque" tabindex="0" data-note="Matthieu 28:1 est cité pour la formule « après les shabbats » et la visite des femmes à l’aube.">13</sup></cite>
+      </blockquote>
+      <p>Afin de clarifier le texte et de lever toute confusion autour des « shabbats », la Bible précise que les femmes ont préparé les aromates et les baumes pour les apporter au tombeau. Puis, à l’aube d’un des shabbats, elles se sont rendues à la tombe.</p>
+      <p>Parmi ces deux shabbats, l’un était annuel et l’autre hebdomadaire. Plusieurs fêtes de YHWH comportaient en effet des jours de repos solennel :</p>
+      <blockquote>
+        <p>YHWH parla à Moshéh, en disant : Parle aux enfants d’Yisra’él et dis-leur : Les fêtes de YHWH, que vous proclamerez, seront de saintes convocations. Ce sont là mes fêtes.</p>
+        <cite>Lévitique 23 : 1-44<sup class="note-marque" tabindex="0" data-note="Lévitique 23 énumère les fêtes de YHWH et leurs jours de repos ou saintes convocations. Il sert ici de cadre à la distinction entre repos festif annuel et shabbat hebdomadaire.">14</sup></cite>
+      </blockquote>
+      <p>Or, la semaine de l’arrestation du Seigneur coïncidait avec la préparation d’une fête :</p>
+      <blockquote>
+        <p>Or la fête des pains sans levain, qu'on appelle Pâque, approchait.</p>
+        <cite>Luc 22 : 1<sup class="note-marque" tabindex="0" data-note="Luc 22:1 situe les événements dans l’approche de la fête des pains sans levain, appelée Pâque.">15</sup></cite>
+      </blockquote>
+      <p>C’est pourquoi Jean 19 : 31 précise :</p>
+      <blockquote>
+        <p>Alors les Juifs, afin que les corps ne restent pas sur la croix durant le shabbat, parce que c'était la préparation — car le jour de ce shabbat était un grand —, demandèrent à Pilate qu'on leur brise les jambes et qu'on les enlève.</p>
+        <cite>Jean 19 : 31<sup class="note-marque" tabindex="0" data-note="Jean 19:31 qualifie ce shabbat de « grand ». L’étude s’appuie sur cette précision pour le rapprocher d’un repos festif annuel.">16</sup></cite>
+      </blockquote>
+      <blockquote>
+        <p>Alors ils mènent Yéhoshoua de chez Kaïaphas au prétoire. Or c'était le matin. Et ils n'entrèrent pas eux-mêmes dans le prétoire, afin qu’ils ne soient pas souillés et afin qu'ils mangent la Pâque.</p>
+        <cite>Jean 18 : 28<sup class="note-marque" tabindex="0" data-note="Jean 18:28 est cité pour le contexte de la Pâque mentionné dans le récit de l’arrestation et du procès.">17</sup></cite>
+      </blockquote>
+      <p>Ce « grand shabbat » était donc le shabbat annuel lié à la fête de la Pâque. Par conséquent, le « grand shabbat » lié à la mort du Seigneur ne doit pas être confondu avec le shabbat hebdomadaire.</p>
+
+      <h3>4. Le jour de la mort du Seigneur</h3>
+      <p>Puisque le Seigneur n’était déjà plus dans le tombeau lorsque les femmes y arrivèrent à l’aube, c’est-à-dire le samedi matin, il a nécessairement ressuscité un vendredi soir. Sachant qu’il a demeuré trois jours et trois nuits dans le tombeau, il faut remonter de trois jours complets pour déterminer la date de sa crucifixion :</p>
+      <ul>
+        <li>De vendredi à jeudi : troisième jour ;</li>
+        <li>De jeudi à mercredi : deuxième jour ;</li>
+        <li>De mercredi à mardi : premier jour.</li>
+      </ul>
+      <p>Nous pouvons donc affirmer sans l’ombre d’un doute que le Seigneur est mort un mardi.</p>
+      <p>De plus, les Écritures indiquent qu’il a été crucifié à la troisième heure :</p>
+      <blockquote>
+        <p>Or c'était la troisième heure, quand ils le crucifièrent.</p>
+        <cite>Marc 15 : 25<sup class="note-marque" tabindex="0" data-note="Marc 15:25 situe la crucifixion à la troisième heure dans le récit de Marc.">18</sup></cite>
+      </blockquote>
+      <p>Il est resté sur la croix jusqu’à la neuvième heure :</p>
+      <blockquote>
+        <p>Et à la neuvième heure, Yéhoshoua cria d'une grande voix en disant : Éloï, Éloï, lama sabachthani ? Ce qui, interprété, est : Mon El ! Mon El ! Pourquoi m'as-tu abandonné ?</p>
+        <cite>Marc 15 : 34 ; voir aussi Matthieu 28 : 46 ; Luc 23 : 44-46<sup class="note-marque" tabindex="0" data-note="Marc 15:34 et Luc 23:44-46 sont les passages cités ici pour la neuvième heure et le cri du Seigneur sur la croix.">19</sup></cite>
+      </blockquote>
+      <p>Les Romains divisaient la période allant du lever au coucher du soleil en douze heures, mais ces heures n’avaient pas toujours exactement soixante minutes : elles étaient plus longues en été et plus courtes en hiver<sup class="note-marque" tabindex="0" data-note="Dans le système horaire antique, les heures de jour étaient calculées à partir du lever du soleil et réparties jusqu’au coucher ; leur durée variait donc selon la saison.">20</sup>. Ainsi :</p>
+      <ul>
+        <li>La troisième heure correspond approximativement à 9 h ;</li>
+        <li>La sixième heure à 12 h ;</li>
+        <li>La neuvième heure à 15 h.</li>
+      </ul>
+      <p>Cela veut dire que le Seigneur, qui a été crucifié à la troisième heure correspondant approximativement à 9 h, est mort à la neuvième heure, soit à 15 h. Comme le Seigneur a été crucifié à la troisième heure, il a donc été arrêté lundi soir comme le disent les Écritures :</p>
+      <blockquote>
+        <p>Alors Yéhoshoua leur dit : Vous serez tous scandalisés en moi cette nuit, car il est écrit : Je frapperai le berger et les brebis du troupeau seront dispersées.</p>
+        <cite>Matthieu 26 : 31 ; voir aussi Marc 15 : 27<sup class="note-marque" tabindex="0" data-note="Matthieu 26:31 rapporte l’annonce faite aux disciples la nuit de l’arrestation. Ce passage est cité ici dans le raisonnement chronologique de l’étude.">21</sup></cite>
+      </blockquote>
+      <p>Ainsi s’accomplit la prophétie : le Seigneur, Agneau du sacrifice, est mort le jour de la Pâque :</p>
+      <blockquote>
+        <p>Ce mois-ci sera pour vous le commencement des mois ; il sera pour vous le premier des mois de l'année. [...] Le dixième jour de ce mois, qu'ils prennent chacun un agneau pour la maison de leurs pères, un agneau pour une maison.</p>
+        <cite>Exode 12 : 1-11<sup class="note-marque" tabindex="0" data-note="Exode 12:1-11 présente l’institution de la Pâque et de l’agneau pascal, appliquée ici à la compréhension du sacrifice du Seigneur.">22</sup></cite>
+      </blockquote>
+      <p>En conclusion, le Seigneur n’est pas ressuscité un dimanche. Il est mort un mardi à 15 h et est ressuscité le vendredi soir.</p>
+      <p>Nous espérons que ce partage vous a édifiés et encouragés. Dans tous les cas, soyez bénis en Yehowshou‘a ha-Mashiya’h.</p>
+      <blockquote>
+        <p>Et vous connaîtrez la vérité et la vérité vous rendra libres.</p>
+        <cite>Jean 8 : 32<sup class="note-marque" tabindex="0" data-note="Jean 8:32 conclut l’étude en rappelant que la vérité rend libre.">23</sup></cite>
+      </blockquote>
+    `
+  },
+  {
     id: "marche-par-esprit",
     titre: "LA MARCHE PAR L'ESPRIT : LA CLÉ DE LA VICTOIRE SPIRITUELLE",
     date: "16/07/2026",
