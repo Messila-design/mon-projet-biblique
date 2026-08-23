@@ -687,6 +687,7 @@ const ETUDES_BIBLIQUES = [
 ];
 
 const ARTICLES = [
+  { title: "La doctrine des baptêmes", category: "La Doctrine Apostolique", description: "Une étude biblique sur les trois baptêmes, leur sens scripturaire et les principales questions liées au baptême dans l'eau.", date: "22/08/2026", source: "articles/la-doctrine-des-baptemes.txt", lien: "https://drive.google.com/file/d/1xlKl3eY4Kqpxta5rLlaG55YUzgSHMGSr/view?usp=drive_link" },
   { title: "Les temps des Nations", category: "Prophéties bibliques", description: "Un parcours biblique et chronologique sur le temps accordé aux nations, les prophéties de Daniel et l'accomplissement du Royaume d'Èlohiym.", date: "09/08/2026", image: "images/clock-ticks-sands-slip-sun-sets-success-awaits-generative-ai.jpg", lien: "https://drive.google.com/file/d/1cJNqtcp2wFzZfEfkMH63nwg3amUIqqKO/view?usp=sharing" },
   { title: "La doctrine apostolique : La Foi en 'Èlohiym", category: "La Doctrine Apostolique", description: "Nature, source et facettes de la foi biblique : espérance de salut, don spirituel, doctrine apostolique, foi agissante et preuves historiques.", date: "26/07/2026", lien: "https://drive.google.com/file/d/18IKxknb-F7nKfnPzCYGExUIT7yX1vO8m/view?usp=drive_link" },
   { title: "Les Traditions", category: "Doctrines", description: "La Torah d'Elohîm, l'Évangile du Mashiah, le culte des ancêtres et les philosophies grecques : distinguer les traditions divines des traditions humaines.", date: "07/07/2026", lien: "https://drive.google.com/file/d/1Tur3vGlONQdSOlXY2fRfXltyN2c5VlNz/view?usp=drive_link" },
@@ -1161,11 +1162,14 @@ function afficherArticle(title){
   const downloadUrl = fileId
     ? `https://drive.google.com/uc?export=download&id=${fileId}`
     : (article.lien || '#');
+  const libelleTelechargement = /\.docx?(?:[?#]|$)/i.test(downloadUrl)
+    ? 'Télécharger le document Word'
+    : 'Télécharger le PDF';
 
-  const boutonTelecharger = `
+  const boutonTelecharger = !article.lien || /\.docx?(?:[?#]|$)/i.test(downloadUrl) ? '' : `
     <a class="btn-download" href="${downloadUrl}" target="_blank" rel="noopener noreferrer">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Télécharger le PDF
+      ${libelleTelechargement}
     </a>`;
 
   if(contenuInterne){
