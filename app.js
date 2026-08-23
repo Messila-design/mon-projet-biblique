@@ -687,7 +687,7 @@ const ETUDES_BIBLIQUES = [
 ];
 
 const ARTICLES = [
-  { title: "La doctrine des baptêmes", category: "La Doctrine Apostolique", description: "Une étude biblique sur les trois baptêmes, leur sens scripturaire et les principales questions liées au baptême dans l'eau.", date: "22/08/2026", source: "articles/la-doctrine-des-baptemes.txt", lien: "https://drive.google.com/file/d/1xlKl3eY4Kqpxta5rLlaG55YUzgSHMGSr/view?usp=drive_link" },
+  { title: "La doctrine des baptêmes", category: "La Doctrine Apostolique", description: "Une étude biblique sur les trois baptêmes, leur sens scripturaire et les principales questions liées au baptême dans l'eau.", date: "22/08/2026", image: "images/swirling-water.jpg", source: "articles/la-doctrine-des-baptemes.txt", lien: "https://drive.google.com/file/d/1xlKl3eY4Kqpxta5rLlaG55YUzgSHMGSr/view?usp=drive_link" },
   { title: "Les temps des Nations", category: "Prophéties bibliques", description: "Un parcours biblique et chronologique sur le temps accordé aux nations, les prophéties de Daniel et l'accomplissement du Royaume d'Èlohiym.", date: "09/08/2026", image: "images/clock-ticks-sands-slip-sun-sets-success-awaits-generative-ai.jpg", lien: "https://drive.google.com/file/d/1cJNqtcp2wFzZfEfkMH63nwg3amUIqqKO/view?usp=sharing" },
   { title: "La doctrine apostolique : La Foi en 'Èlohiym", category: "La Doctrine Apostolique", description: "Nature, source et facettes de la foi biblique : espérance de salut, don spirituel, doctrine apostolique, foi agissante et preuves historiques.", date: "26/07/2026", lien: "https://drive.google.com/file/d/18IKxknb-F7nKfnPzCYGExUIT7yX1vO8m/view?usp=drive_link" },
   { title: "Les Traditions", category: "Doctrines", description: "La Torah d'Elohîm, l'Évangile du Mashiah, le culte des ancêtres et les philosophies grecques : distinguer les traditions divines des traditions humaines.", date: "07/07/2026", lien: "https://drive.google.com/file/d/1Tur3vGlONQdSOlXY2fRfXltyN2c5VlNz/view?usp=drive_link" },
@@ -1181,6 +1181,7 @@ function afficherArticle(title){
     articleEl.className = 'etude article-card';
     articleEl.id = 'carte-lire-article-' + idPrefixe;
     articleEl.innerHTML = `
+      ${article.image ? `<div class="article-article-img article-cover"><img src="${article.image}" alt="${article.title}" loading="lazy"></div>` : ''}
       <div class="article-card-header">
         <div class="article-section">${article.category || 'Article'}</div>
         <h1 style="margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2;">${article.title}</h1>

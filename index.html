@@ -220,6 +220,10 @@
   .article-article-img iframe{
     width:100%; height:100%; min-height:560px; border:0; display:block;
   }
+  .article-article-img.article-cover{ aspect-ratio:16/9; }
+  .article-article-img.article-cover img{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
   .article-actions{
     display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;
   }
@@ -799,6 +803,7 @@
     .video-play{ width:52px; height:52px; }
     .article-row{ padding:24px 0; }
     .article-article-img{ height:70vh; margin-bottom:24px; aspect-ratio:auto; }
+    .article-article-img.article-cover{ height:auto; aspect-ratio:4/3; }
     .article-article-img iframe{ min-height:0; }
     .article-card-header h1, #etude-article h1{ font-size:32px; }
     .article-card-header p{ margin-bottom:24px; }
