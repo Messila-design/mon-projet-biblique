@@ -1,4 +1,4 @@
-
+﻿
 /* ====================================================================
    ZONE DE CONFIGURATION — modifiez ici pour ajouter votre contenu
    ==================================================================== */
@@ -1570,6 +1570,8 @@ function initTaillePolice(){
   function appliquer(n){
     niveau = Math.max(MIN_NIVEAU, Math.min(MAX_NIVEAU, n));
     html.dataset.fontSize = String(niveau);
+    const sizes = {'-2':13,'-1':14.5,'0':16,'1':17.5,'2':19,'3':20.5};
+    html.style.fontSize = (sizes[String(niveau)] || 16) + 'px';
     if(current){
       current.textContent = niveau > 0 ? 'A' + '+'.repeat(niveau) : (niveau < 0 ? 'A' + '−'.repeat(Math.abs(niveau)) : 'Aa');
       current.setAttribute('aria-label', niveau === 0 ? 'Taille de texte normale' : 'Taille de texte ajustée de ' + Math.abs(niveau) + ' niveau' + (Math.abs(niveau) > 1 ? 'x' : ''));

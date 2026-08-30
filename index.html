@@ -17,7 +17,8 @@
 <meta id="tw-image" name="twitter:image" content="images/pub-1.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@300;400;500;600;700&display=swap">
 
 <!-- MailerLite Universal -->
 <script>
@@ -89,7 +90,15 @@
   }
 
   *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; font-size:16px; }
+
+  /* Niveaux de taille de police (-2 à +3) */
+  html[data-font-size="-2"]{ font-size:13px; }
+  html[data-font-size="-1"]{ font-size:14.5px; }
+  html[data-font-size="0"] { font-size:16px; }
+  html[data-font-size="1"] { font-size:17.5px; }
+  html[data-font-size="2"] { font-size:19px; }
+  html[data-font-size="3"] { font-size:20.5px; }
   .onglet[hidden]{ display:none; }
   body{
     margin:0;
