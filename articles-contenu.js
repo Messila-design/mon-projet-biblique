@@ -1059,6 +1059,10 @@ window.formaterArticleTexte = function(texte) {
     return valeur.replace(/\s*—\s*BYM1\b/g, ' — BYM<sup class="note-marque" tabindex="0" data-note="BYM : Bible de Yéhoshoua ha-Mashiyah, version citée dans cet article.">1</sup>');
   };
   const ajouterNotesManuscrit = function(valeur) {
+    valeur = valeur.replace(/\[\[FNE:(\d+)\]\]/g, function(marque, id) {
+      const note = (window.NOTES_ETUDE_ELOHIM || {})[id];
+      return note ? '<sup class="note-marque" tabindex="0" data-note="' + echapper(note) + '">' + id + '</sup>' : '';
+    });
     return valeur.replace(/\[\[FN:(\d+)\]\]/g, function(marque, id) {
       const note = NOTES_MANUSCRIT_BAPTEMES[id];
       return note ? '<sup class="note-marque" tabindex="0" data-note="' + echapper(note) + '">' + id + '</sup>' : '';
@@ -1135,11 +1139,12 @@ window.formaterArticleTexte = function(texte) {
       return;
     }
     fermerListe();
-    const citation = ligne.match(/^«\s*(.*?)\s*»\s*(?:\.?\s*\((.+)\))?\s*[.;]?$/);
+    const citation = ligne.match(/^«\s*(.*?)\s*»\s*(\[\[FNE:\d+\]\])?\s*(?:\.?\s*\((.+)\))?\s*[.;]?$/);
     if(citation) {
       const texteCitation = ajouterNotesManuscrit(ajouterNotesTempsDesNations(echapper(citation[1])));
-      const reference = citation[2] ? '<cite>' + ajouterNotesManuscrit(ajouterNotesTempsDesNations(ajouterNoteBym(echapper(citation[2])))) + '</cite>' : '';
-      html.push('<blockquote><p>« ' + texteCitation + ' »</p>' + reference + '</blockquote>');
+      const noteCitation = citation[2] ? ajouterNotesManuscrit(citation[2]) : '';
+      const reference = citation[3] ? '<cite>' + ajouterNotesManuscrit(ajouterNotesTempsDesNations(ajouterNoteBym(echapper(citation[3])))) + '</cite>' : '';
+      html.push('<blockquote><p>« ' + texteCitation + ' »' + noteCitation + '</p>' + reference + '</blockquote>');
       return;
     }
     html.push('<p>' + contenu + '</p>');
