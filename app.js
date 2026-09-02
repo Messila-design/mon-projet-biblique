@@ -1228,8 +1228,6 @@ function afficherEtude(id){
 
   const { contenuAvecIds, titres } = injecterTableDesMatieres(etude.contenu || '', etude.id);
   const tocHtml = titres.length > 0 ? construireTocHtml(titres, etude.id) : '<aside class="etude-toc-col"></aside>';
-  // On se base sur le contenu déjà formaté : les appels de notes sont ajoutés
-  // pendant le formatage du manuscrit.
   const notesHtml = /<sup\b[^>]*\bnote-marque\b/i.test(contenuAvecIds) ? construireNotesHtml(etude.id) : '';
 
   container.innerHTML = `
@@ -1244,9 +1242,9 @@ function afficherEtude(id){
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
-          ${notesHtml}
           ${construireActionsPartage(etude.titre)}
         </div>
+        ${notesHtml}
       </div>
     </article>
   `;
