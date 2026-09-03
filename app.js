@@ -295,7 +295,7 @@ Et la Vulgate dit :
 
 Que nous traduisons ainsi :
 
-« Mais Noé trouva grâce aux yeux de l’Éternel. »
+« Mais Noé trouva grâce aux yeux du Seigneur. »
 
 Après le passage de l’hébreu au grec, nous observons donc une nouvelle étape avec le passage au latin. Les termes Theos et Kyrios employés dans la tradition grecque trouvent désormais leurs correspondants latins dans Deus et Dominus.
 
@@ -353,6 +353,20 @@ La Réforme, tirée du grec διόρθωσις (diorthosis), signifie notamment 
 La Réforme, c’est donc revenir à ce qui a été enseigné par le Seigneur Yehowshou‘a ha-Mashiya’h, le remettre en pratique et y demeurer afin d’hériter la vie éternelle.
 `;
 
+// Les citations dans leur langue d'origine de cette étude reçoivent un style
+// propre, sans modifier les autres citations.
+function mettreEnValeurTextesOriginaux(contenu) {
+  return contenu.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, function(bloc, contenuBloc) {
+    let classe = '';
+
+    if(/[\u0590-\u05FF]/u.test(contenuBloc)) classe = 'texte-hebreu';
+    else if(/[\u0370-\u03FF\u1F00-\u1FFF]/u.test(contenuBloc)) classe = 'texte-grec';
+    else if(/(?:In principio creavit Deus caelum et terram|Noe vero invenit gratiam coram Domino)/.test(contenuBloc)) classe = 'texte-latin';
+
+    return classe ? '<blockquote class="' + classe + '">' + contenuBloc + '</blockquote>' : bloc;
+  });
+}
+
 const ETUDES_BIBLIQUES = [
   {
     id: "d-elohim-a-dieu",
@@ -360,7 +374,7 @@ const ETUDES_BIBLIQUES = [
     date: "03/09/2026",
     image: "images/Elohiym.jpg",
     resume: "Une étude sur l’histoire des noms, des titres et des traductions de l’Èlohiym d’Yisra’él, des écrits hébraïques aux Bibles françaises.",
-    contenu: window.formaterArticleTexte(TEXTE_ETUDE_ELOHIM).replace(
+    contenu: mettreEnValeurTextesOriginaux(window.formaterArticleTexte(TEXTE_ETUDE_ELOHIM)).replace(
       '<p>[[IMAGE_DEUX_COURANTS]]</p>',
       '<figure class="etude-figure-inline"><button class="image-zoom-trigger" type="button" data-image-zoom aria-label="Agrandir l’image des deux courants de traductions"><img src="images/Image Codex 2 sept. 2026, 21_20_54.png" alt="Les deux courants de traductions bibliques" loading="lazy"></button><figcaption>Les deux courants de traductions — cliquez sur l’image pour l’agrandir.</figcaption></figure>'
     )
