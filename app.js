@@ -673,7 +673,7 @@ const ETUDES_BIBLIQUES = [
       </ul>
 
       <p>Désolé pour la longueur du texte. Cependant, j'ai la conviction qu'il vous fera du bien, comme moi-même j'ai été édifié dessus.</p>
-      <p style="font-size:12px; color:var(--text-soft); margin-top:1.5em;">Source de l'illustration : <a href="https://www.24heures.ch/sante-mentale-le-pervers-narcissique-capable-de-tout-coupable-de-rien-835983095149" target="_blank" rel="noopener">24heures.ch</a></p>
+      <p style="font-size:12px; color:var(--text-soft); margin-top:1.5em;">Source de l'illustration : <a href="https://www.24heures.ch/sante-mentale-le-pervers-narcissique-capable-de-tout-coupable-de-rien-835983095149" target="_blank" rel="noopener noreferrer">24heures.ch</a></p>
     `
   },
   {
@@ -735,7 +735,7 @@ const ETUDES_BIBLIQUES = [
       <p>Reinhard Bonnké, Tommy Lee Osborn, Asa Allonso Allen, et Kacou Sévérin ont-ils appartenu à ma communauté ? Bien entendu que non ! Pourtant, nous avons été bénis par leur ministère un jour, et cela même jusqu'à ce jour. Merci Seigneur ! Pourquoi devrais-je faire des distinctions entre les frères ? Selon moi, ce qui est plus important est de savoir s'ils prêchent la croix, la sanctification, le retour du Seigneur, s'ils dénoncent le péché et si Yehowshuw'a ha-Mashiyah (Jésus-Christ) est Élohiym et Seigneur.</p>
       <p>Ce que nous devons savoir, c'est que tous les disciples, c'est-à-dire les vrais disciples, sont au Seigneur et l'œuvre qu'ils font, ils la font pour le Seigneur. Voilà, cessons d'être immatures et voyons plus loin avec le Seigneur. Même si un frère est chinois, si ce qu'il dit est en accord avec la doctrine apostolique, nous pouvons dire Amen !</p>
       <p>Bien évidemment, il faut faire attention, car beaucoup de personnes sur la toile se font passer pour de vrais serviteurs, mais dans le fond ce sont des faux-prophètes.</p>
-      <p>Je vous encourage à aller sur ce site fondé par un frère : <a href="https://keleuma.org/actualites/" target="_blank" rel="noopener">keleuma.org/actualites</a></p>
+      <p>Je vous encourage à aller sur ce site fondé par un frère : <a href="https://keleuma.org/actualites/" target="_blank" rel="noopener noreferrer">keleuma.org/actualites</a></p>
       <p>Que le Seigneur vous bénisse.</p>
       <p><em>Shalôm à tous !</em></p>
     `
@@ -1514,13 +1514,14 @@ function rendreVideos(){
 }
 
 function ouvrirVideo(id){
+  if(!id || !/^[a-zA-Z0-9_-]{5,20}$/.test(id)) return;
   const modal = document.getElementById('video-modal');
   const frame = document.getElementById('video-frame');
   if(!modal || !frame) {
-    window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
+    window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(id), '_blank', 'noopener,noreferrer');
     return;
   }
-  frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+  frame.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1';
   modal.hidden = false;
   modal.classList.add('is-open');
 }
@@ -1885,6 +1886,15 @@ function initImageZoom(){
 }
 
 /* ---------- Recherche dans le contenu ---------- */
+function echapperTexteHtml(valeur){
+  return String(valeur || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function normaliserTexte(t){
   return (t || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
@@ -1936,12 +1946,12 @@ function initRecherche(){
     const nq = normaliserTexte(q);
     const matches = index.filter(it => normaliserTexte(it.keywords).includes(nq)).slice(0, 12);
     if(!matches.length){
-      results.innerHTML = `<div class="search-result-empty">Aucun résultat pour « ${q} ».</div>`;
+      results.innerHTML = `<div class="search-result-empty">Aucun résultat pour « ${echapperTexteHtml(q)} ».</div>`;
     } else {
       results.innerHTML = matches.map(m => `
         <a class="search-result-item" href="${m.hash.startsWith('#') || m.hash.startsWith('http') ? m.hash : '#' + m.hash}">
-          <strong>${m.title}</strong>
-          <span class="sr-meta">${m.type} · ${m.meta}</span>
+          <strong>${echapperTexteHtml(m.title)}</strong>
+          <span class="sr-meta">${echapperTexteHtml(m.type)} · ${echapperTexteHtml(m.meta)}</span>
         </a>`).join('');
     }
     results.classList.add('is-open');
