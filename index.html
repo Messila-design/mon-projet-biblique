@@ -917,6 +917,31 @@
   @media (min-width:768px){ .article-card-header h1{ font-size:44px; } }
   .article-section{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted-foreground); font-weight:600; }
   .article-card-meta{ margin-top:12px; font-size:13px; color:var(--muted-foreground); }
+  .article-actions:not(:empty){
+    display:flex; justify-content:flex-start; margin-top:28px; padding-top:24px;
+    border-top:1px solid var(--hairline);
+  }
+  .article-actions .btn-download{
+    display:inline-flex; align-items:center; justify-content:center; gap:12px;
+    min-height:52px; max-width:100%; padding:14px 24px;
+    border:1px solid var(--primary); border-radius:var(--radius-sm);
+    background:var(--primary); color:var(--primary-foreground);
+    font-family:var(--font-sans); font-size:15px; font-weight:600; line-height:1.5;
+    text-align:center; text-decoration:none; box-shadow:var(--shadow-card);
+    transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .article-actions .btn-download svg{ width:20px; height:20px; flex-shrink:0; }
+  @media (hover:hover){
+    .article-actions .btn-download:hover{ transform:translateY(-2px); box-shadow:var(--shadow-card-hover); }
+  }
+  .article-actions .btn-download:focus-visible{ outline:3px solid var(--accent-kicker); outline-offset:4px; }
+  .article-actions .btn-download:active{ transform:translateY(0); box-shadow:none; }
+  @media (max-width:600px){
+    .article-actions .btn-download{ width:100%; padding:14px 18px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .article-actions .btn-download{ transition:none; transform:none; }
+  }
   .article-card-header p{ margin:16px 0 32px; font-size:16px; line-height:1.7; color:var(--muted-foreground); max-width:760px; }
   .etude-article-corps{ margin-top:40px; line-height:1.8; color:var(--foreground); }
   .etude-article-corps p{ margin:0 0 24px; }
