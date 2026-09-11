@@ -1,10 +1,13 @@
 {
   "name": "lamed_code",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Site Laméd — études bibliques et publications",
+  "main": "serve.js",
   "scripts": {
-    "test": "node check.js"
+    "start": "node serve.js",
+    "test": "node check.js",
+    "verify": "node verify.js",
+    "audit": "node audit.js"
   },
   "private": true
 }

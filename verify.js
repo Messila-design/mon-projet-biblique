@@ -1,21 +1,33 @@
-const fs = require('fs');
-const c = fs.readFileSync('C:\\Users\\Messila\\Downloads\\lamed_code\\index.html', 'utf8');
-const idx = c.indexOf('la-foi-en-elohiym');
-console.log('Found at:', idx);
-if (idx >= 0) {
-  const titleStart = c.indexOf('titre:', idx);
-  const titleEnd = c.indexOf(',', titleStart);
-  console.log(c.substring(titleStart, titleEnd + 1));
-  
-  const docStart = c.indexOf('const PDF_DOCUMENTS');
-  const docEnd = c.indexOf('];', docStart + 500);
-  const block = c.substring(docStart, docEnd);
-  const matches = block.match(/id: "[^"]+"/g);
-  console.log('Articles count:', matches ? matches.length : 0);
-  if (matches) console.log(matches.join('\n'));
-} else {
-  console.log('ARTICLE NOT FOUND');
-  const docStart = c.indexOf('const PDF_DOCUMENTS');
-  console.log('PDF_DOCUMENTS at:', docStart);
-  console.log(c.substring(docStart, docStart + 200));
+'use strict';
+
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+
+const root = __dirname;
+const files = ['app.js', 'articles-contenu.js'];
+
+for (const file of files) {
+  const filePath = path.join(root, file);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Fichier introuvable : ${file}`);
+  }
+  new vm.Script(fs.readFileSync(filePath, 'utf8'), { filename: file });
 }
+
+const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const studiesMatch = app.match(/const\s+ETUDES_BIBLIQUES\s*=\s*\[([\s\S]*?)\n\];/);
+const articlesMatch = app.match(/const\s+ARTICLES\s*=\s*\[([\s\S]*?)\n\];/);
+
+if (!studiesMatch || !articlesMatch) {
+  throw new Error('Les tableaux ETUDES_BIBLIQUES ou ARTICLES sont introuvables dans app.js.');
+}
+
+const studies = [...studiesMatch[1].matchAll(/\bid\s*:/g)].length;
+const articles = [...articlesMatch[1].matchAll(/\btitle\s*:/g)].length;
+
+if (studies === 0 || articles === 0) {
+  throw new Error('Les données des études ou des articles sont vides.');
+}
+
+console.log(`OK — ${files.length} fichiers analysés, ${studies} étude(s) et ${articles} article(s) trouvés.`);
