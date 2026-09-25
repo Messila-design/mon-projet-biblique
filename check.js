@@ -18,6 +18,7 @@ for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
   const src = attributes.match(/\bsrc=["']([^"']+)["']/i);
 
   if (src) {
+    if (/^https?:\/\//i.test(src[1])) continue;
     const scriptPath = path.resolve(root, src[1]);
     if (!fs.existsSync(scriptPath)) {
       throw new Error(`Script introuvable : ${src[1]}`);

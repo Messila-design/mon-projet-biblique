@@ -1001,6 +1001,57 @@ const VIDEOS = [
 
 /* ==================== FIN DE LA ZONE DE CONFIGURATION ==================== */
 
+function echapperTexteHtml(valeur){
+  return String(valeur ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function identifiantSur(valeur){
+  const brut = String(valeur || '');
+  if(/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,120}$/.test(brut)) return brut;
+  return slugifier(brut) || 'item';
+}
+
+function urlInterneSure(url){
+  const s = String(url || '').trim();
+  if(!s || s === '#') return '#';
+  if(s.startsWith('#') && !/[\s<>"'`]/.test(s) && !/^#javascript:/i.test(s)) return s;
+  if(/^https:\/\/(?:www\.)?(?:youtube\.com|youtu\.be|facebook\.com|x\.com|api\.whatsapp\.com|drive\.google\.com|wa\.me)\//i.test(s)) return s;
+  if(/^mailto:[^\s<>"'\\]+$/i.test(s)) return s;
+  if(/^(?:[\w .,%\-()]+\/)+[\w .,%\-()]+\.(?:txt|pdf|docx?|jpe?g|png|webp)$/i.test(s) && !s.includes('..') && !s.includes(':')) return s;
+  return '#';
+}
+
+function imageSure(src, repli){
+  const s = String(src || '').trim();
+  const fallback = repli || 'images/pub-1.jpg';
+  if(!s) return fallback;
+  if(/^data:image\/(?:jpeg|jpg|png|webp|gif);base64,[A-Za-z0-9+/=\s]+$/.test(s)) return s.replace(/\s+/g, '');
+  if(/^(?:[\w .,%\-()]+\/)+[\w .,%\-()]+\.(?:jpe?g|png|webp|gif|svg)$/i.test(s) && !s.includes('..') && !s.includes(':')) return s;
+  return fallback;
+}
+
+function cheminLocalSure(chemin){
+  const s = String(chemin || '').replace(/\\/g, '/').trim();
+  if(!s || s.includes('..') || s.includes('\0') || s.startsWith('/') || /^[a-zA-Z]:/.test(s) || /^https?:/i.test(s) || s.startsWith('//')) return '';
+  if(/^(?:articles|Textes|images)\/[^/]+\.(?:txt|jpe?g|png)$/i.test(s)) return s;
+  return '';
+}
+
+function idYoutubeSure(id){
+  const s = String(id || '');
+  return /^[a-zA-Z0-9_-]{5,20}$/.test(s) ? s : '';
+}
+
+function idDriveSure(id){
+  const s = String(id || '');
+  return /^[a-zA-Z0-9_-]{10,128}$/.test(s) ? s : '';
+}
+
 const MOIS_FR = {
   'janvier': 0, 'février': 1, 'mars': 2, 'avril': 3, 'mai': 4, 'juin': 5,
   'juillet': 6, 'août': 7, 'septembre': 8, 'octobre': 9, 'novembre': 10, 'décembre': 11
@@ -1078,18 +1129,18 @@ function rendreAccueil(){
   if(leadSlot && triees.length > 0){
     const lead = triees[0];
     leadSlot.innerHTML = `
-      <a href="${lead.lien}" class="mag-lead">
+      <a href="${echapperTexteHtml(urlInterneSure(lead.lien))}" class="mag-lead">
         <div class="mag-lead-thumb">
-          <img src="${lead.image}" alt="${lead.title}" loading="lazy">
+          <img src="${echapperTexteHtml(imageSure(lead.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(lead.title)}" loading="lazy">
         </div>
         <div class="mag-lead-body">
-          <span class="kicker-pill">${lead.category} · Grand Format</span>
-          <h2 class="mag-lead-title">${lead.title}</h2>
-          <p class="mag-lead-excerpt">${lead.excerpt}</p>
+          <span class="kicker-pill">${echapperTexteHtml(lead.category)} · Grand Format</span>
+          <h2 class="mag-lead-title">${echapperTexteHtml(lead.title)}</h2>
+          <p class="mag-lead-excerpt">${echapperTexteHtml(lead.excerpt)}</p>
           <div class="mag-lead-meta">
-            <span>Publié le ${lead.date}</span>
+            <span>Publié le ${echapperTexteHtml(lead.date)}</span>
             <span style="opacity:.4;">·</span>
-            <span class="read-badge">${lead.read} de lecture</span>
+            <span class="read-badge">${echapperTexteHtml(lead.read)} de lecture</span>
           </div>
           <span class="mag-lead-link">Lire l’étude complète <span aria-hidden="true">→</span></span>
         </div>
@@ -1103,16 +1154,16 @@ function rendreAccueil(){
     const sideItems = triees.slice(1, 4);
     sideSlot.innerHTML = sideItems.map((item, idx) => `
       <div class="mag-sidebar-item">
-        <a href="${item.lien}" class="mag-side-link">
+        <a href="${echapperTexteHtml(urlInterneSure(item.lien))}" class="mag-side-link">
           <span class="mag-side-num">${String(idx + 1).padStart(2, '0')}</span>
           <div class="mag-side-content">
-            <span class="mag-side-kicker">${item.category}</span>
-            <h4 class="mag-side-title">${item.title}</h4>
-            <p class="mag-side-desc">${item.excerpt}</p>
+            <span class="mag-side-kicker">${echapperTexteHtml(item.category)}</span>
+            <h4 class="mag-side-title">${echapperTexteHtml(item.title)}</h4>
+            <p class="mag-side-desc">${echapperTexteHtml(item.excerpt)}</p>
             <div class="mag-side-meta">
-              <span>${item.date}</span>
+              <span>${echapperTexteHtml(item.date)}</span>
               <span style="opacity:.4;">·</span>
-              <span>${item.read}</span>
+              <span>${echapperTexteHtml(item.read)}</span>
             </div>
           </div>
         </a>
@@ -1130,14 +1181,14 @@ function rendreAccueil(){
       return `
         <a href="#article=${encodeURIComponent(a.title)}" class="mag-card">
           <div class="mag-card-thumb">
-            <img src="${a.image || IMAGE_DEFAUT}" alt="${a.title}" loading="lazy">
+            <img src="${echapperTexteHtml(imageSure(a.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(a.title)}" loading="lazy">
           </div>
           <div class="mag-card-body">
-            <span class="kicker-pill">${a.category || 'Doctrine'}</span>
-            <h3 class="mag-card-title">${a.title}</h3>
-            <p class="mag-card-desc">${a.description || ''}</p>
+            <span class="kicker-pill">${echapperTexteHtml(a.category || 'Doctrine')}</span>
+            <h3 class="mag-card-title">${echapperTexteHtml(a.title)}</h3>
+            <p class="mag-card-desc">${echapperTexteHtml(a.description || '')}</p>
             <div class="mag-card-footer">
-              <span>${a.date} · ${readTime}</span>
+              <span>${echapperTexteHtml(a.date)} · ${echapperTexteHtml(readTime)}</span>
               <span class="mag-card-cta">Lire l’article <span aria-hidden="true">→</span></span>
             </div>
           </div>
@@ -1151,18 +1202,18 @@ function rendreAccueil(){
   if(etudesGrid){
     const etudesTriees = [...ETUDES_BIBLIQUES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date)).slice(0, 4);
     etudesGrid.innerHTML = etudesTriees.map(e => `
-      <a href="#etude=${encodeURIComponent(e.id)}" class="mag-etude-item">
+      <a href="#etude=${encodeURIComponent(identifiantSur(e.id))}" class="mag-etude-item">
         <div class="mag-etude-thumb">
-          <img src="${e.image || IMAGE_DEFAUT}" alt="${e.titre}" loading="lazy">
+          <img src="${echapperTexteHtml(imageSure(e.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(e.titre)}" loading="lazy">
         </div>
         <div class="mag-etude-body">
           <span class="mag-etude-kicker">Exégèse Biblique</span>
-          <h3 class="mag-etude-title">${e.titre}</h3>
-          <p class="mag-side-desc" style="margin-top:6px;">${extraireExtrait(e.contenu || '', 110)}</p>
+          <h3 class="mag-etude-title">${echapperTexteHtml(e.titre)}</h3>
+          <p class="mag-side-desc" style="margin-top:6px;">${echapperTexteHtml(extraireExtrait(e.contenu || '', 110))}</p>
           <div class="mag-etude-meta">
-            <span>${e.date}</span>
+            <span>${echapperTexteHtml(e.date)}</span>
             <span style="opacity:.4;">·</span>
-            <span>${estimerTempsLecture(e.contenu, '20 min')}</span>
+            <span>${echapperTexteHtml(estimerTempsLecture(e.contenu, '20 min'))}</span>
             <span style="opacity:.4;">·</span>
             <span style="font-weight:600; color:var(--foreground);">Étudier <span aria-hidden="true">→</span></span>
           </div>

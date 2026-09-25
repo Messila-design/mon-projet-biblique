@@ -1,9 +1,11 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+'use strict';
 
-const PORT = process.env.PORT || 3000;
-const ROOT_DIR = path.resolve(__dirname);
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const { pipeline } = require('node:stream');
+
+const ROOT = fs.realpathSync(__dirname);
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -14,98 +16,149 @@ const MIME_TYPES = {
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.webp': 'image/webp',
+  '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.txt': 'text/plain; charset=utf-8',
   '.pdf': 'application/pdf',
-  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   '.ico': 'image/x-icon',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2'
 };
 
+const CSP = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self' https://*.mailerlite.com https://assets.mailerlite.com",
+  "script-src 'self' 'unsafe-inline' https://assets.mailerlite.com https://groot.mailerlite.com https://static.cloudflareinsights.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.mailerlite.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: blob: https://img.youtube.com https://*.mailerlite.com https://storage.mlcdn.com https://assets.mlcdn.com",
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://drive.google.com",
+  "connect-src 'self' https://*.mailerlite.com https://assets.mailerlite.com https://storage.mlcdn.com https://cloudflareinsights.com",
+].join('; ');
+
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'SAMEORIGIN',
+  'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.mailerlite.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: https://img.youtube.com; frame-src https://www.youtube.com https://drive.google.com; connect-src 'self' https://*.mailerlite.com;"
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'Content-Security-Policy': CSP,
+  'Cache-Control': 'no-cache'
 };
 
-const server = http.createServer((req, res) => {
-  // 1. Autoriser uniquement les requêtes GET et HEAD
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'GET, HEAD', ...SECURITY_HEADERS });
-    res.end('405 Méthode non autorisée');
-    return;
-  }
+function isPublicFile(name) {
+  if (['index.html', 'app.js', 'articles-contenu.js'].includes(name)) return true;
+  if (/^(?:images|images - la croix)\/[^/\\]+\.(?:png|jpe?g|webp|gif|ico|svg)$/i.test(name)) return true;
+  if (/^articles\/[^/\\]+\.txt$/i.test(name)) return true;
+  if (name === 'Textes/d-elohim-a-dieu.txt') return true;
+  if (name === 'la croix/La Croix.docx.pdf') return true;
+  return false;
+}
 
-  // 2. Décoder et nettoyer l'URL demandée
-  const rawUrl = req.url.split('?')[0];
-  if (rawUrl.includes('\0')) {
-    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', ...SECURITY_HEADERS });
-    res.end('400 Requête invalide');
-    return;
-  }
+function isInsideRoot(file) {
+  const relative = path.relative(ROOT, file);
+  return relative !== '' && relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative);
+}
 
-  let decodedPath;
-  try {
-    decodedPath = decodeURIComponent(rawUrl);
-  } catch {
-    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', ...SECURITY_HEADERS });
-    res.end('400 Requête invalide');
-    return;
-  }
+function createServer() {
+  return http.createServer({
+    requestTimeout: 15000,
+    headersTimeout: 10000,
+    maxHeaderSize: 16384
+  }, async (req, res) => {
+    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => res.setHeader(key, value));
 
-  if (decodedPath === '/' || decodedPath === '') {
-    decodedPath = '/index.html';
-  }
+    function fail(status, text) {
+      res.writeHead(status, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end(req.method === 'HEAD' ? undefined : text);
+    }
 
-  // 3. Protection stricte contre la traversée de répertoire (Path Traversal)
-  const cleanPath = decodedPath.replace(/^[a-zA-Z]:/, '').replace(/^[\\/]+/, '/');
-  const relPath = cleanPath.replace(/^\/+/, '');
-  const filePath = path.resolve(ROOT_DIR, relPath);
-
-  if (filePath !== ROOT_DIR && !filePath.startsWith(ROOT_DIR + path.sep)) {
-    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8', ...SECURITY_HEADERS });
-    res.end('403 Accès interdit');
-    return;
-  }
-
-  // 4. Vérification de l'existence du fichier
-  fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
-      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8', ...SECURITY_HEADERS });
-      res.end('404 Fichier introuvable');
+    if (!['GET', 'HEAD'].includes(req.method)) {
+      res.setHeader('Allow', 'GET, HEAD');
+      fail(405, 'Méthode non autorisée');
       return;
     }
 
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-    const headers = {
-      'Content-Type': contentType,
-      'Content-Length': stats.size,
-      ...SECURITY_HEADERS
-    };
-
-    if (req.method === 'HEAD') {
-      res.writeHead(200, headers);
-      res.end();
+    let requestPath;
+    try {
+      requestPath = decodeURIComponent((req.url || '').split('?')[0]);
+    } catch {
+      fail(400, 'Adresse invalide');
       return;
     }
 
-    res.writeHead(200, headers);
-    const stream = fs.createReadStream(filePath);
-    stream.on('error', () => {
-      if (!res.headersSent) {
-        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8', ...SECURITY_HEADERS });
+    if (
+      !requestPath.startsWith('/') ||
+      /[\\\x00-\x1f\x7f:]/.test(requestPath) ||
+      requestPath.split('/').some(part => part === '.' || part === '..' || part.startsWith('.'))
+    ) {
+      fail(400, 'Adresse invalide');
+      return;
+    }
+
+    const name = requestPath === '/' ? 'index.html' : requestPath.slice(1);
+    if (!isPublicFile(name)) {
+      fail(404, 'Fichier introuvable');
+      return;
+    }
+
+    let handle;
+    try {
+      const realFile = await fs.promises.realpath(path.resolve(ROOT, name));
+      if (!isInsideRoot(realFile)) {
+        fail(404, 'Fichier introuvable');
+        return;
       }
-      res.end('500 Erreur interne du serveur');
-    });
-    stream.pipe(res);
+      handle = await fs.promises.open(realFile, 'r');
+      const stat = await handle.stat();
+      if (!stat.isFile()) {
+        await handle.close();
+        handle = null;
+        fail(404, 'Fichier introuvable');
+        return;
+      }
+      const ext = path.extname(name).toLowerCase();
+      res.writeHead(200, {
+        'Content-Type': MIME_TYPES[ext] || 'application/octet-stream',
+        'Content-Length': stat.size
+      });
+      if (req.method === 'HEAD') {
+        await handle.close();
+        handle = null;
+        res.end();
+        return;
+      }
+      const stream = handle.createReadStream();
+      handle = null;
+      pipeline(stream, res, () => { });
+    } catch (error) {
+      if (handle) await handle.close().catch(() => { });
+      if (res.headersSent) {
+        res.destroy();
+        return;
+      }
+      fail(['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM'].includes(error.code) ? 404 : 500, 'Fichier indisponible');
+    }
   });
-});
+}
 
-server.listen(PORT, () => {
-  console.log(`Serveur Laméd sécurisé en écoute sur http://localhost:${PORT}/`);
-});
+if (require.main === module) {
+  const port = Number(process.env.PORT || 3000);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new Error('PORT invalide');
+  }
+  const host = process.env.HOST || (process.env.RENDER ? '0.0.0.0' : '127.0.0.1');
+  const server = createServer();
+  server.on('error', error => {
+    console.error('Impossible de démarrer le serveur : ' + error.code);
+    process.exitCode = 1;
+  });
+  server.listen(port, host, () => {
+    console.log(`Serveur Laméd sécurisé en écoute sur http://${host}:${port}/`);
+  });
+}
+
+module.exports = { createServer, isPublicFile };
