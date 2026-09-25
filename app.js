@@ -1131,7 +1131,7 @@ function rendreAccueil(){
     leadSlot.innerHTML = `
       <a href="${echapperTexteHtml(urlInterneSure(lead.lien))}" class="mag-lead">
         <div class="mag-lead-thumb">
-          <img src="${echapperTexteHtml(imageSure(lead.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(lead.title)}" loading="lazy">
+          <img src="${echapperTexteHtml(imageSure(lead.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(lead.title)}" width="1600" height="900" loading="lazy">
         </div>
         <div class="mag-lead-body">
           <span class="kicker-pill">${echapperTexteHtml(lead.category)} · Grand Format</span>
@@ -1181,7 +1181,7 @@ function rendreAccueil(){
       return `
         <a href="#article=${encodeURIComponent(a.title)}" class="mag-card">
           <div class="mag-card-thumb">
-            <img src="${echapperTexteHtml(imageSure(a.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(a.title)}" loading="lazy">
+            <img src="${echapperTexteHtml(imageSure(a.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(a.title)}" width="480" height="300" loading="lazy">
           </div>
           <div class="mag-card-body">
             <span class="kicker-pill">${echapperTexteHtml(a.category || 'Doctrine')}</span>
@@ -1204,7 +1204,7 @@ function rendreAccueil(){
     etudesGrid.innerHTML = etudesTriees.map(e => `
       <a href="#etude=${encodeURIComponent(identifiantSur(e.id))}" class="mag-etude-item">
         <div class="mag-etude-thumb">
-          <img src="${echapperTexteHtml(imageSure(e.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(e.titre)}" loading="lazy">
+          <img src="${echapperTexteHtml(imageSure(e.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(e.titre)}" width="120" height="120" loading="lazy">
         </div>
         <div class="mag-etude-body">
           <span class="mag-etude-kicker">Exégèse Biblique</span>
