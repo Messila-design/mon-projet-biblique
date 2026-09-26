@@ -912,6 +912,11 @@
       line-height: 1.16;
       letter-spacing: -.01em;
       transition: color .3s var(--ease);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .mag-lead:hover .mag-lead-title {
@@ -1048,6 +1053,11 @@
       font-weight: 500;
       line-height: 1.35;
       transition: color .25s var(--ease);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .mag-side-link:hover .mag-side-title {
@@ -1145,6 +1155,11 @@
       font-size: 22px;
       line-height: 1.3;
       transition: color .25s var(--ease);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .mag-card:hover .mag-card-title {
