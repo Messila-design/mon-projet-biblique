@@ -988,13 +988,13 @@ const ARTICLES = [
 
 const VIDEOS = [
   {
-    id: "YFid8kS-j48",
-    titre: "Enseignement en direct",
+    id: "i03FwReFaF8",
+    titre: "L'interprétation biblique (1)",
     description: "Première vidéo YouTube de Laméd."
   },
   {
-    id: "BeTOtfxuvPg",
-    titre: "Enseignement biblique",
+    id: "JbgGT7PqC2s",
+    titre: "L'interprétation biblique (2)",
     description: "Deuxième vidéo YouTube de Laméd."
   }
 ];
