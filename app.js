@@ -369,6 +369,51 @@ function mettreEnValeurTextesOriginaux(contenu) {
 
 const ETUDES_BIBLIQUES = [
   {
+    id: "oeuvre-elohiym-grace-et-appel",
+    titre: "L’œuvre d’Èlohiym : une affaire de grâce et d’appel",
+    date: "12/10/2026",
+    image: "images/rcascoherrera-david-10163218_1920.png",
+    resume: "Une réflexion sur l’appel, l’onction et la grâce : pourquoi l’œuvre d’Èlohiym ne dépend pas de nos efforts, mais de ce qu’Il a donné à chacun.",
+    contenu: `
+      <p><em>Bonjour, bonsoir à tous,</em></p>
+      <blockquote>
+        <p>23 Il arrivait que quand le mauvais esprit d’Elohîm venait sur Shaoul, David prenait la harpe et en jouait de sa main. Shaoul respirait et se trouvait bien, et le mauvais esprit se retirait de dessus lui.</p>
+        <cite>1 Samuel 16:23</cite>
+      </blockquote>
+      <p>C’est un passage biblique que nous connaissons certainement.</p>
+      <p>David avait été oint roi, mais le temps n’était pas venu qu’il soit connu publiquement. Cependant, ce qui attire mon attention sur ce passage, c’est que le démon se retirait de Sha‘uwl sans effort. David n’avait pas jeûné pour cela et peut-être qu’il ne savait même pas ce qui se passait lorsqu’il jouait. Mais il jouait simplement, et cela faisait du bien au roi.</p>
+      <p>Aussi, tout le monde dans le royaume pouvait jouer de la harpe, mais cela n’aurait jamais eu le même effet. Mais, parce que David avait été oint roi au préalable, c’est cette onction, que j’appellerais royale, qui se manifestait lorsqu’il jouait. Cette onction royale s’exerçait dans la vie d’un autre roi. Quand ’Èlohiym approuve et oint une personne, les œuvres d’Èlohiym l’accompagnent tout naturellement.</p>
+      <p>Est-ce dire que je ne dois plus jeûner ? Bien sûr que non. Au contraire, cela fait partie de la marche. Mais nous ne devons jamais croire que c’est parce que tu jeûnes ou que tu pries que le Seigneur va agir. Non, c’est une séduction de l’ennemi. Si hier tu l’as fait et que cela a marché, c’est parce que ’Èlohiym a voulu agir, mais pas parce que tu as jeûné et prié.</p>
+      <p>Mais tu te diras qu’il y en a d’autres qui le font et que ça marche. En vérité, nous devons agir par obéissance. Ce n’est pas parce qu’hier une personne l’a fait que cela devient une vérité absolue, applicable à tout le monde. Car si le Seigneur demande à un chrétien de le faire, celui-ci le fait dans l’obéissance au Seigneur. Or, si moi je le fais sans cette orientation divine, pensez-vous que j’aurais les mêmes résultats ? Bien évidemment que non.</p>
+      <p>Frères et sœurs, il faut que l’on discerne entre une orientation divine et une vérité absolue, c’est-à-dire ce qui est bibliquement enseignable. Veillons à ne pas tomber dans ce piège de l’ennemi, celui de nous faire croire que, parce que tu jeûnes et pries, il y aura le réveil spirituel au Gabon, que tu verras les morts ressusciter, que l’onction se manifestera puissamment. Tout dépend de ce qui t’a été dit par le ciel.</p>
+      <p>Je ne suis pas en train de dire de ne plus jeûner et prier parce que nous avons été oints. Non, nous sommes tous tenus par cette même loi pour nous maintenir dans la présence du Seigneur. Ce dont nous parlons est une affaire d’appel et d’onction. C’est une grâce, une faveur qui a été donnée par le ciel. C’est tout. Tout ce qu’il y a à faire, c’est de l’entretenir par une vie de consécration, pour ne pas gaspiller cette grâce, afin que plusieurs en profitent et soient bénis.</p>
+      <p>Donc, ce que nous devons faire, c’est faire simplement ce qui nous a été demandé de faire. Et même, tu peux jeûner et prier, remuer ciel et terre, et rien ne se passe. Tu seras frustré et aigri. Et même, tu pourras te fâcher contre le Seigneur (ce qu’il ne faut jamais faire, car il est souverain). C’est parce que tu n’as pas compris que c’est une affaire de grâce et d’appel. La Bible dit :</p>
+      <blockquote>
+        <p>4 Or il y a différents dons de grâce, mais le même Esprit. 5 Et il y a différents services, et le même Seigneur. 6 Et il y a différentes opérations, mais c’est le même Elohîm qui opère toutes choses en tous. 7 Or à chacun est donnée la manifestation de l’Esprit pour être utile. 8 Car à l’un est donnée en effet par le moyen de l’Esprit la parole de sagesse, mais à un autre, la parole de connaissance, selon le même Esprit, 9 mais à un autre, la foi dans le même Esprit, mais à un autre, les dons de guérisons dans le même Esprit, 10 mais à un autre, les opérations des miracles, mais à un autre, la prophétie, mais à un autre, les discernements d’esprits, mais à un autre, diverses langues, mais à un autre, l’interprétation de langues. 11 Mais un seul et même Esprit opère toutes ces choses, les distribuant à chacun en particulier comme il le veut.</p>
+        <cite>1 Corinthiens 12:4-12 — BYM</cite>
+      </blockquote>
+      <blockquote>
+        <p>7 Mais la grâce est donnée à chacun de nous selon la mesure du don du Mashiah.</p>
+        <cite>Éphésiens 4:7 — BYM</cite>
+      </blockquote>
+      <blockquote>
+        <p>4 Car, comme nous avons beaucoup de membres dans un seul corps, et que tous les membres n’ont pas la même fonction, 5 ainsi nous, qui sommes nombreux, sommes un seul corps en Mashiah mais, chacun individuellement, membres les uns des autres. 6 Mais, ayant des dons de grâce différents selon la grâce qui nous a été donnée : soit la prophétie, selon la proportion de la foi,</p>
+        <cite>Romains 12:4-6 — BYM</cite>
+      </blockquote>
+      <p>Par ces passages, nous comprenons bien que le Saint-Esprit agit dans la vie de ses disciples en fonction des dons qu’il a départis à chacun, non parce qu’ils ont jeûné et prié. Comme nous l’avons dit plus haut, derrière les dons, il faut avoir une vie de consécration, et le Seigneur décidera de t’utiliser comme il l’aura souhaité.</p>
+      <blockquote>
+        <p>1 Je vous exhorte donc, frères, à travers les compassions d’Elohîm, à présenter vos corps en sacrifice vivant, saint, agréable à Elohîm : c’est votre service sacré spirituel. 2 Et ne vous conformez pas à cet âge-ci, mais soyez transformés par le renouvellement de votre pensée, pour que vous examiniez quelle est la volonté d’Elohîm, ce qui est bon, agréable et parfait.</p>
+        <cite>Romains 12:1-2 — BYM</cite>
+      </blockquote>
+      <blockquote>
+        <p>20 Or dans une grande maison, il n’y a pas seulement des vases d’or et d’argent, mais il y en a aussi de bois et de terre. Les uns sont en effet des vases d’honneur, mais les autres sont d’un usage vil. 21 Si donc quelqu’un se nettoie complètement de ceux-ci, il sera un vase d’honneur, sanctifié et utile au Seigneur, et préparé pour toute bonne œuvre.</p>
+        <cite>2 Timothée 2:20-21 — BYM</cite>
+      </blockquote>
+      <p>Puisse le Seigneur nous éclairer. Amen !</p>
+      <p><em>Shalôm à tous !</em></p>
+    `
+  },
+  {
     id: "d-elohim-a-dieu",
     titre: "D’Èlohiym à Dieu",
     date: "03/09/2026",
