@@ -2040,6 +2040,39 @@
       }
     }
 
+    /* Les etudes depourvues de table des matieres conservent la meme mise en
+       page que les autres : le texte reste dans la colonne centrale, a la
+       meme largeur et a la meme position. Sans cette regle, le contenu
+       s'effondre dans la premiere colonne (220px) de la grille. */
+    .etude-layout.sans-sommaire {
+      grid-template-columns: 220px minmax(0, 760px) 240px;
+      column-gap: 88px;
+      justify-content: center;
+    }
+
+    .etude-layout.sans-sommaire .etude-content-col {
+      grid-column: 2;
+    }
+
+    @media (max-width:1279px) {
+      .etude-layout.sans-sommaire {
+        grid-template-columns: 240px minmax(0, 1fr) 260px;
+        column-gap: 64px;
+        gap: 64px;
+      }
+    }
+
+    @media (max-width:1023px) {
+      .etude-layout.sans-sommaire {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .etude-layout.sans-sommaire .etude-content-col {
+        grid-column: 1;
+      }
+    }
+
     .etude-toc-col {
       font-size: 15px;
     }

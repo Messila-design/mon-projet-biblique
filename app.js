@@ -1343,7 +1343,8 @@ function afficherEtude(id){
   }
 
   const { contenuAvecIds, titres } = injecterTableDesMatieres(etude.contenu || '', etude.id);
-  const tocHtml = titres.length > 0 ? construireTocHtml(titres, etude.id) : '';
+  const aSommaire = titres.length > 0;
+  const tocHtml = aSommaire ? construireTocHtml(titres, etude.id) : '';
   const notesHtml = /<sup\b[^>]*\bnote-marque\b/i.test(contenuAvecIds) ? construireNotesHtml(etude.id) : '';
   const telechargement = etude.telechargement ? `
     <div class="article-actions">
@@ -1361,7 +1362,7 @@ function afficherEtude(id){
         <h1 style="margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2;">${echapperTexteHtml(etude.titre)}</h1>
         <div class="article-card-meta">Publié le ${echapperTexteHtml(etude.date || '—')}</div>
       </div>
-      <div class="etude-layout">
+      <div class="etude-layout${aSommaire ? '' : ' sans-sommaire'}">
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
@@ -1707,7 +1708,8 @@ function afficherArticle(title){
 
   if(contenuInterne){
     const { contenuAvecIds, titres } = injecterTableDesMatieres(contenuInterne, idPrefixe);
-    const tocHtml = titres.length > 0 ? construireTocHtml(titres, idPrefixe) : '';
+    const aSommaire = titres.length > 0;
+    const tocHtml = aSommaire ? construireTocHtml(titres, idPrefixe) : '';
     const notesHtml = /<sup\b[^>]*\bnote-marque\b/i.test(contenuAvecIds) ? construireNotesHtml(idPrefixe) : '';
 
     const articleEl = document.createElement('article');
@@ -1721,7 +1723,7 @@ function afficherArticle(title){
         <div class="article-card-meta">Publié le ${echapperTexteHtml(article.date || '—')}</div>
         <p style="margin:16px 0 32px; font-size:16px; line-height:1.7; color:var(--muted-foreground);">${echapperTexteHtml(article.description)}</p>
       </div>
-      <div class="etude-layout">
+      <div class="etude-layout${aSommaire ? '' : ' sans-sommaire'}">
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
