@@ -146,6 +146,7 @@
       font-family: var(--font-sans);
       -webkit-font-smoothing: antialiased;
       font-feature-settings: "liga" 1, "kern" 1;
+      overflow-x: hidden;
     }
 
     img {
@@ -184,6 +185,7 @@
       gap: 16px;
       flex-wrap: nowrap;
       min-height: 33px;
+      overflow: hidden;
     }
 
     .mag-topbar-left {
@@ -193,6 +195,9 @@
       font-weight: 600;
       color: var(--accent-kicker);
       white-space: nowrap;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .mag-topbar-sub {
@@ -229,6 +234,14 @@
       align-items: center;
       gap: 16px;
       white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Sur petits écrans, le libellé « Accès Libre & Gratuit » encombre le bandeau. */
+    @media (max-width:640px) {
+      .mag-topbar-right {
+        display: none;
+      }
     }
 
     /* ---------- Barre d'outils (recherche + taille de police) ---------- */
@@ -558,6 +571,7 @@
       flex-direction: column;
       align-items: stretch;
       gap: 16px;
+      min-width: 0;
     }
 
     .brand {
@@ -622,6 +636,8 @@
       color: var(--muted-foreground);
       white-space: nowrap;
       scrollbar-width: none;
+      min-width: 0;
+      max-width: 100%;
     }
 
     nav.header-nav::-webkit-scrollbar {
@@ -1706,6 +1722,222 @@
       }
     }
 
+    /* ---------- Enseignements en Vidéo (cartes) & Modale YouTube ---------- */
+    .videos-grid {
+      margin-top: 48px;
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width:768px) {
+      .videos-grid {
+        grid-template-columns: repeat(2, minmax(0, 360px));
+        max-width: 752px;
+      }
+    }
+
+    .video-card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+      transition: box-shadow .5s var(--ease), transform .5s var(--ease);
+      font-family: inherit;
+      color: inherit;
+    }
+
+    .video-card:hover {
+      box-shadow: var(--shadow-card-hover);
+      transform: translateY(-2px);
+    }
+
+    .video-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .85;
+      transition: opacity .4s var(--ease);
+    }
+
+    .video-card:hover .video-thumb img {
+      opacity: 1;
+    }
+
+    .video-play {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
+    }
+
+    .video-play::after {
+      content: '';
+      margin-left: 4px;
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 16px solid #ff0000;
+    }
+
+    .video-text {
+      padding: 0 24px 24px;
+    }
+
+    .video-text h3 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .video-text p {
+      margin: 10px 0 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted-foreground);
+    }
+
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .72);
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s var(--ease);
+    }
+
+    .video-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .video-modal-dialog {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .video-modal-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+    }
+
+    .video-modal-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-modal-close {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, .15);
+      color: #fff;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .video-modal-close:hover {
+      background: rgba(255, 255, 255, .3);
+    }
+
+    /* ---------- Section YouTube (lectures intégrées) ---------- */
+    #youtube {
+      background: var(--secondary);
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .youtube-grid {
+      margin-top: 40px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width:768px) {
+      .youtube-grid {
+        grid-template-columns: repeat(2, minmax(0, 360px));
+        max-width: 752px;
+      }
+    }
+
+    .youtube-card {
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card);
+      box-shadow: var(--shadow-card);
+    }
+
+    .youtube-card iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 0;
+      display: block;
+      background: #000;
+    }
+
+    .youtube-card .yt-meta {
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted-foreground);
+    }
+
+    .youtube-card .yt-meta a {
+      color: var(--foreground);
+      text-decoration: none;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .youtube-card .yt-meta a:hover {
+      border-color: var(--foreground);
+    }
+
     /* ---------- Disposition des Articles ---------- */
     #articles .articles-head {
       border-bottom: 1px solid var(--hairline);
@@ -1848,6 +2080,20 @@
       counter-reset: toc;
     }
 
+    /* Sous-liste des titres de second niveau (h4) dans la table des matières. */
+    .etude-toc-col ol.etude-toc-sous {
+      list-style: none;
+      margin: 8px 0 0;
+      padding-left: 14px;
+      border-left: 1px solid var(--hairline);
+    }
+
+    .etude-toc-col ol.etude-toc-sous li {
+      margin-bottom: 6px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
     .etude-toc-col li {
       margin-bottom: 8px;
       line-height: 1.4;
@@ -1915,6 +2161,18 @@
 
     .etude-notes-col li {
       margin-bottom: 12px;
+    }
+
+    /* Retour de la note vers l'appel de note dans le texte. */
+    .note-backref {
+      margin-left: 6px;
+      font-size: 11px;
+      color: var(--muted-foreground);
+      text-decoration: none;
+    }
+
+    .note-backref:hover {
+      color: var(--foreground);
     }
 
     .etude-notes-col li:target {
@@ -2001,6 +2259,32 @@
     .article-article-img img {
       width: 100%;
       object-fit: cover;
+    }
+
+    /* Couverture d'article : format large, sans déformation. */
+    .article-article-img.article-cover {
+      aspect-ratio: 16/9;
+    }
+
+    .article-article-img.article-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Visionneuse Google Drive : le document doit rester lisible. */
+    .article-article-img:has(iframe) {
+      aspect-ratio: auto;
+      background: var(--secondary);
+    }
+
+    .article-article-img iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 560px;
+      border: 0;
     }
 
     #etude-article>.eyebrow {
@@ -2219,6 +2503,21 @@
       font-weight: 600;
     }
 
+    /* Ouverture et signature des articles (contenu imported des manuscrits). */
+    .etude-article-corps .article-intro {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--muted-foreground);
+    }
+
+    .etude-article-corps .article-meta {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted-foreground);
+      margin-bottom: 24px;
+    }
+
     .etude-article-corps sup.note-marque {
       font-size: 11px;
       margin-left: 2px;
@@ -2360,6 +2659,8 @@
       background: rgba(16, 30, 60, 0.18);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
+      max-width: 100vw;
+      overflow-x: hidden;
     }
 
     .newsletter-popup.is-open {
@@ -2369,10 +2670,49 @@
     .newsletter-popup-content {
       position: relative;
       width: min(480px, 100%);
+      max-width: 100%;
     }
 
     .newsletter-popup-content .ml-embedded {
       width: 100%;
+      max-width: 100%;
+    }
+
+    /* Confirmation d'inscription affichée par le site si le gestionnaire de
+       succès de MailerLite n'a pas pu s'exécuter (bloqué par la CSP). */
+    .lamed-confirmation {
+      display: none;
+      margin: 0;
+      padding: 28px 24px;
+      text-align: center;
+      background: var(--card);
+      border-radius: 12px;
+      color: var(--foreground);
+    }
+
+    .lamed-confirmation-titre {
+      margin: 0 0 8px;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    .lamed-confirmation-texte {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted-foreground);
+    }
+
+    /* Le conteneur .ml-embedded impose sa propre couleur : on la neutralise. */
+    .newsletter-popup-content .ml-embedded .lamed-confirmation,
+    .newsletter-popup-content .ml-embedded .lamed-confirmation p {
+      color: inherit;
+    }
+
+    .newsletter-popup-content .ml-embedded .lamed-confirmation-texte {
+      color: var(--muted-foreground);
     }
 
     .newsletter-popup-close {
@@ -2694,7 +3034,6 @@
 
       .section-head-row h2,
       #articles .articles-head h2,
-      #videos .videos-head h2,
       #apropos h2 {
         font-size: 32px;
       }
@@ -2762,8 +3101,13 @@
         aspect-ratio: 4/3;
       }
 
+      /* Sur mobile, la visionneuse Drive garde une hauteur lisible. */
+      .article-article-img:has(iframe) {
+        height: 70vh;
+      }
+
       .article-article-img iframe {
-        min-height: 0;
+        min-height: 70vh;
       }
 
       .article-card-header h1,
@@ -2895,6 +3239,7 @@
         <a href="#articles">Articles</a>
         <a href="#apropos">À propos</a>
         <a href="#archives">Mémoire</a>
+        <a href="#youtube">Vidéos</a>
         <button type="button" class="nav-newsletter" data-newsletter-open>Newsletter</button>
       </nav>
     </div>
@@ -2907,8 +3252,8 @@
         <span class="reading-tools-label">Recherche</span>
         <div class="search-form-wrap">
           <form class="search-form" id="site-search-form" role="search" autocomplete="off">
-            <input type="search" id="site-search-input" placeholder="Rechercher dans les études et articles…"
-              aria-label="Rechercher dans le site">
+            <input type="search" id="site-search-input" placeholder="Rechercher…"
+              aria-label="Rechercher dans les études et articles" aria-describedby="site-search-hint">
             <button type="submit" aria-label="Lancer la recherche">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -2917,7 +3262,9 @@
               </svg>
             </button>
           </form>
-          <div class="search-results" id="site-search-results" role="listbox"></div>
+        <span id="site-search-hint" class="sr-only">Tapez au moins deux caractères pour lancer la recherche dans
+          les études bibliques et les articles.</span>
+        <div class="search-results" id="site-search-results" role="listbox" aria-label="Résultats de recherche"></div>
         </div>
       </div>
       <div class="reading-tools-group">
@@ -3408,6 +3755,7 @@
           <a href="#articles">Articles</a>
           <a href="#apropos">À propos</a>
           <a href="#archives">Mémoire</a>
+          <a href="#youtube">Vidéos</a>
         </nav>
         <div class="footer-socials" aria-label="Réseaux sociaux">
           <p class="footer-socials-title">Nous contacter</p>
