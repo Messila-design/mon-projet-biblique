@@ -43,19 +43,103 @@
   <!-- End MailerLite Universal -->
 
   <!--
-====================================================================
-  GUIDE RAPIDE — À LIRE AVANT DE MODIFIER CE FICHIER
-====================================================================
-  Le contenu affiché (publications, études, articles)
-  est défini dans le bloc JavaScript "ZONE DE CONFIGURATION" du
-  fichier app.js (cherchez CTRL+F "ZONE DE CONFIGURATION").
-  Ajoutez/modifiez simplement les entrées des tableaux PUBLICATIONS,
-  ETUDES_BIBLIQUES et ARTICLES pour mettre le site à jour.
+===================================================================
+  MODELE EDITORIAL — A LIRE AVANT DE MODIFIER CE FICHIER
+===================================================================
+  Le contenu du site est defini dans la ZONE DE CONFIGURATION de
+  app.js (CTRL+F "ZONE DE CONFIGURATION") : les tableaux PUBLICATIONS,
+  ETUDES_BIBLIQUES, ARTICLES et VIDEOS. Rien ne se modifie ici dans
+  index.html, sauf pour la structure des pages.
 
-  Chaque page (Accueil, Études, Articles, Newsletter, À propos) est
-  un élément .onglet affiché/masqué via le hash de l'URL (#etudes, etc.).
-  Voir la fonction afficherOnglet() dans app.js.
-====================================================================
+  ------------------------------------------------------------------
+  1. PUBLIER UNE NOUVELLE ETUDE BIBLIQUE
+  ------------------------------------------------------------------
+  Ajouter une entree dans ETUDES_BIBLIQUES (app.js) :
+
+    {
+      id: "mon-etude-biblique",          // minuscules, chiffres, tirets
+      titre: "MON TITRE D'ETUDE",        // affiche tel quel
+      date: "21/10/2026",                // jj/mm/aaaa
+      image: "[fichier-image].jpg",       // a deposer dans le dossier images/
+      resume: "Phrase d'accroche.",      // optionnel
+      contenu: `
+        <p><em>Bonjour, bonsoir a tous,</em></p>
+
+        <h3>1. Premier chapitre</h3>
+        <p>Le texte...</p>
+        <blockquote>
+          <p>La citation biblique.</p>
+          <cite>Reference 3:16</cite>
+        </blockquote>
+
+        <h3>2. Second chapitre</h3>
+        <p>La suite...</p>
+      `
+    }
+
+  REGLES DU GABARIT
+  - L'identifiant (id) sert d'ancre d'URL (#etude=mon-etude-biblique) :
+    il ne doit contenir QUE des minuscules, des chiffres et des tirets.
+    Ne jamais le renommer apres publication, cela casserait les liens.
+  - La date s'ecrit jj/mm/aaaa. Elle determine l'ordre d'affichage.
+  - L'image est un fichier du dossier images/ (jpg ou png). Elle doit
+    etre deposee sur le serveur, sinon elle s'affichera cassee.
+  - La table des matieres est construite automatiquement a partir des
+    balises <h3> (chapitres) et <h4> (sous-chapitres) du contenu.
+    Sans ces balises, l'etude s'affiche sans sommaire lateral, mais sa
+    mise en page reste identique a celle des autres etudes.
+  - Les citations se presentent en <blockquote> avec un <cite> qui
+    precise la reference. Les notes s'ajoutent ainsi :
+        <sup class="note-marque" tabindex="0" data-note="Texte de la note.">1</sup>
+    La colonne "Notes" se construit automatiquement a gauche du texte.
+  - Pour publier aussi le PDF, ajouter :
+        telechargement: "la croix/La Croix.docx.pdf",
+        telechargementLabel: "Telecharger l'etude en PDF",
+    et deposer le PDF dans un dossier servi par le site (la croix/).
+
+  ------------------------------------------------------------------
+  2. PUBLIER UN NOUVEL ARTICLE
+  ------------------------------------------------------------------
+  Ajouter une entree dans ARTICLES (app.js) :
+
+    {
+      title: "Mon article",
+      category: "La Doctrine Apostolique",
+      description: "Une phrase d'accroche pour les listes.",
+      date: "21/10/2026",
+      image: "[fichier-image].jpg",
+      lien: "https://drive.google.com/file/d/XXXX/view"
+    }
+
+  - Le titre (title) sert d'ancre (#article=...) : il doit rester unique.
+  - Le lien (lien) pointe vers le document Google Drive. Pour un texte
+    publie en ligne, le contenu est place dans articles-contenu.js.
+  - Un article sans contenu en ligne affiche une visionneuse Drive.
+
+  ------------------------------------------------------------------
+  3. MIS EN PAGE ET MISE EN FORME
+  ------------------------------------------------------------------
+  - L'etude s'affiche en trois colonnes : sommaire a gauche, texte au
+    centre, notes a droite. Le texte garde toujours la meme largeur
+    (741px a 1440px de large), que l'etude ait ou non un sommaire.
+  - Le style du texte est defini dans index.html, section ".etude-article-corps".
+    Les classes disponibles : h3, h4, p, blockquote, cite, ul, ol, li,
+    table, figure.etude-figure-inline, strong, em, sup.note-marque.
+  - Les citations en langue originale (hebreu, grec, latin) recoivent
+    automatiquement la classe texte-hebreu, texte-grec ou texte-latin.
+  - Le mode nuit et le choix de la taille de police sont memorises par le
+    visiteur, aucun reglage n'est necessaire.
+
+  ------------------------------------------------------------------
+  4. VERIFIER AVANT DE PUBLIER
+  ------------------------------------------------------------------
+  Dans le dossier du site :
+      npm test      verifie la syntaxe et les identifiants uniques
+      npm run audit verifie les ressources et les conflits de fusion
+      npm run modele  verifie le respect du modele editorial
+  Les trois commandes doivent repondre "OK" avant un envoi sur GitHub.
+
+===================================================================
 -->
 
   <style>

@@ -7,7 +7,9 @@
     "start": "node serve.js",
     "test": "node check.js",
     "verify": "node verify.js",
-    "audit": "node audit.js"
+    "audit": "node audit.js",
+    "modele": "node modele.js",
+    "controle": "node check.js && node audit.js && node verify.js && node modele.js"
   },
   "private": true
 }
