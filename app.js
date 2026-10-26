@@ -385,7 +385,7 @@ const ETUDES_BIBLIQUES = [
       <p>Aussi, tout le monde dans le royaume pouvait jouer de la harpe, mais cela n’aurait jamais eu le même effet. Mais, parce que David avait été oint roi au préalable, c’est cette onction, que j’appellerais royale, qui se manifestait lorsqu’il jouait. Cette onction royale s’exerçait dans la vie d’un autre roi. Quand ’Èlohiym approuve et oint une personne, les œuvres d’Èlohiym l’accompagnent tout naturellement.</p>
       <p>Est-ce dire que je ne dois plus jeûner ? Bien sûr que non. Au contraire, cela fait partie de la marche. Mais nous ne devons jamais croire que c’est parce que tu jeûnes ou que tu pries que le Seigneur va agir. Non, c’est une séduction de l’ennemi. Si hier tu l’as fait et que cela a marché, c’est parce que ’Èlohiym a voulu agir, mais pas parce que tu as jeûné et prié.</p>
       <p>Mais tu te diras qu’il y en a d’autres qui le font et que ça marche. En vérité, nous devons agir par obéissance. Ce n’est pas parce qu’hier une personne l’a fait que cela devient une vérité absolue, applicable à tout le monde. Car si le Seigneur demande à un chrétien de le faire, celui-ci le fait dans l’obéissance au Seigneur. Or, si moi je le fais sans cette orientation divine, pensez-vous que j’aurais les mêmes résultats ? Bien évidemment que non.</p>
-      <p>Frères et sœurs, il faut que l’on discerne entre une orientation divine et une vérité absolue, c’est-à-dire ce qui est bibliquement enseignable. Veillons à ne pas tomber dans ce piège de l’ennemi, celui de nous faire croire que, parce que tu jeûnes et pries, il y aura le réveil spirituel au Gabon, que tu verras les morts ressusciter, que l’onction se manifestera puissamment. Tout dépend de ce qui t’a été dit par le ciel.</p>
+      <p>Frères et sœurs, il faut que l’on discerne entre une orientation divine et une vérité absolue, c’est-à-dire ce qui est bibliquement enseignable. Veillons à ne pas tomber dans ce piège de l’ennemi, celui de nous faire croire que, parce que tu jeûnes et pries, il y aura le réveil spirituel dans les nations ou dans ton assemblée, que tu verras les morts ressusciter, que l’onction se manifestera puissamment. Tout dépend de ce qui t’a été dit par le ciel.</p>
       <p>Je ne suis pas en train de dire de ne plus jeûner et prier parce que nous avons été oints. Non, nous sommes tous tenus par cette même loi pour nous maintenir dans la présence du Seigneur. Ce dont nous parlons est une affaire d’appel et d’onction. C’est une grâce, une faveur qui a été donnée par le ciel. C’est tout. Tout ce qu’il y a à faire, c’est de l’entretenir par une vie de consécration, pour ne pas gaspiller cette grâce, afin que plusieurs en profitent et soient bénis.</p>
       <p>Donc, ce que nous devons faire, c’est faire simplement ce qui nous a été demandé de faire. Et même, tu peux jeûner et prier, remuer ciel et terre, et rien ne se passe. Tu seras frustré et aigri. Et même, tu pourras te fâcher contre le Seigneur (ce qu’il ne faut jamais faire, car il est souverain). C’est parce que tu n’as pas compris que c’est une affaire de grâce et d’appel. La Bible dit :</p>
       <blockquote>
@@ -1314,7 +1314,7 @@ function rendreEtudes(){
 function afficherEtude(id){
   const etude = ETUDES_BIBLIQUES.find(e => e.id === id) || ETUDES_BIBLIQUES.find(e => identifiantSur(e.id) === id);
   const container = document.getElementById('etude-article');
-  if(!etude || !container){ afficherOnglet('etudes'); return; }
+  if(!etude || !container){ reseterMetaPartage(); afficherOnglet('etudes'); window.scrollTo(0, 0); return; }
 
   if(etude.source && !etude.contenuComplet && !etude.sourceIndisponible){
     if(!etude.chargementEnCours){
@@ -1440,7 +1440,7 @@ function injecterTableDesMatieres(contenu, idPrefixe){
 
 function construireTocHtml(titres, prefix){
   if(!titres || !titres.length) return '';
-  const aDeuxNiveaux = titres.some(t => t.niveau === 1) && titres.some(t => t.niveau === 2);
+  const aDeuxNiveaux = titres[0].niveau === 1 && titres.some(t => t.niveau === 2);
   const wrap = (html) => `<aside class="etude-toc-col" aria-label="Table des matières">
     <div class="etude-toc-label">Table des matières</div>
     ${html}
@@ -1623,12 +1623,14 @@ function rendreVideos(){
 
   grid.querySelectorAll('.video-card').forEach(btn => {
     btn.addEventListener('click', function(){
-      ouvrirVideo(this.getAttribute('data-video'), this.querySelector('h3').textContent);
+      ouvrirVideo(this.getAttribute('data-video'), this);
     });
   });
 }
 
-function ouvrirVideo(id){
+let dernierDeclencheurVideo = null;
+
+function ouvrirVideo(id, declencheur){
   if(!id || !/^[a-zA-Z0-9_-]{5,20}$/.test(id)) return;
   const modal = document.getElementById('video-modal');
   const frame = document.getElementById('video-frame');
@@ -1636,9 +1638,12 @@ function ouvrirVideo(id){
     window.open('https://www.youtube.com/watch?v=' + encodeURIComponent(id), '_blank', 'noopener,noreferrer');
     return;
   }
+  dernierDeclencheurVideo = declencheur || document.activeElement;
   frame.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1';
   modal.hidden = false;
   modal.classList.add('is-open');
+  const closeBtn = document.getElementById('video-modal-close');
+  if(closeBtn) closeBtn.focus();
 }
 
 function telechargerArticleHtml(article, contenuHtml){
@@ -1657,7 +1662,7 @@ function telechargerArticleHtml(article, contenuHtml){
 function afficherArticle(title){
   const article = ARTICLES.find(a => a.title === title);
   const container = document.getElementById('article-article');
-  if(!article || !container){ afficherOnglet('articles'); return; }
+  if(!article || !container){ reseterMetaPartage(); afficherOnglet('articles'); window.scrollTo(0, 0); return; }
 
   const contenuInterne = (window.ARTICLES_CONTENU || {})[article.title];
   const idPrefixe = 'art-' + slugifier(article.title);
@@ -1742,7 +1747,7 @@ function afficherArticle(title){
     definirMetaPartage({
       titre: 'Laméd — ' + article.title + ' · Réflexions',
       description: article.description || article.category || '',
-      image: ''
+      image: article.image || ''
     });
     afficherOnglet('lire-article');
     window.scrollTo(0, 0);
@@ -1771,7 +1776,7 @@ function afficherArticle(title){
   definirMetaPartage({
     titre: 'Laméd — ' + article.title + ' · Réflexions',
     description: article.description || article.category || '',
-    image: ''
+    image: article.image || ''
   });
   afficherOnglet('lire-article');
   window.scrollTo(0, 0);
@@ -1797,18 +1802,71 @@ function afficherOnglet(id){
   });
 }
 
+function defilerVersElement(cible, comportement){
+  if(!cible) return;
+  const entete = document.querySelector('.site-header');
+  const decalage = entete ? entete.getBoundingClientRect().height + 16 : 16;
+
+  // Faire defiler d'abord les conteneurs internes (colonne de notes) :
+  // scrollIntoView smooth peut les ignorer.
+  let parent = cible.parentElement;
+  while(parent && parent !== document.body && parent !== document.documentElement){
+    const style = getComputedStyle(parent);
+    if(/(auto|scroll)/.test(style.overflowY) && parent.scrollHeight > parent.clientHeight + 1){
+      const rectParent = parent.getBoundingClientRect();
+      const haut = cible.getBoundingClientRect().top - rectParent.top + parent.scrollTop - 8;
+      parent.scrollTo({ top: Math.max(0, haut), behavior: 'auto' });
+    }
+    parent = parent.parentElement;
+  }
+
+  const rect = cible.getBoundingClientRect();
+  if(rect.top >= decalage && rect.bottom <= window.innerHeight) return;
+  const position = rect.top + window.scrollY - decalage;
+  window.scrollTo({ top: Math.max(0, position), behavior: comportement || 'smooth' });
+}
+
+/* ---------- Ancres internes (sommaire et notes) ---------- */
+function activerAncresInternes(){
+  document.addEventListener('click', (event) => {
+    if(event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const lien = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
+    if(!lien) return;
+    const hash = lien.getAttribute('href');
+    if(!hash || hash === '#' || /^#(?:etude|article)=/.test(hash)) return;
+
+    let id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch(e){ return; }
+    const cible = document.getElementById(id);
+    if(!cible || cible.classList.contains('onglet')) return;
+
+    const page = cible.closest('.onglet');
+    const pageActive = document.querySelector('.onglet:not([hidden])');
+    if(!page || page.hidden || !pageActive || page.id !== pageActive.id) return;
+    if(pageActive.id !== 'lire-etude' && pageActive.id !== 'lire-article') return;
+
+    // Ne pas remplacer #etude=... ou #article=... par l'ancre : cela
+    // reinitialiserait les metadonnees et casserait le lien profond.
+    event.preventDefault();
+    cible.setAttribute('tabindex', '-1');
+    cible.focus({ preventScroll: true });
+    defilerVersElement(cible);
+  });
+}
+
 /* ---------- Meta de partage (Open Graph) dynamique ---------- */
 function definirMetaPartage({ titre, description, image }){
   document.title = titre || 'Laméd — Études bibliques & publications';
   const defautImage = 'images/pub-1.jpg';
-  const img = image && !/^data:/.test(image) ? image : defautImage;
+  const img = image && !/^data:/.test(image) ? imageSure(image, defautImage) : defautImage;
+  const imgAbsolue = new URL(img, document.baseURI || window.location.href).href;
   const valeurs = {
     'og-title': titre || 'Laméd — Études bibliques & publications',
     'og-description': description || 'Des études bibliques pour approfondir les Écritures : articles et publications.',
-    'og-image': img,
+    'og-image': imgAbsolue,
     'tw-title': titre || 'Laméd — Études bibliques & publications',
     'tw-description': description || 'Des études bibliques pour approfondir les Écritures : articles et publications.',
-    'tw-image': img
+    'tw-image': imgAbsolue
   };
   Object.entries(valeurs).forEach(([id, contenu]) => {
     const el = document.getElementById(id);
@@ -1849,7 +1907,7 @@ function naviguerDepuisHash(){
   if(page){
     reseterMetaPartage();
     afficherOnglet(page.id);
-    requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    requestAnimationFrame(() => defilerVersElement(el, 'smooth'));
     return;
   }
 
@@ -1932,24 +1990,12 @@ function initNewsletterPopup(){
     cadre.appendChild(closeBtn);
   }
 
-  // MailerLite injecte un script inline (ml_webform_success_...) qui affiche le
-  // message de confirmation apres inscription. Ce script n'ayant pas de nonce,
-  // la CSP le bloque. On lui ajoute donc le nonce de la page pour qu'il
-  // s'execute normalement. Il est insere dans le <head>, d'ou l'observation
-  // de tout le document.
-  function autoriserScriptsInjectes(){
-    const scriptReference = document.querySelector('script[nonce]');
-    if(!scriptReference) return;
-    const nonce = scriptReference.nonce || scriptReference.getAttribute('nonce') || '';
-    if(!nonce) return;
-    document.querySelectorAll('script:not([src]):not([nonce])').forEach(script => {
-      script.setAttribute('nonce', nonce);
-    });
-  }
-
+  // Le script de succes de MailerLite est autorise par son hash dans la CSP
+  // (voir serve.js). Le filet de securite ci-dessous reste utile si le
+  // formulaire est recree et que le hash ne correspond plus.
   // Filet de securite : si le gestionnaire de succes de MailerLite n'a pas pu
-  // s'executer (bloque par la CSP), on affiche nous-memes la confirmation
-  // afin que l'utilisateur ne reste pas devant un formulaire fige.
+  // s'executer, on affiche nous-memes la confirmation afin que l'utilisateur
+  // ne reste pas devant un formulaire fige.
   function ajouterConfirmationLocale(){
     const embed = popup.querySelector('.ml-embedded');
     if(!embed || embed.querySelector('.lamed-confirmation')) return;
@@ -1984,13 +2030,10 @@ function initNewsletterPopup(){
   closeBtn.addEventListener('click', fermer);
   const observateurFormulaire = new MutationObserver(() => {
     placerCroixDansCadre();
-    autoriserScriptsInjectes();
     surveillerConfirmation();
   });
   observateurFormulaire.observe(popup, { childList:true, subtree:true });
-  observateurFormulaire.observe(document.head, { childList:true, subtree:true });
   placerCroixDansCadre();
-  autoriserScriptsInjectes();
   surveillerConfirmation();
   document.addEventListener('keydown', (event) => {
     if(event.key === 'Escape' && popup.classList.contains('is-open')) fermer();
@@ -2009,6 +2052,8 @@ function initVideoModal(){
     if(frame) frame.src = '';
     modal.classList.remove('is-open');
     modal.hidden = true;
+    if(dernierDeclencheurVideo && dernierDeclencheurVideo.isConnected) dernierDeclencheurVideo.focus();
+    dernierDeclencheurVideo = null;
   }
 
   closeBtn.addEventListener('click', close);
@@ -2053,52 +2098,45 @@ function initImageZoom(){
 }
 
 /* ---------- Recherche dans le contenu ---------- */
-function echapperTexteHtml(valeur){
-  return String(valeur || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 function normaliserTexte(t){
   return (t || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function construireIndexRecherche(){
   const items = [];
+  function ajouter(item, contenu){
+    const texte = String(contenu || '').replace(/<[^>]*>/g, ' ');
+    item.recherche = normaliserTexte([item.title, item.desc, item.meta, texte].join(' '));
+    items.push(item);
+  }
   ETUDES_BIBLIQUES.forEach(e => {
-    items.push({
+    ajouter({
       type: 'Étude',
       title: e.titre,
       desc: extraireExtrait(e.contenu, 180),
       meta: e.date || '',
-      hash: '#etude=' + encodeURIComponent(identifiantSur(e.id)),
-      keywords: [e.titre, e.date, extraireExtrait(e.contenu, 400)].join(' ')
-    });
+      hash: '#etude=' + encodeURIComponent(identifiantSur(e.id))
+    }, e.contenu);
   });
   ARTICLES.forEach(a => {
-    items.push({
+    ajouter({
       type: 'Article',
       title: a.title,
       desc: a.description || '',
       meta: a.category + ' · ' + a.date,
-      hash: '#article=' + encodeURIComponent(a.title),
-      keywords: [a.title, a.description, a.category, a.date].join(' ')
-    });
+      hash: '#article=' + encodeURIComponent(a.title)
+    }, (window.ARTICLES_CONTENU || {})[a.title] || '');
   });
   PUBLICATIONS.forEach(p => {
     // Les publications sans lien réel ne doivent pas mener à une page vide.
     const cible = (p.lien && p.lien !== '#') ? p.lien : '#accueil';
-    items.push({
+    ajouter({
       type: 'Publication',
       title: p.title,
       desc: p.excerpt || '',
       meta: (p.category || '') + ' · ' + (p.date || ''),
-      hash: cible,
-      keywords: [p.title, p.excerpt, p.category, p.date].join(' ')
-    });
+      hash: cible
+    }, p.excerpt);
   });
   return items;
 }
@@ -2113,7 +2151,7 @@ function initRecherche(){
   function afficherResultats(q){
     if(!q || q.length < 2){ results.classList.remove('is-open'); results.innerHTML = ''; return; }
     const nq = normaliserTexte(q);
-    const matches = index.filter(it => normaliserTexte(it.keywords).includes(nq)).slice(0, 12);
+    const matches = index.filter(it => it.recherche.includes(nq)).slice(0, 12);
     if(!matches.length){
       results.innerHTML = `<div class="search-result-empty" role="presentation">Aucun résultat pour « ${echapperTexteHtml(q)} ».</div>`;
     } else {
@@ -2132,7 +2170,10 @@ function initRecherche(){
   });
   input.addEventListener('input', () => afficherResultats(input.value.trim()));
   document.addEventListener('click', (e) => {
-    if(!form.parentElement.contains(e.target)) results.classList.remove('is-open');
+    if(results.contains(e.target) || !form.parentElement.contains(e.target)) results.classList.remove('is-open');
+  });
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') results.classList.remove('is-open');
   });
   input.addEventListener('focus', () => { if(input.value.trim().length >= 2) afficherResultats(input.value.trim()); });
 }
@@ -2195,3 +2236,4 @@ function initModeNuit(){
 initRecherche();
 initTaillePolice();
 initModeNuit();
+activerAncresInternes();

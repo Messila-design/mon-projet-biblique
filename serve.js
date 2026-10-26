@@ -31,16 +31,20 @@ const CSP_BASE = [
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
-  "form-action 'self' https://*.mailerlite.com https://assets.mailerlite.com",
-  // Meta Pixel (connect.facebook.net), MailerLite (universal, webforms, jQuery,
-  // polices) et Cloudflare Web Analytics doivent etre explicitement autorises,
-  // sinon leurs ressources sont bloquees par le navigateur.
-  "script-src 'self' https://connect.facebook.net https://assets.mailerlite.com https://assets.mlcdn.com https://groot.mailerlite.com https://static.mailerlite.com https://static.cloudflareinsights.com",
+  "form-action 'self' https://*.mailerlite.com https://assets.mailerlite.com https://www.facebook.com",
+  // Meta Pixel (connect.facebook.net + www.facebook.com), MailerLite (universal,
+  // webforms, jQuery, polices) et Cloudflare Web Analytics doivent etre
+  // explicitement autorises, sinon leurs ressources sont bloquees.
+  // Le hash autorise le gestionnaire de succes inline injecte par MailerLite
+  // (ml_webform_success_43549979), qui ne peut pas recevoir de nonce avant son
+  // execution. Si le formulaire MailerLite est recree, remplacer ce hash par
+  // celui indique dans le message CSP de la console.
+  "script-src 'self' https://connect.facebook.net https://assets.mailerlite.com https://assets.mlcdn.com https://groot.mailerlite.com https://static.mailerlite.com https://static.cloudflareinsights.com 'sha256-HznWvJ463XPNa7qy05sbmk+iOkv6Nrevp+DqBaH3jU4='",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.mailerlite.com https://assets.mlcdn.com https://fonts.mailerlite.com",
   "font-src 'self' https://fonts.gstatic.com https://assets.mlcdn.com https://assets.mailerlite.com https://fonts.mailerlite.com",
-  "img-src 'self' data: blob: https://img.youtube.com https://*.mailerlite.com https://storage.mlcdn.com https://assets.mlcdn.com",
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://drive.google.com",
-  "connect-src 'self' https://*.mailerlite.com https://assets.mailerlite.com https://assets.mlcdn.com https://storage.mlcdn.com https://cloudflareinsights.com"
+  "img-src 'self' data: blob: https://img.youtube.com https://*.mailerlite.com https://storage.mlcdn.com https://assets.mlcdn.com https://www.facebook.com",
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://drive.google.com https://www.facebook.com",
+  "connect-src 'self' https://*.mailerlite.com https://assets.mailerlite.com https://assets.mlcdn.com https://storage.mlcdn.com https://cloudflareinsights.com https://www.facebook.com https://connect.facebook.net"
 ];
 
 // Un nonce unique par reponse autorise les scripts inline de la page
