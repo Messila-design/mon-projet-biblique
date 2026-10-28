@@ -48,7 +48,7 @@
 ===================================================================
   Le contenu du site est defini dans la ZONE DE CONFIGURATION de
   app.js (CTRL+F "ZONE DE CONFIGURATION") : les tableaux PUBLICATIONS,
-  ETUDES_BIBLIQUES, ARTICLES et VIDEOS. Rien ne se modifie ici dans
+  ETUDES_BIBLIQUES, ARTICLES, LIVRES et VIDEOS. Rien ne se modifie ici dans
   index.html, sauf pour la structure des pages.
 
   ------------------------------------------------------------------
@@ -115,6 +115,26 @@
   - Le lien (lien) pointe vers le document Google Drive. Pour un texte
     publie en ligne, le contenu est place dans articles-contenu.js.
   - Un article sans contenu en ligne affiche une visionneuse Drive.
+
+  ------------------------------------------------------------------
+  2 BIS. PUBLIER UN LIVRE
+  ------------------------------------------------------------------
+  Ajouter une entree dans LIVRES (app.js) :
+
+    {
+      title: "Titre du livre",
+      category: "Les Livres",
+      description: "Une phrase de presentation.",
+      date: "21/10/2026",
+      lien: "https://drive.google.com/file/d/XXXX/view"
+    }
+
+  Le champ source est facultatif. S'il pointe vers un fichier texte,
+  son contenu s'affiche en ligne avec un sommaire genere depuis les titres
+  commencant par "## ". Le lien Drive permet le telechargement.
+  L'image de couverture est facultative. La parution est triee par date,
+  affichee dans l'onglet Livres,
+  l'accueil et la recherche, et son lien ouvre la visionneuse Drive.
 
   ------------------------------------------------------------------
   3. MIS EN PAGE ET MISE EN FORME
@@ -2028,7 +2048,8 @@
       padding-bottom: 24px;
     }
 
-    #articles .articles-head h2 {
+    #articles .articles-head h2,
+    #livres .articles-head h2 {
       margin: 12px 0 0;
       font-family: var(--font-serif);
       font-weight: 400;
@@ -3354,9 +3375,9 @@
         <a href="#accueil">Accueil</a>
         <a href="#etudes">Études bibliques</a>
         <a href="#articles">Articles</a>
+        <a href="#livres">Livres</a>
         <a href="#apropos">À propos</a>
         <a href="#archives">Mémoire</a>
-        <a href="#youtube">Vidéos</a>
         <button type="button" class="nav-newsletter" data-newsletter-open>Newsletter</button>
       </nav>
     </div>
@@ -3732,13 +3753,13 @@
       </div>
     </section>
 
-    <!-- Archives des études (dossiers chronologiques) -->
+    <!-- Archives des études et des livres (dossiers chronologiques) -->
     <section id="archives" class="onglet on-secondary">
       <div class="section-inner">
         <div class="section-head-row">
           <div>
             <p class="eyebrow">05 — Mémoire</p>
-            <h2>Archives des études</h2>
+            <h2>Archives des études et des livres</h2>
           </div>
           <a href="#etudes" class="archive-link">← Retour aux parcours</a>
         </div>
@@ -3754,6 +3775,17 @@
           <h2>Articles</h2>
         </div>
         <div id="articles-grid" class="articles-grid"></div>
+      </div>
+    </section>
+
+    <!-- Livres -->
+    <section id="livres" class="onglet">
+      <div class="section-inner">
+        <div class="articles-head">
+          <p class="eyebrow">04 — Ouvrages</p>
+          <h2>Livres</h2>
+        </div>
+        <div id="livres-grid" class="articles-grid"></div>
       </div>
     </section>
 
@@ -3785,42 +3817,6 @@
             <img src="images/about.jpg" alt="Ouvrages reliés et stylo sur un bureau clair" width="1200" height="1500"
               loading="lazy">
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- YouTube -->
-    <section id="youtube" class="onglet">
-      <div class="section-inner">
-        <div class="section-head-row">
-          <div>
-            <p class="eyebrow">07 — Vidéos</p>
-            <h2>Enseignement en vidéo</h2>
-          </div>
-          <a href="https://www.youtube.com/c/DICOBIBLIQUE" target="_blank" rel="noopener noreferrer"
-            class="archive-link">Chaîne YouTube →</a>
-        </div>
-        <div class="youtube-grid">
-          <article class="youtube-card">
-            <iframe src="https://www.youtube.com/embed/i03FwReFaF8" title="L'interprétation biblique (1)" loading="lazy"
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
-            <div class="yt-meta">
-              <span>L'interprétation biblique (1)</span>
-              <a href="https://youtube.com/live/i03FwReFaF8?feature=share" target="_blank"
-                rel="noopener noreferrer">Ouvrir sur YouTube ↗</a>
-            </div>
-          </article>
-          <article class="youtube-card">
-            <iframe src="https://www.youtube.com/embed/JbgGT7PqC2s" title="L'interprétation biblique (2)" loading="lazy"
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
-            <div class="yt-meta">
-              <span>L'interprétation biblique (2)</span>
-              <a href="https://youtube.com/live/JbgGT7PqC2s?feature=share" target="_blank"
-                rel="noopener noreferrer">Ouvrir sur YouTube ↗</a>
-            </div>
-          </article>
         </div>
       </div>
     </section>
@@ -3870,9 +3866,9 @@
           <a href="#accueil">Accueil</a>
           <a href="#etudes">Études bibliques</a>
           <a href="#articles">Articles</a>
+          <a href="#livres">Livres</a>
           <a href="#apropos">À propos</a>
           <a href="#archives">Mémoire</a>
-          <a href="#youtube">Vidéos</a>
         </nav>
         <div class="footer-socials" aria-label="Réseaux sociaux">
           <p class="footer-socials-title">Nous contacter</p>
@@ -3917,6 +3913,7 @@
   </footer>
 
   <script src="articles-contenu.js"></script>
+  <script src="livres-contenu.js"></script>
   <script src="app.js"></script>
 
   <!-- Cloudflare Web Analytics -->

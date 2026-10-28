@@ -3,7 +3,7 @@
 /*
  * Controle du modele editorial Laméd.
  *
- * Verifie que les études et les articles respectent le gabarit de
+ * Verifie que les études, articles et livres respectent le gabarit de
  * publication, afin qu'une nouvelle publication ne puisse pas introduire
  * les regressions deja corrigees :
  *   - identifiant d'etude stable et utilisable dans une ancre d'URL
@@ -41,7 +41,7 @@ function evaluerConfiguration(app) {
   const contenu = fs.readFileSync(path.join(root, 'articles-contenu.js'), 'utf8');
   vm.runInContext(contenu, sandbox, { filename: 'articles-contenu.js', timeout: 30000 });
   vm.runInContext(
-    app.slice(0, debut) + '\n;globalThis.__modele = { ETUDES_BIBLIQUES, ARTICLES, VIDEOS, PUBLICATIONS };',
+    app.slice(0, debut) + '\n;globalThis.__modele = { ETUDES_BIBLIQUES, ARTICLES, LIVRES, VIDEOS, PUBLICATIONS };',
     sandbox,
     { filename: 'app.js', timeout: 30000 }
   );
@@ -50,7 +50,7 @@ function evaluerConfiguration(app) {
 
 const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const { ETUDES_BIBLIQUES, ARTICLES } = evaluerConfiguration(app);
+const { ETUDES_BIBLIQUES, ARTICLES, LIVRES } = evaluerConfiguration(app);
 
 // ------------------------------------------------------- regles de contenu
 
@@ -162,6 +162,29 @@ for (const article of ARTICLES) {
   }
 }
 
+const titresLivres = new Set();
+
+for (const livre of LIVRES) {
+  const contexte = `Livre "${livre.title || '(sans titre)'}"`;
+  const titre = String(livre.title || '');
+
+  if (!titre) {
+    erreur(`${contexte} : titre manquant.`);
+  } else if (titresArticles.has(titre) || titresLivres.has(titre)) {
+    erreur(`${contexte} : titre en double parmi les articles et les livres.`);
+  } else {
+    titresLivres.add(titre);
+  }
+
+  if (!livre.category) avertissement(`${contexte} : categorie manquante.`);
+  if (!livre.description) avertissement(`${contexte} : description manquante.`);
+  verifierDate(livre.date, contexte);
+  verifierImage(livre.image, contexte);
+  if (livre.source && !fs.existsSync(path.join(root, livre.source))) {
+    erreur(`${contexte} : fichier source introuvable -> "${livre.source}"`);
+  }
+}
+
 // --------------------------------------- coherence avec le reste du site
 
 for (const etude of ETUDES_BIBLIQUES) {
@@ -183,10 +206,11 @@ for (const id of ancresEtudesHtml) {
   }
 }
 
+const titresPublications = new Set([...titresArticles, ...titresLivres]);
 const ancresArticlesHtml = [...html.matchAll(/href="#article=([^"]+)"/g)].map(m => decodeURIComponent(m[1]));
 for (const titre of ancresArticlesHtml) {
-  if (!titresArticles.has(titre)) {
-    erreur(`index.html pointe vers #article=${titre} mais aucun article ne porte ce titre.`);
+  if (!titresPublications.has(titre)) {
+    erreur(`index.html pointe vers #article=${titre} mais aucun article ou livre ne porte ce titre.`);
   }
 }
 
@@ -200,6 +224,7 @@ console.log('Controle du modele editorial Laméd');
 console.log('='.repeat(60));
 console.log(`Etudes mesurees : ${ETUDES_BIBLIQUES.length}`);
 console.log(`Articles mesures : ${ARTICLES.length}`);
+console.log(`Livres mesures : ${LIVRES.length}`);
 console.log('');
 
 if (remarques.length) {

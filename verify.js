@@ -18,16 +18,18 @@ for (const file of files) {
 const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const studiesMatch = app.match(/const\s+ETUDES_BIBLIQUES\s*=\s*\[([\s\S]*?)\n\];/);
 const articlesMatch = app.match(/const\s+ARTICLES\s*=\s*\[([\s\S]*?)\n\];/);
+const booksMatch = app.match(/const\s+LIVRES\s*=\s*\[([\s\S]*?)\n\];/);
 
-if (!studiesMatch || !articlesMatch) {
-  throw new Error('Les tableaux ETUDES_BIBLIQUES ou ARTICLES sont introuvables dans app.js.');
+if (!studiesMatch || !articlesMatch || !booksMatch) {
+  throw new Error('Les tableaux ETUDES_BIBLIQUES, ARTICLES ou LIVRES sont introuvables dans app.js.');
 }
 
 const studies = [...studiesMatch[1].matchAll(/\bid\s*:/g)].length;
 const articles = [...articlesMatch[1].matchAll(/\btitle\s*:/g)].length;
+const books = [...booksMatch[1].matchAll(/\btitle\s*:/g)].length;
 
-if (studies === 0 || articles === 0) {
-  throw new Error('Les données des études ou des articles sont vides.');
+if (studies === 0 || articles === 0 || books === 0) {
+  throw new Error('Les données des études, des articles ou des livres sont vides.');
 }
 
-console.log(`OK — ${files.length} fichiers analysés, ${studies} étude(s) et ${articles} article(s) trouvés.`);
+console.log(`OK — ${files.length} fichiers analysés, ${studies} étude(s), ${articles} article(s) et ${books} livre(s) trouvés.`);

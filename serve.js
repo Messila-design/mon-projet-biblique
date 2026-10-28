@@ -74,6 +74,7 @@ function isPublicFile(name) {
   if (/^(?:images|images - la croix)\/[^/\\]+\.(?:png|jpe?g|webp|gif|ico|svg)$/i.test(name)) return true;
   if (/^articles\/[^/\\]+\.txt$/i.test(name)) return true;
   if (name === 'Textes/d-elohim-a-dieu.txt') return true;
+  if (name === 'Textes/puissance-par-la-priere.txt') return true;
   if (name === 'la croix/La Croix.docx.pdf') return true;
   return false;
 }

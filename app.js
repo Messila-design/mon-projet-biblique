@@ -1025,12 +1025,16 @@ const ARTICLES = [
   { title: "La doctrine apostolique : La Foi en 'Èlohiym", category: "La Doctrine Apostolique", description: "Nature, source et facettes de la foi biblique : espérance de salut, don spirituel, doctrine apostolique, foi agissante et preuves historiques.", date: "26/07/2026", image: "images/alex-shute-6N3hwSsdleQ-unsplash.jpg", lien: "https://drive.google.com/file/d/18IKxknb-F7nKfnPzCYGExUIT7yX1vO8m/view?usp=drive_link" },
   { title: "Les Traditions", category: "Doctrines", description: "La Torah d'Elohîm, l'Évangile du Mashiah, le culte des ancêtres et les philosophies grecques : distinguer les traditions divines des traditions humaines.", date: "07/07/2026", image: "images/amaefule-wooden-mask-2543403_1920.jpg", lien: "https://drive.google.com/file/d/1Tur3vGlONQdSOlXY2fRfXltyN2c5VlNz/view?usp=drive_link" },
   { title: "La Repentance des œuvres mortes", category: "La Doctrine Apostolique", description: "Premier volet de la Doctrine apostolique : ce qu'est vraiment la repentance, comment elle se manifeste, et ce qui se passe pour celui qui refuse de s'y soumettre.", date: "07/07/2026", image: "images/sad-contemplative-person-near-lake.jpg", lien: "https://drive.google.com/file/d/1sgskRVnKABRtbX5JHpUCuh5ObApin7Vn/view?usp=drive_link" },
-  { title: "Muse-ique ou Culte à YHWH", category: "Les Livres", description: "Un discernement biblique entre l'inspiration musicale profane (la « muse ») et le véritable culte rendu à YHWH dans l'adoration.", date: "04/07/2026", lien: "https://drive.google.com/file/d/12xjIwO-1aFAbfIqO9YFmZ6DIKekcpxB6/view?usp=drive_link" },
   { title: "Comment vérifier les Écritures ?", category: "Doctrines", description: "Des repères pratiques pour éprouver et vérifier ce qui est enseigné, à la lumière des Écritures : inspiration, révélation et illumination.", date: "02/07/2026", image: "images/mick-haupt-eQ2Z9ay9Wws-unsplash_1.jpg", lien: "https://drive.google.com/file/d/14J7CEIBw1g0Hcmv_bbR-rLKuq4qFI1To/view?usp=drive_link" },
   { title: "La possession démoniaque", category: "Doctrines", description: "Comprendre la possession démoniaque, ses manifestations et la délivrance, à la lumière des Écritures.", date: "02/07/2026", image: "images/marek-szturc-4CDdd1RCt6w-unsplash.jpg", lien: "https://drive.google.com/file/d/1Og0gF62MQMuJhJB748x167KELucPiIWI/view?usp=drive_link" },
   { title: "La Dot", category: "Doctrines", description: "Un regard biblique sur la pratique de la dot, entre coutume culturelle et fondement scripturaire.", date: "02/07/2026", image: "images/la dot.jpg", lien: "https://drive.google.com/file/d/1QAZeTIPFZXBe4QOXqGqxxgAukPt--2Oh/view?usp=drive_link" },
   { title: "L'Église (1)", category: "Doctrines", description: "Première partie d'un enseignement sur la nature et la mission de l'Église selon les Écritures.", date: "02/07/2026", image: "images/camylla-battani-ABVE1cyT7hk-unsplash.jpg", lien: "https://drive.google.com/file/d/1X-C8-spOcYx-SfsB5HU_70wPXyqU0IQ0/view?usp=drive_link" },
   { title: "L'Église (2)", category: "Doctrines", description: "Suite de l'enseignement sur l'Église : approfondissement biblique et applications pratiques.", date: "02/07/2026", image: "images/camylla-battani-ABVE1cyT7hk-unsplash.jpg", lien: "https://drive.google.com/file/d/1yDoojgdw3UgjUmpGhh3L0teofSsUgQiw/view?usp=drive_link" }
+];
+
+const LIVRES = [
+  { title: "Muse-ique ou Culte à YHWH", category: "Les Livres", description: "Un discernement biblique entre l'inspiration musicale profane (la « muse ») et le véritable culte rendu à YHWH dans l'adoration.", date: "04/07/2026", lien: "https://drive.google.com/file/d/12xjIwO-1aFAbfIqO9YFmZ6DIKekcpxB6/view?usp=drive_link" },
+  { title: "La puissance par la prière", category: "Les Livres", description: "Un ouvrage d’Edward McKendree Bounds consacré à la prière et à sa place dans la vie chrétienne.", date: "28/10/2026", image: "images/aaron-burden-lPCu8HnGU2E-unsplash.jpg", source: "Textes/puissance-par-la-priere.txt", lien: "https://drive.google.com/file/d/1XuOzc3qczBGICQOHMh_wj0fKgcAYhHcE/view?usp=drive_link" }
 ];
 
 const VIDEOS = [
@@ -1158,7 +1162,7 @@ function rendreAccueil(){
     });
   });
 
-  ARTICLES.forEach(a => {
+  [...ARTICLES, ...LIVRES].forEach(a => {
     const contenuTexte = (window.ARTICLES_CONTENU || {})[a.title] || a.description || '';
     flux.push({
       image: a.image || IMAGE_DEFAUT,
@@ -1224,7 +1228,7 @@ function rendreAccueil(){
   // 3. La Tribune Doctrinale (Articles majeurs en grille 3 colonnes)
   const articlesGrid = document.getElementById('mag-articles-grid');
   if(articlesGrid){
-    const articlesTries = [...ARTICLES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date)).slice(0, 6);
+    const articlesTries = [...ARTICLES, ...LIVRES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date)).slice(0, 6);
     articlesGrid.innerHTML = articlesTries.map(a => {
       const contenuTexte = (window.ARTICLES_CONTENU || {})[a.title] || a.description || '';
       const readTime = estimerTempsLecture(contenuTexte, '14 min');
@@ -1557,19 +1561,44 @@ function activerSurbrillanceToc(container){
   activer();
 }
 
-function rendreArchives(){
-  const grid = document.getElementById('archives-folders');
-  if(!grid) return;
+function grouperPublicationsArchives(){
+  const publications = [
+    ...ETUDES_BIBLIQUES.map(e => ({
+      titre: e.titre,
+      date: e.date,
+      type: 'Étude biblique',
+      lien: '#etude=' + encodeURIComponent(identifiantSur(e.id))
+    })),
+    ...ARTICLES.map(article => ({
+      titre: article.title,
+      date: article.date,
+      type: 'Article',
+      lien: '#article=' + encodeURIComponent(article.title)
+    })),
+    ...LIVRES.map(livre => ({
+      titre: livre.title,
+      date: livre.date,
+      type: 'Livre',
+      lien: '#article=' + encodeURIComponent(livre.title)
+    }))
+  ];
   const dossiers = {};
-  ETUDES_BIBLIQUES.forEach(e => {
-    const d = parseDateFr(e.date);
-    const cle = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-    if(!dossiers[cle]) dossiers[cle] = { cle, annee: d.getFullYear(), mois: d.getMonth(), items: [] };
-    dossiers[cle].items.push(e);
+  publications.forEach(item => {
+    const date = parseDateFr(item.date);
+    const cle = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
+    if(!dossiers[cle]) dossiers[cle] = { annee: date.getFullYear(), mois: date.getMonth(), items: [] };
+    dossiers[cle].items.push(item);
   });
   Object.keys(dossiers).forEach(cle => {
     dossiers[cle].items.sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
   });
+  return dossiers;
+}
+
+function rendreArchives(){
+  const grid = document.getElementById('archives-folders');
+  if(!grid) return;
+  const dossiers = grouperPublicationsArchives();
   const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
   const cles = Object.keys(dossiers).sort((a, b) => b.localeCompare(a));
   const folderSvg = `
@@ -1581,11 +1610,18 @@ function rendreArchives(){
     const d = dossiers[cle];
     const nom = MOIS[d.mois] + ' ' + d.annee;
     const htmlId = 'archives-' + cle;
+    const nombreEtudes = d.items.filter(item => item.type === 'Étude biblique').length;
+    const nombreArticles = d.items.filter(item => item.type === 'Article').length;
+    const nombreLivres = d.items.filter(item => item.type === 'Livre').length;
+    const compteurs = [];
+    if(nombreEtudes) compteurs.push(nombreEtudes + ' étude' + (nombreEtudes > 1 ? 's' : ''));
+    if(nombreArticles) compteurs.push(nombreArticles + ' article' + (nombreArticles > 1 ? 's' : ''));
+    if(nombreLivres) compteurs.push(nombreLivres + ' livre' + (nombreLivres > 1 ? 's' : ''));
     return `
       <a href="#${htmlId}" class="archive-folder" data-folder="${cle}">
         <div class="folder-icon">${folderSvg}</div>
         <div class="folder-name">${nom}</div>
-        <div class="folder-count">${d.items.length} étude${d.items.length > 1 ? 's' : ''}</div>
+        <div class="folder-count">${compteurs.join(' · ')}</div>
       </a>
     `;
   }).join('');
@@ -1596,6 +1632,20 @@ function rendreArticles(){
   if(!grid) return;
   const articlesTries = [...ARTICLES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
   grid.innerHTML = articlesTries.map(a => `
+    <a href="#article=${encodeURIComponent(a.title)}" class="article-row">
+      <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
+      <span class="title">${echapperTexteHtml(a.title)}</span>
+      <span class="desc">${echapperTexteHtml(a.description)}</span>
+      <span class="meta">${echapperTexteHtml(a.date)} · Lire en ligne <span aria-hidden="true">→</span></span>
+    </a>
+  `).join('');
+}
+
+function rendreLivres(){
+  const grid = document.getElementById('livres-grid');
+  if(!grid) return;
+  const livres = [...LIVRES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
+  grid.innerHTML = livres.map(a => `
     <a href="#article=${encodeURIComponent(a.title)}" class="article-row">
       <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
       <span class="title">${echapperTexteHtml(a.title)}</span>
@@ -1660,9 +1710,15 @@ function telechargerArticleHtml(article, contenuHtml){
 }
 
 function afficherArticle(title){
-  const article = ARTICLES.find(a => a.title === title);
+  const livre = LIVRES.find(item => item.title === title);
+  const article = livre || ARTICLES.find(item => item.title === title);
   const container = document.getElementById('article-article');
   if(!article || !container){ reseterMetaPartage(); afficherOnglet('articles'); window.scrollTo(0, 0); return; }
+  const retour = document.querySelector('#lire-article .etude-retour');
+  if(retour){
+    retour.href = livre ? '#livres' : '#articles';
+    retour.textContent = livre ? '← Retour aux livres' : '← Retour aux articles';
+  }
 
   const contenuInterne = (window.ARTICLES_CONTENU || {})[article.title];
   const idPrefixe = 'art-' + slugifier(article.title);
@@ -1785,6 +1841,7 @@ function afficherArticle(title){
 rendrePublications();
 rendreEtudes();
 rendreArticles();
+rendreLivres();
 rendreVideos();
 rendreArchives();
 afficherArchivesContenu();
@@ -1924,16 +1981,7 @@ function afficherArchivesContenu(){
   const grid = document.getElementById('archives-folders');
   if(!grid) return;
   const MOIS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  const dossiers = {};
-  ETUDES_BIBLIQUES.forEach(e => {
-    const d = parseDateFr(e.date);
-    const cle = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-    if(!dossiers[cle]) dossiers[cle] = { annee: d.getFullYear(), mois: d.getMonth(), items: [] };
-    dossiers[cle].items.push(e);
-  });
-  Object.keys(dossiers).forEach(cle => {
-    dossiers[cle].items.sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
-  });
+  const dossiers = grouperPublicationsArchives();
   const cles = Object.keys(dossiers).sort((a, b) => b.localeCompare(a));
   const fragment = document.createDocumentFragment();
   cles.forEach(cle => {
@@ -1947,10 +1995,10 @@ function afficherArchivesContenu(){
     block.innerHTML = `
       <h3 style="font-family:var(--font-serif); font-weight:400; font-size:24px; margin:0 0 16px;">${echapperTexteHtml(nom)}</h3>
       <ul style="list-style:none; padding:0; margin:0;">
-        ${d.items.map(e => `
+        ${d.items.map(item => `
           <li style="padding:12px 0; border-top:1px solid var(--hairline);">
-            <a href="#etude=${encodeURIComponent(identifiantSur(e.id))}" style="font-family:var(--font-serif); font-size:18px; text-decoration:none; color:var(--foreground);">${echapperTexteHtml(e.titre)}</a>
-            <span style="display:block; font-size:12px; color:var(--muted-foreground); margin-top:4px;">${echapperTexteHtml(e.date)}</span>
+            <a href="${echapperTexteHtml(item.lien)}" style="font-family:var(--font-serif); font-size:18px; text-decoration:none; color:var(--foreground);">${echapperTexteHtml(item.titre)}</a>
+            <span style="display:block; font-size:12px; color:var(--muted-foreground); margin-top:4px;">${echapperTexteHtml(item.type)} · ${echapperTexteHtml(item.date)}</span>
           </li>`).join('')}
       </ul>`;
     fragment.appendChild(block);
@@ -2118,9 +2166,9 @@ function construireIndexRecherche(){
       hash: '#etude=' + encodeURIComponent(identifiantSur(e.id))
     }, e.contenu);
   });
-  ARTICLES.forEach(a => {
+  [...ARTICLES, ...LIVRES].forEach(a => {
     ajouter({
-      type: 'Article',
+      type: LIVRES.includes(a) ? 'Livre' : 'Article',
       title: a.title,
       desc: a.description || '',
       meta: a.category + ' · ' + a.date,
