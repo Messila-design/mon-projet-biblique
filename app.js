@@ -594,6 +594,67 @@ const ETUDES_BIBLIQUES = [
     `
   },
   {
+    id: "corruption-morale",
+    titre: "LA CORRUPTION MORALE",
+    date: "08/07/2026",
+    image: "images/corruption-morale.jpg",
+    contenu: `
+      <p><em>Bonjour bonsoir à tous,</em></p>
+      <p>J'aimerais nous partager quelques réflexions sur <em>la corruption morale</em>.</p>
+
+      <p>Prenons comme texte de base 1 Corinthiens 5:9-11 :</p>
+      <blockquote>
+        <p>Je vous ai écrit dans la lettre de ne pas vous mêler<sup class="note-marque" tabindex="0" data-note="Du grec συναναμίγνυμι (sunanamignumi) : « s'associer étroitement avec », « fréquenter assidûment » — voir l'étude du mot ci-dessous.">1</sup> avec les hommes qui se prostituent, mais non pas d'une manière absolue avec les hommes qui se prostituent de ce monde, ou avec les cupides, ou les ravisseurs, ou les idolâtres — autrement, vous devez donc sortir du monde. Mais maintenant, ce que je vous ai écrit, c'est de ne pas vous mêler<sup class="note-marque" tabindex="0" data-note="Même mot grec συναναμίγνυμι (sunanamignumi) qu'à la note 1, répété ici dans le second commandement de l'apôtre Paulus.">2</sup> avec quelqu'un qui se nomme frère, s'il est un homme qui se prostitue, ou cupide, ou idolâtre, ou railleur, ou ivrogne, ou ravisseur, de ne pas même manger avec un tel homme.</p>
+        <cite>1 Corinthiens 5:9-11 — BYM</cite>
+      </blockquote>
+      <p>Dans le passage précédent, nous allons porter notre étude sur le mot <em>mêler</em>. Je souhaite que par ce partage le Seigneur vous ouvre les yeux et qu'il nous délivre, car nous sommes trop souvent trop naïfs.</p>
+      <p>Le mot <em>mêler</em> vient du grec <em>sunanamignumi</em> (translittération approximative du grec ancien συναναμίγνυμι). Il s'agit d'un verbe grec de la Nouvelle Alliance, rare et spécifique, qui n'apparaît que trois fois dans la Bible.</p>
+      <p>Je vais vous fournir une compréhension complète et biblique de ce mot, en m'appuyant sur son étymologie, son sens biblique, ses versets bibliques avec des exemples concrets, et enfin des applications dans la vie quotidienne.</p>
+
+      <h3>Compréhension biblique complète</h3>
+      <p>Le verbe συναναμίγνυμι (<em>sunanamignumi</em>) est un composé grec issu de :</p>
+      <ul>
+        <li><em>σύν</em> (syn) : « avec » ou « ensemble », indiquant une union ou une association.</li>
+        <li><em>ἀνά</em> (ana) : « sur » ou « de nouveau », qui renforce l'idée de répétition ou de continuité.</li>
+        <li><em>μῖγνυμι</em> (mignymi) : « mélanger » ou « unir ».</li>
+      </ul>
+      <p>Littéralement, il signifie « mélanger ensemble de manière continue » ou « s'unir intimement et régulièrement ». Dans le contexte biblique (koinè grec de la Nouvelle Alliance), il prend un sens figuré dominant : « s'associer étroitement avec », « fréquenter assidûment » ou « avoir une compagnie intime et persistante ». Cette notion implique non seulement une proximité physique, mais aussi une participation morale et spirituelle, comme un mélange d'influences qui peut altérer l'identité ou la pureté.</p>
+      <p>Bibliquement, ce mot souligne le principe que l'apôtre Paulus prônait : la séparation du mal pour préserver la sainteté de l'église. Il n'est pas neutre : il met en garde contre les associations qui risquent de corrompre la foi, en écho à des thèmes plus larges comme la pureté rituelle de l'Ancienne Alliance (ex. : Lévitique 19:2, « Soyez saints, car je suis saint ») ou l'appel à la vigilance spirituelle (2 Corinthiens 6:14, « Ne vous mettez pas avec les infidèles sous un joug étranger »). Contrairement à d'autres verbes grecs pour « compagnie » comme συνεῖναι (<em>suneinai</em>, simplement « être avec »), <em>sunanamignumi</em> insiste sur l'idée d'un mélange profond et continu, comme des substances qui se fondent irrémédiablement. Cela reflète la vision paulinienne de l'église comme un corps pur (1 Corinthiens 12), où les liens toxiques menacent l'unité en Mashiyach.</p>
+      <p>Ce mot n'apparaît que dans les épîtres de Paulus, soulignant son usage pastoral pour corriger des communautés en crise (Corinthe et Thessalonique). Il n'a pas d'équivalent direct en hébreu biblique, mais évoque des idées de séparation des impurs (ex. : Esdras 9-10 sur les mariages mixtes).</p>
+
+      <h3>Exemples concrets dans la Bible</h3>
+      <p>Le mot est utilisé trois fois, toujours à la forme infinitive passive présent (συναναμίγνυσθαι, « ne pas s'associer »), dans un contexte d'exhortation disciplinaire. Voici les occurrences avec le texte grec, une traduction littérale et une explication exégétique :</p>
+
+      <h4>1 Corinthiens 5:9</h4>
+      <p>Texte grec : « Ἔγραψα ὑμῖν ἐν τῇ ἐπιστολῇ μὴ συναναμίγνυσθαι πόρνοις » (J'ai écrit dans l'épître de ne pas s'associer avec les prostitués/impurs sexuellement).</p>
+      <p><strong>Contexte :</strong> Paulus corrige un scandale à Corinthe : un homme vit en inceste avec la femme de son père (v. 1). Il clarifie une lettre antérieure mal comprise, en distinguant les païens des chrétiens fautifs.</p>
+      <p><strong>Exemple concret :</strong> Imaginez une communauté chrétienne primitive où un membre commet un adultère public. L'apôtre Paulus dit : ne « mélangez » pas votre vie avec lui comme si de rien n'était — pas de repas partagés, pas de culte commun — pour éviter la contagion morale, comme un levain qui fermente toute la pâte (v. 6-8). C'est une discipline aimante pour le salut du fautif (v. 5).</p>
+
+      <h4>1 Corinthiens 5:11</h4>
+      <p>Texte grec : « νῦν δὲ ἔγραψα ὑμῖν μὴ συναναμίγνυσθαι ἐάν τις ἀδελφὸς ὀνομαζόμενος… » (Maintenant, j'ai écrit de ne pas s'associer si quelqu'un se nomme frère mais est… [liste de péchés : avare, idolâtre, adultère, ivrogne, voleur]).</p>
+      <p><strong>Contexte :</strong> Suite du même chapitre, Paulus liste des péchés graves et insiste : tolérez les païens (v. 10), mais excluez les « frères » qui persistent dans le mal.</p>
+      <p><strong>Exemple concret :</strong> À Corinthe, une église diverse (juifs, grecs, esclaves) risque de diluer sa sainteté en festoyant avec un chrétien cupide ou ivrogne. Paulus compare cela à un mélange impur : « Ne mangez pas même avec un tel homme » (v. 11). C'est un appel à l'excommunication temporaire pour restauration, pas à la haine.</p>
+
+      <h4>2 Thessaloniciens 3:14</h4>
+      <p>Texte grec : « Εἰ δέ τις οὐχ ὑπακούει τῷ λόγῳ ἡμῶν διὰ τῆς ἐπιστολῆς, τοῦτον σημειοῦσθε, μὴ συναναμίγνυσθαι ὑμῖν, ἵνα ἐντραπῇ » (Si quelqu'un n'obéit pas à notre parole par cette lettre, notez-le, ne vous associez pas avec lui, afin qu'il ait honte).</p>
+      <p><strong>Contexte :</strong> Paulus exhorte les Thessaloniciens oisifs qui vivent aux dépens des autres (v. 6-13), dans une ville persécutée où la paresse mine la communauté.</p>
+      <p><strong>Exemple concret :</strong> Des croyants, attendant le retour du Mashiyach, refusent de travailler et deviennent un fardeau. Paulus dit : isolez-les socialement (pas de compagnie intime) pour les inciter à la repentance, comme un avertissement fraternel qui restaure la diligence (v. 15 : « Ne le traitez pas comme un ennemi, mais admonestez-le comme un frère »).</p>
+
+      <p>Dans ces exemples, <em>sunanamignumi</em> n'est pas une isolation totale (comme l'excommunication juive), mais une distance mesurée pour la croissance spirituelle, équilibrée par l'amour (Galates 6:1).</p>
+
+      <h3>Exemples concrets dans le quotidien</h3>
+      <p>Bien que ce mot soit rare et biblique, son sens profond s'applique aujourd'hui pour guider les relations chrétiennes. Il invite à une vigilance sur nos « mélanges » influents, sans pharisaïsme. Voici des illustrations pratiques :</p>
+      <ul>
+        <li><strong>Dans l'église ou la communauté :</strong> si un ami chrétien tombe dans l'addiction (alcool, par exemple), au lieu de l'ignorer ou de le juger, appliquez une « non-association intime » : priez pour lui, mais évitez les sorties privées qui normaliseraient le péché. Organisez une intervention fraternelle (Matthieu 18:15-17) pour l'aider à se repentir, comme l'apôtre Paulus à Corinthe. Résultat : il se sent aimé mais confronté, favorisant la guérison.</li>
+        <li><strong>Au travail ou en société :</strong> vous côtoyez un collègue corrompu (menteur, manipulateur). <em>Sunanamignumi</em> conseille de collaborer professionnellement (comme Paulus tolère les païens), mais pas de « mélanger » vos vies : pas de dîners privés ou de confidences qui vous exposent à son influence. Par exemple, refusez une promotion impliquant une alliance éthique douteuse, préservant votre intégrité comme un « sel de la terre » (Matthieu 5:13).</li>
+        <li><strong>Dans les relations personnelles :</strong> si un ami persiste dans l'idolâtrie moderne (matérialisme extrême), limitez votre amitié pour éviter le « mélange » spirituel. Parlez-lui avec grâce, mais priorisez des cercles sains. Par exemple, évitez de partager des vacances avec des amis toxiques qui moquent votre foi, en optant pour des groupes édifiants qui renforcent votre marche en Mashiyach.</li>
+      </ul>
+
+      <p>Désolé pour la longueur du texte. Cependant, j'ai la conviction qu'il vous fera du bien, comme moi-même j'ai été édifié dessus.</p>
+      <p style="font-size:12px; color:var(--text-soft); margin-top:1.5em;">Source de l'illustration : <a href="https://www.24heures.ch/sante-mentale-le-pervers-narcissique-capable-de-tout-coupable-de-rien-835983095149" target="_blank" rel="noopener">24heures.ch</a></p>
+    `
+  },
+  {
     id: "marche-par-esprit",
     titre: "LA MARCHE PAR L'ESPRIT : LA CLÉ DE LA VICTOIRE SPIRITUELLE",
     date: "16/07/2026",
