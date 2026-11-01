@@ -2941,13 +2941,15 @@
     @media (min-width:1024px) {
       .footer-top {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-columns: auto max-content auto;
         align-items: center;
-        column-gap: 48px;
+        column-gap: 24px;
       }
 
       nav.footer-nav {
         justify-content: center;
+        flex-wrap: nowrap;
+        gap: 20px;
       }
 
       .footer-socials {
@@ -3773,6 +3775,7 @@
         <div class="articles-head">
           <p class="eyebrow">03 — Réflexions</p>
           <h2>Articles</h2>
+          <p class="section-subtitle">Des réflexions bibliques pour éclairer les questions de foi et de vie chrétienne à la lumière des Écritures.</p>
         </div>
         <div id="articles-grid" class="articles-grid"></div>
       </div>
@@ -3784,6 +3787,7 @@
         <div class="articles-head">
           <p class="eyebrow">04 — Ouvrages</p>
           <h2>Livres</h2>
+          <p class="section-subtitle">Des ouvrages pour approfondir les Écritures et nourrir la foi, à lire à son rythme et à garder comme ressources.</p>
         </div>
         <div id="livres-grid" class="articles-grid"></div>
       </div>
