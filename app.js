@@ -1412,12 +1412,10 @@ function afficherEtude(id){
   const tocHtml = aSommaire ? construireTocHtml(titres, etude.id) : '';
   const notesHtml = /<sup\b[^>]*\bnote-marque\b/i.test(contenuAvecIds) ? construireNotesHtml(etude.id) : '';
   const telechargement = etude.telechargement ? `
-    <div class="article-actions">
       <a class="btn-download" href="${echapperTexteHtml(urlInterneSure(etude.telechargement))}" download>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         ${echapperTexteHtml(etude.telechargementLabel || 'Télécharger le PDF')}
-      </a>
-    </div>` : '';
+      </a>` : '';
 
   container.innerHTML = `
     <article class="etude article-card" id="carte-lire-etude-${echapperTexteHtml(etude.id)}">
@@ -1426,13 +1424,12 @@ function afficherEtude(id){
         <div class="article-section">Étude biblique</div>
         <h1 style="margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2;">${echapperTexteHtml(etude.titre)}</h1>
         <div class="article-card-meta">Publié le ${echapperTexteHtml(etude.date || '—')}</div>
+        ${construireBarreActionsArticle(etude.titre, telechargement)}
       </div>
       <div class="etude-layout${aSommaire ? '' : ' sans-sommaire'}">
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
-          ${construireActionsPartage(etude.titre)}
-          ${telechargement}
         </div>
         ${notesHtml}
       </div>
@@ -1468,12 +1465,16 @@ function construireActionsPartage(titre){
   const sujetEmail = encodeURIComponent(titre);
   return `
     <section class="share-actions" aria-label="Partager cette lecture">
-      <p class="share-actions-title">Partager cette lecture</p>
+      <span class="share-actions-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 7 6.6 4.4"/></svg>
+        <span>Partager</span>
+      </span>
       <div class="share-actions-links">
         <a class="share-action" href="https://api.whatsapp.com/send?text=${messageEncode}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5A11.9 11.9 0 0 0 12 0C5.4 0 .1 5.3.1 11.9c0 2.1.5 4.1 1.5 5.9L0 24l6.4-1.7a12 12 0 0 0 5.6 1.4h.1c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.1-3.5-8.3Zm-8.4 18.2h-.1a10 10 0 0 1-5.1-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a10 10 0 1 1 8.6 4.7Zm5.5-7.5c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2s-.8 1-.9 1.2c-.2.2-.3.2-.6.1a8.2 8.2 0 0 1-2.5-1.6 9.2 9.2 0 0 1-1.7-2.2c-.2-.3 0-.4.1-.6l.5-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.4Z"/></svg><span class="sr-only">WhatsApp</span></a>
         <a class="share-action" href="https://www.facebook.com/sharer/sharer.php?u=${urlEncodee}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23.1 10.1 24v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.6 4.5-4.6 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 1-2 1.9v2.3h3.4l-.5 3.5h-2.9V24C19.6 23.1 24 18.1 24 12.1Z"/></svg><span class="sr-only">Facebook</span></a>
         <a class="share-action" href="https://x.com/intent/post?text=${messageEncode}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L2.9 2h6.3l4.4 5.8L18.9 2Zm-1.1 18h1.7L8.3 3.9H6.5L17.8 20Z"/></svg><span class="sr-only">X</span></a>
         <a class="share-action" href="mailto:?subject=${sujetEmail}&body=${messageEncode}" aria-label="Partager par e-mail" title="E-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="sr-only">E-mail</span></a>
+        <button class="share-action" type="button" data-share-copy aria-label="Copier le lien" title="Copier le lien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3A5 5 0 0 0 13 2.9l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3A5 5 0 0 0 11 21.1l1.7-1.7"/></svg><span class="sr-only">Copier le lien</span></button>
         <button class="share-action" type="button" data-share-print aria-label="Imprimer" title="Imprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg><span class="sr-only">Imprimer</span></button>
       </div>
     </section>`;
@@ -1483,6 +1484,34 @@ function activerActionsPartage(conteneur){
   conteneur.querySelectorAll('[data-share-print]').forEach(bouton => {
     bouton.addEventListener('click', () => window.print());
   });
+  conteneur.querySelectorAll('[data-share-copy]').forEach(bouton => {
+    bouton.addEventListener('click', async () => {
+      const url = window.location.href;
+      if(navigator.clipboard && window.isSecureContext){
+        try {
+          await navigator.clipboard.writeText(url);
+          bouton.title = 'Lien copié';
+          bouton.setAttribute('aria-label', 'Lien copié');
+          window.setTimeout(() => {
+            bouton.title = 'Copier le lien';
+            bouton.setAttribute('aria-label', 'Copier le lien');
+          }, 2000);
+          return;
+        } catch(erreur) {
+          console.error('La copie du lien a échoué.', erreur);
+        }
+      }
+      window.prompt('Copiez le lien de cet article pour le partager :', url);
+    });
+  });
+}
+
+function construireBarreActionsArticle(titre, boutonTelecharger){
+  return `
+    <div class="article-toolbar" role="group" aria-label="Actions de l’article">
+      ${construireActionsPartage(titre)}
+      ${boutonTelecharger ? `<div class="article-actions">${boutonTelecharger}</div>` : ''}
+    </div>`;
 }
 
 function injecterTableDesMatieres(contenu, idPrefixe){
@@ -1843,14 +1872,13 @@ function afficherArticle(title){
         <div class="article-section">${echapperTexteHtml(article.category || 'Article')}</div>
         <h1 style="margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2;">${echapperTexteHtml(article.title)}</h1>
         <div class="article-card-meta">Publié le ${echapperTexteHtml(article.date || '—')}</div>
-        <p style="margin:16px 0 32px; font-size:16px; line-height:1.7; color:var(--muted-foreground);">${echapperTexteHtml(article.description)}</p>
+        <p style="margin:16px 0 20px; font-size:16px; line-height:1.7; color:var(--muted-foreground);">${echapperTexteHtml(article.description)}</p>
+        ${construireBarreActionsArticle(article.title, boutonTelecharger)}
       </div>
       <div class="etude-layout${aSommaire ? '' : ' sans-sommaire'}">
         ${tocHtml}
         <div class="etude-content-col">
           <div class="etude-article-corps">${contenuAvecIds}</div>
-          ${construireActionsPartage(article.title)}
-          <div class="article-actions">${boutonTelecharger}</div>
         </div>
         ${notesHtml}
       </div>
@@ -1877,14 +1905,13 @@ function afficherArticle(title){
         <div class="article-section">${echapperTexteHtml(article.category || 'Article')}</div>
         <h1 style="margin:12px 0 0; font-family:var(--font-serif); font-weight:400; font-size:36px; line-height:1.2;">${echapperTexteHtml(article.title)}</h1>
         <div class="article-card-meta">Publié le ${echapperTexteHtml(article.date || '—')}</div>
-        <p style="margin:16px 0 32px; font-size:16px; line-height:1.7; color:var(--muted-foreground);">${echapperTexteHtml(article.description)}</p>
+        <p style="margin:16px 0 20px; font-size:16px; line-height:1.7; color:var(--muted-foreground);">${echapperTexteHtml(article.description)}</p>
+        ${construireBarreActionsArticle(article.title, boutonTelecharger)}
       </div>
       ${viewerUrl ? `
         <div class="article-article-img">
           <iframe src="${echapperTexteHtml(viewerUrl)}" title="${echapperTexteHtml(article.title)}" loading="lazy" allow="autoplay"></iframe>
         </div>` : ''}
-      ${construireActionsPartage(article.title)}
-      <div class="article-actions">${boutonTelecharger}</div>
     </div>
   `;
 

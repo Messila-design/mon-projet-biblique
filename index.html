@@ -2491,6 +2491,81 @@
       border-top: 1px solid var(--hairline);
     }
 
+    .article-toolbar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .article-toolbar .share-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .article-toolbar .share-actions-title {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 38px;
+      margin: 0 2px 0 0;
+      padding: 0 11px;
+      border: 1px solid var(--hairline-strong);
+      border-radius: 4px;
+      background: var(--card);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--foreground);
+    }
+
+    .article-toolbar .share-actions-title svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .article-toolbar .share-actions-links {
+      gap: 6px;
+    }
+
+    .article-toolbar .share-action {
+      width: 38px;
+      height: 38px;
+      border-radius: 4px;
+      background: var(--card);
+    }
+
+    .article-toolbar .article-actions:not(:empty) {
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .article-toolbar .article-actions .btn-download {
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      box-shadow: none;
+    }
+
+    .article-toolbar .article-actions .btn-download svg {
+      width: 16px;
+      height: 16px;
+    }
+
     .article-actions .btn-download {
       display: inline-flex;
       align-items: center;
@@ -2540,6 +2615,16 @@
       .article-actions .btn-download {
         width: 100%;
         padding: 14px 18px;
+      }
+
+      .article-toolbar {
+        align-items: center;
+        gap: 8px;
+      }
+
+      .article-toolbar .article-actions .btn-download {
+        width: auto;
+        padding: 0 10px;
       }
     }
 
