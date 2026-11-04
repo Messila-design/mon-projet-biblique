@@ -1093,11 +1093,13 @@ const ARTICLES = [
   { title: "L'Église (2)", category: "Doctrines", description: "Suite de l'enseignement sur l'Église : approfondissement biblique et applications pratiques.", date: "02/07/2026", image: "images/camylla-battani-ABVE1cyT7hk-unsplash.jpg", lien: "https://drive.google.com/file/d/1yDoojgdw3UgjUmpGhh3L0teofSsUgQiw/view?usp=drive_link" }
 ];
 
-const ARTICLE_A_VENIR = {
-  title: "La fête de Noël",
-  description: "Un article consacré à la fête de Noël est en préparation. Il sera publié prochainement.",
-  image: "images/la-fete-de-noel.png"
-};
+const ARTICLES_A_VENIR = [
+  {
+    title: "La fête de Noël",
+    description: "Un article consacré à la fête de Noël est en préparation. Il sera publié prochainement.",
+    image: "images/la-fete-de-noel.png"
+  }
+];
 
 const LIVRES = [
   { title: "Muse-ique ou Culte à YHWH", category: "Les Livres", description: "Un discernement biblique entre l'inspiration musicale profane (la « muse ») et le véritable culte rendu à YHWH dans l'adoration.", date: "04/07/2026", lien: "https://drive.google.com/file/d/12xjIwO-1aFAbfIqO9YFmZ6DIKekcpxB6/view?usp=drive_link" },
@@ -1296,25 +1298,26 @@ function rendreAccueil(){
   const articlesGrid = document.getElementById('mag-articles-grid');
   if(articlesGrid){
     const articlesTries = [...ARTICLES, ...LIVRES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date)).slice(0, 5);
-    const annonce = `
-      <article class="mag-card mag-card-upcoming" aria-label="Article à paraître : ${echapperTexteHtml(ARTICLE_A_VENIR.title)}">
+    const annonces = ARTICLES_A_VENIR.filter(annonce => !articleEstPublie(annonce)).map(annonce => `
+      <article class="mag-card mag-card-upcoming" aria-label="Article à paraître : ${echapperTexteHtml(annonce.title)}">
         <div class="mag-card-thumb">
-          <button type="button" class="image-zoom-trigger" data-image-zoom aria-label="Agrandir l’affiche de l’article : ${echapperTexteHtml(ARTICLE_A_VENIR.title)}">
-            <img src="${echapperTexteHtml(imageSure(ARTICLE_A_VENIR.image, IMAGE_DEFAUT))}" alt="Affiche de l’article à paraître : ${echapperTexteHtml(ARTICLE_A_VENIR.title)}" width="480" height="300" loading="lazy" decoding="async">
-          </button>
+          ${annonce.image ? `
+            <button type="button" class="image-zoom-trigger" data-image-zoom aria-label="Agrandir l’affiche de l’article : ${echapperTexteHtml(annonce.title)}">
+              <img src="${echapperTexteHtml(imageSure(annonce.image, IMAGE_DEFAUT))}" alt="Affiche de l’article à paraître : ${echapperTexteHtml(annonce.title)}" width="480" height="300" loading="lazy" decoding="async">
+            </button>` : ''}
         </div>
         <div class="mag-card-body">
           <span class="kicker-pill">À paraître</span>
-          <h3 class="mag-card-title">${echapperTexteHtml(ARTICLE_A_VENIR.title)}</h3>
-          <p class="mag-card-desc">${echapperTexteHtml(ARTICLE_A_VENIR.description)}</p>
+          <h3 class="mag-card-title">${echapperTexteHtml(annonce.title)}</h3>
+          <p class="mag-card-desc">${echapperTexteHtml(annonce.description || '')}</p>
           <div class="mag-card-footer">
             <span>Prochainement</span>
             <span class="mag-card-cta">Article en préparation</span>
           </div>
         </div>
       </article>
-    `;
-    articlesGrid.innerHTML = annonce + articlesTries.map(a => {
+    `).join('');
+    articlesGrid.innerHTML = annonces + articlesTries.map(a => {
       const contenuTexte = (window.ARTICLES_CONTENU || {})[a.title] || a.description || '';
       const readTime = estimerTempsLecture(contenuTexte, '14 min');
       return `
@@ -1709,6 +1712,11 @@ function grouperPublicationsArchives(){
   return dossiers;
 }
 
+function articleEstPublie(annonce){
+  const titreAnnonce = normaliserTexte(annonce.title).trim();
+  return ARTICLES.some(article => normaliserTexte(article.title).trim() === titreAnnonce);
+}
+
 function rendreArchives(){
   const grid = document.getElementById('archives-folders');
   if(!grid) return;
@@ -1745,18 +1753,19 @@ function rendreArticles(){
   const grid = document.getElementById('articles-grid');
   if(!grid) return;
   const articlesTries = [...ARTICLES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
-  const annonce = `
-    <article class="article-row article-annonce" aria-label="Article à paraître : ${echapperTexteHtml(ARTICLE_A_VENIR.title)}">
+  const annonces = ARTICLES_A_VENIR.filter(annonce => !articleEstPublie(annonce)).map(annonce => `
+    <article class="article-row article-annonce" aria-label="Article à paraître : ${echapperTexteHtml(annonce.title)}">
       <span class="eyebrow">À paraître</span>
-      <span class="title">${echapperTexteHtml(ARTICLE_A_VENIR.title)}</span>
-      <button type="button" class="image-zoom-trigger article-annonce-affiche" data-image-zoom aria-label="Agrandir l’affiche de l’article : ${echapperTexteHtml(ARTICLE_A_VENIR.title)}">
-        <img src="${echapperTexteHtml(imageSure(ARTICLE_A_VENIR.image))}" alt="Affiche de l’article à paraître : ${echapperTexteHtml(ARTICLE_A_VENIR.title)}" loading="lazy" decoding="async">
-      </button>
-      <span class="desc">${echapperTexteHtml(ARTICLE_A_VENIR.description)}</span>
-      <span class="meta">Cliquer sur l’affiche pour l’agrandir · Prochainement</span>
+      <span class="title">${echapperTexteHtml(annonce.title)}</span>
+      ${annonce.image ? `
+        <button type="button" class="image-zoom-trigger article-annonce-affiche" data-image-zoom aria-label="Agrandir l’affiche de l’article : ${echapperTexteHtml(annonce.title)}">
+          <img src="${echapperTexteHtml(imageSure(annonce.image))}" alt="Affiche de l’article à paraître : ${echapperTexteHtml(annonce.title)}" loading="lazy" decoding="async">
+        </button>` : ''}
+      <span class="desc">${echapperTexteHtml(annonce.description || '')}</span>
+      <span class="meta">${annonce.image ? 'Cliquer sur l’affiche pour l’agrandir · ' : ''}Prochainement</span>
     </article>
-  `;
-  grid.innerHTML = annonce + articlesTries.map(a => `
+  `).join('');
+  grid.innerHTML = annonces + articlesTries.map(a => `
     <a href="#article=${encodeURIComponent(a.title)}" class="article-row">
       <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
       <span class="title">${echapperTexteHtml(a.title)}</span>
@@ -1974,16 +1983,18 @@ initVideoModal();
 initImageZoom();
 
 function initUpcomingAnnouncementEffect(){
-  const annonce = document.querySelector('#mag-articles-grid .mag-card-upcoming');
-  if(!annonce || !('IntersectionObserver' in window)) return;
+  const annonces = document.querySelectorAll('#mag-articles-grid .mag-card-upcoming');
+  if(!annonces.length || !('IntersectionObserver' in window)) return;
 
   const observer = new IntersectionObserver((entries) => {
-    if(!entries.some(entry => entry.isIntersecting)) return;
-    annonce.classList.add('is-announcement-arriving');
-    observer.disconnect();
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      entry.target.classList.add('is-announcement-arriving');
+      observer.unobserve(entry.target);
+    });
   }, { threshold: 0.35, rootMargin: '0px 0px -8% 0px' });
 
-  observer.observe(annonce);
+  annonces.forEach(annonce => observer.observe(annonce));
 }
 
 /* ---------- Système d'onglets ---------- */
