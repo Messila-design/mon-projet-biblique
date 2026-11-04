@@ -115,6 +115,8 @@
   - Le lien (lien) pointe vers le document Google Drive. Pour un texte
     publie en ligne, le contenu est place dans articles-contenu.js.
   - Un article sans contenu en ligne affiche une visionneuse Drive.
+  - Pour annoncer un article avant sa publication, modifier ARTICLE_A_VENIR
+    dans app.js. L'annonce s'affiche sur l'accueil et dans la liste des articles.
 
   ------------------------------------------------------------------
   2 BIS. PUBLIER UN LIVRE
@@ -1257,6 +1259,84 @@
       transform: scale(1.04);
     }
 
+    .mag-card-upcoming:hover {
+      box-shadow: var(--shadow-card);
+      transform: none;
+    }
+
+    .mag-card-upcoming .mag-card-thumb img {
+      object-fit: contain;
+      padding: 8px;
+    }
+
+    .mag-card-upcoming .image-zoom-trigger {
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .mag-card-upcoming:hover .mag-card-thumb img {
+      transform: none;
+    }
+
+    .mag-card-upcoming.is-announcement-arriving {
+      animation: announcement-arrival 4.2s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    .mag-card-upcoming.is-announcement-arriving .kicker-pill {
+      animation: announcement-badge-arrival 4.2s ease-out both;
+    }
+
+    @keyframes announcement-arrival {
+      0% {
+        opacity: .35;
+        transform: translateY(28px) scale(.93);
+        box-shadow: 0 0 0 0 rgba(198, 155, 74, 0);
+      }
+
+      15% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.025);
+        box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
+      }
+
+      28% {
+        transform: translateY(0) scale(1);
+        box-shadow: var(--shadow-card);
+      }
+
+      42% {
+        box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
+      }
+
+      55% {
+        box-shadow: var(--shadow-card);
+      }
+
+      69% {
+        box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
+      }
+
+      82% {
+        box-shadow: var(--shadow-card);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        box-shadow: var(--shadow-card);
+      }
+    }
+
+    @keyframes announcement-badge-arrival {
+      0%, 28%, 55%, 82%, 100% {
+        filter: none;
+      }
+
+      15%, 42%, 69% {
+        filter: brightness(1.22);
+      }
+    }
+
     .mag-card-body {
       padding: 24px;
       display: flex;
@@ -2116,6 +2196,24 @@
       color: var(--muted-foreground);
     }
 
+    .article-annonce {
+      grid-column: 1 / -1;
+    }
+
+    .article-annonce-affiche {
+      display: block;
+      width: min(100%, 280px);
+      max-height: 420px;
+      margin: 8px 0;
+    }
+
+    .article-annonce-affiche img {
+      display: block;
+      width: 100%;
+      max-height: 420px;
+      object-fit: contain;
+    }
+
     /* ---------- Lecture d'une étude & Article (Side-by-side) ---------- */
     .etude-article-wrap,
     .article-article-wrap {
@@ -2632,6 +2730,11 @@
       .article-actions .btn-download {
         transition: none;
         transform: none;
+      }
+
+      .mag-card-upcoming.is-announcement-arriving,
+      .mag-card-upcoming.is-announcement-arriving .kicker-pill {
+        animation: none;
       }
     }
 
