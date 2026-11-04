@@ -1116,6 +1116,11 @@ const VIDEOS = [
     id: "JbgGT7PqC2s",
     titre: "L'interprétation biblique (2)",
     description: "Deuxième vidéo YouTube de Laméd."
+  },
+  {
+    id: "Cl9vB8I79sA",
+    titre: "Temps de Partage | La corruption morale",
+    description: "Temps de Partage consacré à la corruption morale."
   }
 ];
 
