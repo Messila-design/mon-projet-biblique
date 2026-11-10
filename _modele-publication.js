@@ -49,11 +49,21 @@
      description: "[Une phrase d'accroche affichee dans les listes.]",
      date: "[jj/mm/aaaa]",
      image: "images/[nom-de-l-image].jpg",
+     source: "articles/[manuscrit].txt",
+     notes: {
+       1: "[Texte de la note de bas de page.]"
+     },
      lien: "https://drive.google.com/file/d/[IDENTIFIANT_DU_FICHIER]/view"
    }
 
-   Pour un article publie en ligne, ajoutez son contenu dans
-   articles-contenu.js, sous la meme cle que le title :
+   Pour publier le manuscrit texte en lecture en ligne, utilisez le champ
+   source et placez les appels de notes dans le texte sous la forme
+   [[NOTE:1]]. Chaque numero doit exister dans notes. Le site affiche alors
+   automatiquement les notes en bas de page. La meme convention fonctionne
+   pour les manuscrits d'etudes et de livres.
+
+   Pour publier un contenu HTML dans articles-contenu.js, sous la meme cle
+   que le title :
 
      window.ARTICLES_CONTENU = {
        ...

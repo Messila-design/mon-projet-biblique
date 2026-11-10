@@ -43,14 +43,17 @@ const CSP_BASE = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.mailerlite.com https://assets.mlcdn.com https://fonts.mailerlite.com",
   "font-src 'self' https://fonts.gstatic.com https://assets.mlcdn.com https://assets.mailerlite.com https://fonts.mailerlite.com",
   "img-src 'self' data: blob: https://img.youtube.com https://*.mailerlite.com https://storage.mlcdn.com https://assets.mlcdn.com https://www.facebook.com",
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://drive.google.com https://www.facebook.com",
+  "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://drive.google.com https://www.facebook.com",
   "connect-src 'self' https://*.mailerlite.com https://assets.mailerlite.com https://assets.mlcdn.com https://storage.mlcdn.com https://cloudflareinsights.com https://www.facebook.com https://connect.facebook.net"
 ];
 
 // Un nonce unique par reponse autorise les scripts inline de la page
 // sans avoir a maintenir 'unsafe-inline' dans script-src.
-function buildCsp(nonce) {
+function buildCsp(nonce, autoriserPdfDansUneFrame = false) {
   return CSP_BASE.map(directive => {
+    if (directive.startsWith('frame-ancestors ') && autoriserPdfDansUneFrame) {
+      return "frame-ancestors 'self'";
+    }
     if (!directive.startsWith('script-src ')) return directive;
     return `${directive} 'nonce-${nonce}'`;
   }).join('; ');
@@ -70,11 +73,13 @@ const SECURITY_HEADERS = {
 const HSTS_HEADER = 'max-age=63072000; includeSubDomains; preload';
 
 function isPublicFile(name) {
-  if (['index.html', 'app.js', 'articles-contenu.js'].includes(name)) return true;
+  if (['index.html', 'app.js', 'articles-contenu.js', 'livres-contenu.js'].includes(name)) return true;
   if (/^(?:images|images - la croix)\/[^/\\]+\.(?:png|jpe?g|webp|gif|ico|svg)$/i.test(name)) return true;
   if (/^articles\/[^/\\]+\.txt$/i.test(name)) return true;
+  if (/^3 - Livres\/[^/\\]+\.txt$/i.test(name)) return true;
   if (name === 'Textes/d-elohim-a-dieu.txt') return true;
   if (name === 'Textes/puissance-par-la-priere.txt') return true;
+  if (/^3 - Livres\/[^/\\]+\.pdf$/i.test(name)) return true;
   if (name === 'la croix/La Croix.docx.pdf') return true;
   return false;
 }
@@ -140,11 +145,13 @@ function createServer() {
       fail(404, 'Fichier introuvable');
       return;
     }
+    const estPdfLivre = /^3 - Livres\/[^/\\]+\.pdf$/i.test(name);
+    if (estPdfLivre) res.setHeader('X-Frame-Options', 'SAMEORIGIN');
 
     // Nonce CSP : genere a chaque reponse, il autorise les scripts inline
     // de la page sans weakens 'unsafe-inline' dans script-src.
     const nonce = crypto.randomBytes(16).toString('base64');
-    res.setHeader('Content-Security-Policy', buildCsp(nonce));
+    res.setHeader('Content-Security-Policy', buildCsp(nonce, estPdfLivre));
 
     let handle;
     try {

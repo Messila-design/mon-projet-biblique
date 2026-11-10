@@ -1049,7 +1049,7 @@ const NOTES_MANUSCRIT_BAPTEMES = {
 
 /* Convertit un manuscrit texte en lecture en ligne. Les titres et questions
    restent ainsi cohérents pour chaque nouvel article importé. */
-window.formaterArticleTexte = function(texte) {
+window.formaterArticleTexte = function(texte, options = {}) {
   const estTempsDesNations = texte.includes('I. INTRODUCTION : COMPRENDRE LE CADRE PROPHETIQUE ET CHRONOLOGIQUE');
   const echapper = function(valeur) {
     return valeur.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1059,6 +1059,13 @@ window.formaterArticleTexte = function(texte) {
     return valeur.replace(/\s*—\s*BYM1\b/g, ' — BYM<sup class="note-marque" tabindex="0" data-note="BYM : Bible de Yéhoshoua ha-Mashiyah, version citée dans cet article.">1</sup>');
   };
   const ajouterNotesManuscrit = function(valeur) {
+    valeur = valeur.replace(/\[\[NOTE:(\d+)\]\]/g, function(marque, id) {
+      const note = options.notes && options.notes[id];
+      if(typeof note !== 'string' || !note.trim()){
+        throw new Error('La note ' + id + ' est référencée mais absente de la configuration de l’article.');
+      }
+      return '<sup class="note-marque" tabindex="0" data-note="' + echapper(note) + '">' + id + '</sup>';
+    });
     valeur = valeur.replace(/\[\[FNE:(\d+)\]\]/g, function(marque, id) {
       const note = (window.NOTES_ETUDE_ELOHIM || {})[id];
       return note ? '<sup class="note-marque" tabindex="0" data-note="' + echapper(note) + '">' + id + '</sup>' : '';

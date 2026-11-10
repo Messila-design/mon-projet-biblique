@@ -1103,7 +1103,8 @@ const ARTICLES_A_VENIR = [
 
 const LIVRES = [
   { title: "Muse-ique ou Culte à YHWH", category: "Les Livres", description: "Un discernement biblique entre l'inspiration musicale profane (la « muse ») et le véritable culte rendu à YHWH dans l'adoration.", date: "04/07/2026", lien: "https://drive.google.com/file/d/12xjIwO-1aFAbfIqO9YFmZ6DIKekcpxB6/view?usp=drive_link" },
-  { title: "La puissance par la prière", category: "Les Livres", description: "Un ouvrage d’Edward McKendree Bounds consacré à la prière et à sa place dans la vie chrétienne.", date: "28/10/2026", image: "images/aaron-burden-lPCu8HnGU2E-unsplash.jpg", source: "Textes/puissance-par-la-priere.txt", lien: "https://drive.google.com/file/d/1XuOzc3qczBGICQOHMh_wj0fKgcAYhHcE/view?usp=drive_link" }
+  { title: "La puissance par la prière", category: "Les Livres", description: "Un ouvrage d’Edward McKendree Bounds consacré à la prière et à sa place dans la vie chrétienne.", date: "28/10/2026", image: "images/aaron-burden-lPCu8HnGU2E-unsplash.jpg", source: "Textes/puissance-par-la-priere.txt", lien: "https://drive.google.com/file/d/1XuOzc3qczBGICQOHMh_wj0fKgcAYhHcE/view?usp=drive_link" },
+  { title: "De l'islam à JESUS- Mon œuvre est pour le Roi!", category: "Les Livres", description: "Un témoignage de l’islam à Jésus-Christ et de l’engagement de l’auteur au service du Roi.", date: "10/11/2026", image: "images/kelly-sikkema-NXv3XcMyDy0-unsplash.jpg", source: "3 - Livres/de-l-islam-a-jesus.txt", notes: { 1: "Bus dont l’accès a été rendu gratuit durant la période du Covid-19.", 2: "Romains 1:17.", 3: "Lycée et collège pour Yehoshoua." }, fichier: "3 - Livres/De l'islam à JESUS- Mon œuvre est pour le Roi!.pdf" }
 ];
 
 const VIDEOS = [
@@ -1139,6 +1140,10 @@ function identifiantSur(valeur){
   const brut = String(valeur || '');
   if(/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,120}$/.test(brut)) return brut;
   return slugifier(brut) || 'item';
+}
+
+function ancreArticle(titre){
+  return '#article=' + encodeURIComponent(titre).replace(/'/g, '%27');
 }
 
 function urlInterneSure(url){
@@ -1245,7 +1250,7 @@ function rendreAccueil(){
       read: estimerTempsLecture(contenuTexte, '15 min'),
       title: a.title,
       excerpt: a.description || extraireExtrait(contenuTexte, 160),
-      lien: '#article=' + encodeURIComponent(a.title),
+      lien: ancreArticle(a.title),
       type: 'article'
     });
   });
@@ -1326,7 +1331,7 @@ function rendreAccueil(){
       const contenuTexte = (window.ARTICLES_CONTENU || {})[a.title] || a.description || '';
       const readTime = estimerTempsLecture(contenuTexte, '14 min');
       return `
-        <a href="#article=${encodeURIComponent(a.title)}" class="mag-card">
+        <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="mag-card">
           <div class="mag-card-thumb">
             <img src="${echapperTexteHtml(imageSure(a.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(a.title)}" width="480" height="300" loading="lazy">
           </div>
@@ -1422,12 +1427,13 @@ function afficherEtude(id){
           return reponse.text();
         })
         .then(texte => {
-          etude.contenu = window.formaterArticleTexte(texte);
+          etude.contenu = window.formaterArticleTexte(texte, { notes: etude.notes });
           etude.contenuComplet = true;
           etude.chargementEnCours = false;
           afficherEtude(id);
         })
-        .catch(() => {
+        .catch(erreur => {
+          console.error('Impossible de charger ou de formater le manuscrit de l’étude : ' + etude.titre, erreur);
           etude.chargementEnCours = false;
           etude.sourceIndisponible = true;
           afficherEtude(id);
@@ -1695,13 +1701,13 @@ function grouperPublicationsArchives(){
       titre: article.title,
       date: article.date,
       type: 'Article',
-      lien: '#article=' + encodeURIComponent(article.title)
+      lien: ancreArticle(article.title)
     })),
     ...LIVRES.map(livre => ({
       titre: livre.title,
       date: livre.date,
       type: 'Livre',
-      lien: '#article=' + encodeURIComponent(livre.title)
+      lien: ancreArticle(livre.title)
     }))
   ];
   const dossiers = {};
@@ -1771,7 +1777,7 @@ function rendreArticles(){
     </article>
   `).join('');
   grid.innerHTML = annonces + articlesTries.map(a => `
-    <a href="#article=${encodeURIComponent(a.title)}" class="article-row">
+    <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="article-row">
       <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
       <span class="title">${echapperTexteHtml(a.title)}</span>
       <span class="desc">${echapperTexteHtml(a.description)}</span>
@@ -1785,7 +1791,7 @@ function rendreLivres(){
   if(!grid) return;
   const livres = [...LIVRES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
   grid.innerHTML = livres.map(a => `
-    <a href="#article=${encodeURIComponent(a.title)}" class="article-row">
+    <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="article-row">
       <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
       <span class="title">${echapperTexteHtml(a.title)}</span>
       <span class="desc">${echapperTexteHtml(a.description)}</span>
@@ -1862,7 +1868,7 @@ function afficherArticle(title){
   const contenuInterne = (window.ARTICLES_CONTENU || {})[article.title];
   const idPrefixe = 'art-' + slugifier(article.title);
 
-  if(!contenuInterne && article.source && !article.sourceIndisponible){
+  if((!contenuInterne || (article.notes && !article.sourceChargee)) && article.source && !article.sourceIndisponible){
     if(!article.chargementEnCours){
       article.chargementEnCours = true;
       fetch(article.source)
@@ -1872,11 +1878,13 @@ function afficherArticle(title){
         })
         .then(texte => {
           window.ARTICLES_CONTENU = window.ARTICLES_CONTENU || {};
-          window.ARTICLES_CONTENU[article.title] = window.formaterArticleTexte(texte);
+          window.ARTICLES_CONTENU[article.title] = window.formaterArticleTexte(texte, { notes: article.notes });
+          article.sourceChargee = true;
           article.chargementEnCours = false;
           afficherArticle(title);
         })
-        .catch(() => {
+        .catch(erreur => {
+          console.error('Impossible de charger ou de formater le manuscrit de l’article : ' + article.title, erreur);
           article.chargementEnCours = false;
           article.sourceIndisponible = true;
           afficherArticle(title);
@@ -1890,18 +1898,23 @@ function afficherArticle(title){
 
   const driveMatch = (article.lien || '').match(/\/d\/([^/]+)/);
   const fileId = driveMatch ? driveMatch[1] : '';
+  const fichierLocal = article.fichier || '';
   const viewerUrl = fileId
     ? `https://drive.google.com/file/d/${fileId}/preview`
-    : '';
+    : fichierLocal
+      ? `${encodeURI(fichierLocal)}#page=4&pagemode=bookmarks`
+      : '';
   const downloadUrl = fileId
     ? `https://drive.google.com/uc?export=download&id=${fileId}`
-    : (article.lien || '#');
+    : fichierLocal
+      ? encodeURI(fichierLocal)
+      : (article.lien || '#');
   const libelleTelechargement = /\.docx?(?:[?#]|$)/i.test(downloadUrl)
     ? 'Télécharger le document Word'
     : 'Télécharger le PDF';
 
-  const boutonTelecharger = !article.lien || /\.docx?(?:[?#]|$)/i.test(downloadUrl) ? '' : `
-    <a class="btn-download" href="${downloadUrl}" target="_blank" rel="noopener noreferrer">
+  const boutonTelecharger = (!article.lien && !fichierLocal) || /\.docx?(?:[?#]|$)/i.test(downloadUrl) ? '' : `
+    <a class="btn-download" href="${echapperTexteHtml(downloadUrl)}" ${fichierLocal ? `download="${echapperTexteHtml(fichierLocal.split('/').pop())}"` : 'target="_blank" rel="noopener noreferrer'}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       ${libelleTelechargement}
     </a>`;
@@ -2325,7 +2338,7 @@ function construireIndexRecherche(){
       title: a.title,
       desc: a.description || '',
       meta: a.category + ' · ' + a.date,
-      hash: '#article=' + encodeURIComponent(a.title)
+      hash: ancreArticle(a.title)
     }, (window.ARTICLES_CONTENU || {})[a.title] || '');
   });
   PUBLICATIONS.forEach(p => {
