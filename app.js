@@ -2093,26 +2093,23 @@ function initUpcomingAnnouncementEffect(){
   const annonces = document.querySelectorAll('#mag-articles-grid .mag-card-upcoming');
   if(!annonces.length || !('IntersectionObserver' in window)) return;
 
-  const visibilitePrecedente = new WeakMap();
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      const carte = entry.target;
-      const etaitVisible = visibilitePrecedente.get(carte) || false;
-      visibilitePrecedente.set(carte, entry.isIntersecting);
-
-      if(entry.isIntersecting && !etaitVisible && !carte.classList.contains('is-announcement-arriving')){
-        carte.classList.add('is-announcement-arriving');
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-announcement-arriving');
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.35, rootMargin: '0px 0px -8% 0px' });
 
-  annonces.forEach(annonce => {
-    annonce.addEventListener('animationend', (event) => {
-      if(event.target === annonce && event.animationName === 'announcement-arrival'){
-        annonce.classList.remove('is-announcement-arriving');
-      }
+  annonces.forEach(annonce => observer.observe(annonce));
+
+  window.addEventListener('pageshow', (event) => {
+    if(!event.persisted) return;
+    annonces.forEach(annonce => {
+      annonce.classList.remove('is-announcement-arriving');
+      observer.observe(annonce);
     });
-    observer.observe(annonce);
   });
 }
 
