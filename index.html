@@ -111,7 +111,8 @@
       lien: "https://drive.google.com/file/d/XXXX/view"
     }
 
-  - Le titre (title) sert d'ancre (#article=...) : il doit rester unique.
+  - Le titre (title) sert d'ancre : #article=... pour un article,
+    #livre=... pour un livre. Il doit rester unique.
   - Le lien (lien) pointe vers le document Google Drive. Pour un texte
     publie en ligne, le contenu est place dans articles-contenu.js.
   - Un article sans contenu en ligne affiche une visionneuse Drive.
@@ -3821,7 +3822,7 @@
                 </div>
               </div>
             </a>
-            <a href="#article=Muse-ique%20ou%20Culte%20%C3%A0%20YHWH" class="mag-card">
+            <a href="#livre=Muse-ique%20ou%20Culte%20%C3%A0%20YHWH" class="mag-card">
               <div class="mag-card-thumb">
                 <img src="images/pub-1.jpg" alt="Muse-ique ou Culte à YHWH" width="480" height="300" loading="lazy">
               </div>
@@ -3953,6 +3954,14 @@
       <div class="section-inner article-article-wrap">
         <a href="#articles" class="archive-link etude-retour">← Retour aux articles</a>
         <div id="article-article"></div>
+      </div>
+    </section>
+
+    <!-- Lecture d'un livre -->
+    <section id="lire-livre" class="onglet">
+      <div class="section-inner article-article-wrap">
+        <a href="#livres" class="archive-link etude-retour">← Retour aux livres</a>
+        <div id="livre-article"></div>
       </div>
     </section>
 

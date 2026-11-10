@@ -1146,6 +1146,10 @@ function ancreArticle(titre){
   return '#article=' + encodeURIComponent(titre).replace(/'/g, '%27');
 }
 
+function ancreLivre(titre){
+  return '#livre=' + encodeURIComponent(titre).replace(/'/g, '%27');
+}
+
 function urlInterneSure(url){
   const s = String(url || '').trim();
   if(!s || s === '#') return '#';
@@ -1707,7 +1711,7 @@ function grouperPublicationsArchives(){
       titre: livre.title,
       date: livre.date,
       type: 'Livre',
-      lien: ancreArticle(livre.title)
+      lien: ancreLivre(livre.title)
     }))
   ];
   const dossiers = {};
@@ -1791,7 +1795,7 @@ function rendreLivres(){
   if(!grid) return;
   const livres = [...LIVRES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
   grid.innerHTML = livres.map(a => `
-    <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="article-row">
+    <a href="${echapperTexteHtml(ancreLivre(a.title))}" class="article-row">
       <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
       <span class="title">${echapperTexteHtml(a.title)}</span>
       <span class="desc">${echapperTexteHtml(a.description)}</span>
@@ -1857,9 +1861,10 @@ function telechargerArticleHtml(article, contenuHtml){
 function afficherArticle(title){
   const livre = LIVRES.find(item => item.title === title);
   const article = livre || ARTICLES.find(item => item.title === title);
-  const container = document.getElementById('article-article');
+  const ongletLecture = livre ? 'lire-livre' : 'lire-article';
+  const container = document.getElementById(livre ? 'livre-article' : 'article-article');
   if(!article || !container){ reseterMetaPartage(); afficherOnglet('articles'); window.scrollTo(0, 0); return; }
-  const retour = document.querySelector('#lire-article .etude-retour');
+  const retour = document.querySelector(`#${ongletLecture} .etude-retour`);
   if(retour){
     retour.href = livre ? '#livres' : '#articles';
     retour.textContent = livre ? '← Retour aux livres' : '← Retour aux articles';
@@ -1890,8 +1895,8 @@ function afficherArticle(title){
           afficherArticle(title);
         });
     }
-    container.innerHTML = '<div class="article-card"><p>Chargement de l’article…</p></div>';
-    afficherOnglet('lire-article');
+    container.innerHTML = `<div class="article-card"><p>Chargement ${livre ? 'du livre' : 'de l’article'}…</p></div>`;
+    afficherOnglet(ongletLecture);
     window.scrollTo(0, 0);
     return;
   }
@@ -1952,11 +1957,11 @@ function afficherArticle(title){
     activerSurbrillanceToc(articleEl);
     activerActionsPartage(articleEl);
     definirMetaPartage({
-      titre: 'Laméd — ' + article.title + ' · Réflexions',
+      titre: 'Laméd — ' + article.title + (livre ? ' · Livre' : ' · Article'),
       description: article.description || article.category || '',
       image: article.image || ''
     });
-    afficherOnglet('lire-article');
+    afficherOnglet(ongletLecture);
     window.scrollTo(0, 0);
     return;
   }
@@ -1980,11 +1985,11 @@ function afficherArticle(title){
   activerActionsPartage(container);
 
   definirMetaPartage({
-    titre: 'Laméd — ' + article.title + ' · Réflexions',
+    titre: 'Laméd — ' + article.title + (livre ? ' · Livre' : ' · Article'),
     description: article.description || article.category || '',
     image: article.image || ''
   });
-  afficherOnglet('lire-article');
+  afficherOnglet(ongletLecture);
   window.scrollTo(0, 0);
 }
 
@@ -2056,7 +2061,7 @@ function activerAncresInternes(){
     const lien = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
     if(!lien) return;
     const hash = lien.getAttribute('href');
-    if(!hash || hash === '#' || /^#(?:etude|article)=/.test(hash)) return;
+    if(!hash || hash === '#' || /^#(?:etude|article|livre)=/.test(hash)) return;
 
     let id;
     try { id = decodeURIComponent(hash.slice(1)); } catch(e){ return; }
@@ -2066,9 +2071,9 @@ function activerAncresInternes(){
     const page = cible.closest('.onglet');
     const pageActive = document.querySelector('.onglet:not([hidden])');
     if(!page || page.hidden || !pageActive || page.id !== pageActive.id) return;
-    if(pageActive.id !== 'lire-etude' && pageActive.id !== 'lire-article') return;
+    if(pageActive.id !== 'lire-etude' && pageActive.id !== 'lire-article' && pageActive.id !== 'lire-livre') return;
 
-    // Ne pas remplacer #etude=... ou #article=... par l'ancre : cela
+    // Ne pas remplacer #etude=..., #article=... ou #livre=... par l'ancre : cela
     // reinitialiserait les metadonnees et casserait le lien profond.
     event.preventDefault();
     cible.setAttribute('tabindex', '-1');
@@ -2111,8 +2116,29 @@ function naviguerDepuisHash(){
   }
 
   if(cible.startsWith('article=')){
-    try{ afficherArticle(decodeURIComponent(cible.slice('article='.length))); }
+    try{
+      const titre = decodeURIComponent(cible.slice('article='.length));
+      if(LIVRES.some(livre => livre.title === titre)){
+        history.replaceState(null, '', location.pathname + location.search + ancreLivre(titre));
+      }
+      afficherArticle(titre);
+    }
     catch(e){ afficherOnglet('articles'); }
+    return;
+  }
+
+  if(cible.startsWith('livre=')){
+    try{
+      const titre = decodeURIComponent(cible.slice('livre='.length));
+      if(LIVRES.some(livre => livre.title === titre)){
+        afficherArticle(titre);
+      } else {
+        reseterMetaPartage();
+        afficherOnglet('livres');
+        window.scrollTo(0, 0);
+      }
+    }
+    catch(e){ afficherOnglet('livres'); }
     return;
   }
 
@@ -2338,7 +2364,7 @@ function construireIndexRecherche(){
       title: a.title,
       desc: a.description || '',
       meta: a.category + ' · ' + a.date,
-      hash: ancreArticle(a.title)
+      hash: LIVRES.includes(a) ? ancreLivre(a.title) : ancreArticle(a.title)
     }, (window.ARTICLES_CONTENU || {})[a.title] || '');
   });
   PUBLICATIONS.forEach(p => {

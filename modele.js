@@ -214,6 +214,13 @@ for (const titre of ancresArticlesHtml) {
   }
 }
 
+const ancresLivresHtml = [...html.matchAll(/href="#livre=([^"]+)"/g)].map(m => decodeURIComponent(m[1]));
+for (const titre of ancresLivresHtml) {
+  if (!titresLivres.has(titre)) {
+    erreur(`index.html pointe vers #livre=${titre} mais aucun livre ne porte ce titre.`);
+  }
+}
+
 // Le sommaire automatique repose sur les balises <h3> et <h4> : leur nombre
 // doit rester coherent entre l'etude et sa table des matieres.
 if (totalTitres > 0) remarque(`${totalTitres} titre(s) de section dans l'ensemble des etudes.`);
