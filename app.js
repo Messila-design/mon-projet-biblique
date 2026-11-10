@@ -1550,7 +1550,7 @@ function activerActionsPartage(conteneur){
 
 function construireBarreActionsArticle(titre, boutonTelecharger){
   return `
-    <div class="article-toolbar" role="group" aria-label="Actions de l’article">
+    <div class="article-toolbar" role="group" aria-label="Actions de la publication">
       ${construireActionsPartage(titre)}
       ${boutonTelecharger ? `<div class="article-actions">${boutonTelecharger}</div>` : ''}
     </div>`;
@@ -1863,7 +1863,13 @@ function afficherArticle(title){
   const article = livre || ARTICLES.find(item => item.title === title);
   const ongletLecture = livre ? 'lire-livre' : 'lire-article';
   const container = document.getElementById(livre ? 'livre-article' : 'article-article');
-  if(!article || !container){ reseterMetaPartage(); afficherOnglet('articles'); window.scrollTo(0, 0); return; }
+  if(!article || !container){ reseterMetaPartage(); afficherOnglet(livre ? 'livres' : 'articles'); window.scrollTo(0, 0); return; }
+  // Mettre à jour le hash de l'URL pour que le lien partagé pointe directement vers ce contenu
+  if(livre){
+    history.replaceState(null, '', location.pathname + location.search + ancreLivre(title));
+  } else if(!location.hash.startsWith('#article=')){
+    history.replaceState(null, '', location.pathname + location.search + ancreArticle(title));
+  }
   const retour = document.querySelector(`#${ongletLecture} .etude-retour`);
   if(retour){
     retour.href = livre ? '#livres' : '#articles';
@@ -2120,8 +2126,10 @@ function naviguerDepuisHash(){
       const titre = decodeURIComponent(cible.slice('article='.length));
       if(LIVRES.some(livre => livre.title === titre)){
         history.replaceState(null, '', location.pathname + location.search + ancreLivre(titre));
+        afficherArticle(titre);
+      } else {
+        afficherArticle(titre);
       }
-      afficherArticle(titre);
     }
     catch(e){ afficherOnglet('articles'); }
     return;
