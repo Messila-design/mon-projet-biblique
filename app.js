@@ -1104,7 +1104,6 @@ const ARTICLES_A_VENIR = [
 const LIVRES = [
   { title: "Muse-ique ou Culte à YHWH", category: "Les Livres", description: "Un discernement biblique entre l'inspiration musicale profane (la « muse ») et le véritable culte rendu à YHWH dans l'adoration.", date: "04/07/2026", lien: "https://drive.google.com/file/d/12xjIwO-1aFAbfIqO9YFmZ6DIKekcpxB6/view?usp=drive_link" },
   { title: "La puissance par la prière", category: "Les Livres", description: "Un ouvrage d’Edward McKendree Bounds consacré à la prière et à sa place dans la vie chrétienne.", date: "28/10/2026", image: "images/aaron-burden-lPCu8HnGU2E-unsplash.jpg", source: "Textes/puissance-par-la-priere.txt", lien: "https://drive.google.com/file/d/1XuOzc3qczBGICQOHMh_wj0fKgcAYhHcE/view?usp=drive_link" },
-  { title: "De l'islam à JESUS- Mon œuvre est pour le Roi!", category: "Les Livres", description: "Un témoignage de l’islam à Jésus-Christ et de l’engagement de l’auteur au service du Roi.", date: "10/11/2026", image: "images/kelly-sikkema-NXv3XcMyDy0-unsplash.jpg", source: "3 - Livres/de-l-islam-a-jesus.txt", notes: { 1: "Bus dont l’accès a été rendu gratuit durant la période du Covid-19.", 2: "Romains 1:17.", 3: "Lycée et collège pour Yehoshoua." }, fichier: "3 - Livres/De l'islam à JESUS- Mon œuvre est pour le Roi!.pdf" }
 ];
 
 const VIDEOS = [
