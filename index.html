@@ -1282,11 +1282,13 @@
     }
 
     .mag-card-upcoming.is-announcement-arriving {
-      animation: announcement-arrival 4.2s cubic-bezier(.2, .8, .2, 1) 5 both;
+      animation: announcement-arrival 4.2s cubic-bezier(.2, .8, .2, 1) both;
+      animation-iteration-count: 5;
     }
 
     .mag-card-upcoming.is-announcement-arriving .kicker-pill {
-      animation: announcement-badge-arrival 4.2s ease-out 5 both;
+      animation: announcement-badge-arrival 4.2s ease-out both;
+      animation-iteration-count: 5;
     }
 
     @keyframes announcement-arrival {
