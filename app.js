@@ -1104,7 +1104,7 @@ const ARTICLES_A_VENIR = [
 const LIVRES = [
   { title: "Muse-ique ou Culte à YHWH", category: "Les Livres", description: "Un discernement biblique entre l'inspiration musicale profane (la « muse ») et le véritable culte rendu à YHWH dans l'adoration.", date: "04/07/2026", lien: "https://drive.google.com/file/d/12xjIwO-1aFAbfIqO9YFmZ6DIKekcpxB6/view?usp=drive_link" },
   { title: "La puissance par la prière", category: "Les Livres", description: "Un ouvrage d’Edward McKendree Bounds consacré à la prière et à sa place dans la vie chrétienne.", date: "28/10/2026", image: "images/aaron-burden-lPCu8HnGU2E-unsplash.jpg", source: "Textes/puissance-par-la-priere.txt", lien: "https://drive.google.com/file/d/1XuOzc3qczBGICQOHMh_wj0fKgcAYhHcE/view?usp=drive_link" },
-  { title: "De l'islam à JESUS- Mon œuvre est pour le Roi!", category: "Les Livres", description: "Un témoignage de l’islam à Jésus-Christ et de l’engagement de l’auteur au service du Roi.", date: "10/11/2026", image: "images/kelly-sikkema-NXv3XcMyDy0-unsplash.jpg", source: "3 - Livres/de-l-islam-a-jesus.txt", notes: { 1: "Bus dont l’accès a été rendu gratuit durant la période du Covid-19.", 2: "Romains 1:17.", 3: "Lycée et collège pour Yehoshoua." }, fichier: "3 - Livres/De l'islam à JESUS- Mon œuvre est pour le Roi!.pdf" },
+  { id: "de-l-islam-a-jesus", title: "De l'islam à JESUS- Mon œuvre est pour le Roi!", category: "Les Livres", description: "Un témoignage de l’islam à Jésus-Christ et de l’engagement de l’auteur au service du Roi.", date: "10/11/2026", image: "images/kelly-sikkema-NXv3XcMyDy0-unsplash.jpg", source: "3 - Livres/de-l-islam-a-jesus.txt", notes: { 1: "Bus dont l’accès a été rendu gratuit durant la période du Covid-19.", 2: "Romains 1:17.", 3: "Lycée et collège pour Yehoshoua." }, fichier: "3 - Livres/De l'islam à JESUS- Mon œuvre est pour le Roi!.pdf" },
 ];
 
 const VIDEOS = [
@@ -1499,8 +1499,81 @@ function slugifier(texte){
     .replace(/\s+/g, '-');
 }
 
+function normaliserChaineComparaison(valeur){
+  return String(valeur || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/œ/g, 'oe')
+    .replace(/æ/g, 'ae')
+    .replace(/['’`\-_\s]+/g, ' ')
+    .trim();
+}
+
+function trouverLivre(identifiantOuTitre){
+  if(!identifiantOuTitre) return null;
+  let brut = String(identifiantOuTitre).trim();
+  let decode = brut;
+  try { decode = decodeURIComponent(brut); } catch(e){}
+
+  // 1. Égalité stricte sur titre ou id
+  let trouve = LIVRES.find(l => l.title === decode || l.title === brut || (l.id && (l.id === decode || l.id === brut)));
+  if(trouve) return trouve;
+
+  // 2. Égalité sur les slugs
+  const slugRecherche = slugifier(decode);
+  trouve = LIVRES.find(l => slugifier(l.title) === slugRecherche || (l.id && slugifier(l.id) === slugRecherche));
+  if(trouve) return trouve;
+
+  // 3. Égalité normalisée (sans accents, sans casse, oe=œ, apostrophes unifiées)
+  const normRecherche = normaliserChaineComparaison(decode);
+  trouve = LIVRES.find(l => normaliserChaineComparaison(l.title) === normRecherche);
+  if(trouve) return trouve;
+
+  // 4. Début de titre, sous-chaîne ou correspondance partielle
+  if(normRecherche.length >= 4){
+    trouve = LIVRES.find(l => {
+      const normLivre = normaliserChaineComparaison(l.title);
+      return normLivre.startsWith(normRecherche) || normLivre.includes(normRecherche) || normRecherche.includes(normLivre);
+    });
+    if(trouve) return trouve;
+  }
+
+  return null;
+}
+
+function trouverArticle(identifiantOuTitre){
+  if(!identifiantOuTitre) return null;
+  let brut = String(identifiantOuTitre).trim();
+  let decode = brut;
+  try { decode = decodeURIComponent(brut); } catch(e){}
+
+  let trouve = ARTICLES.find(a => a.title === decode || a.title === brut);
+  if(trouve) return trouve;
+
+  const slugRecherche = slugifier(decode);
+  trouve = ARTICLES.find(a => slugifier(a.title) === slugRecherche);
+  if(trouve) return trouve;
+
+  const normRecherche = normaliserChaineComparaison(decode);
+  trouve = ARTICLES.find(a => normaliserChaineComparaison(a.title) === normRecherche);
+  if(trouve) return trouve;
+
+  if(normRecherche.length >= 4){
+    trouve = ARTICLES.find(a => {
+      const normArt = normaliserChaineComparaison(a.title);
+      return normArt.startsWith(normRecherche) || normArt.includes(normRecherche) || normRecherche.includes(normArt);
+    });
+    if(trouve) return trouve;
+  }
+
+  return null;
+}
+
 function construireActionsPartage(titre){
-  const url = window.location.href;
+  const livre = trouverLivre(titre);
+  const ancre = livre ? ancreLivre(livre.title) : ancreArticle(titre);
+  const url = new URL(ancre, window.location.href).href;
   const message = `Je vous recommande cette lecture : ${titre} — ${url}`;
   const urlEncodee = encodeURIComponent(url);
   const messageEncode = encodeURIComponent(message);
@@ -1516,7 +1589,7 @@ function construireActionsPartage(titre){
         <a class="share-action" href="https://www.facebook.com/sharer/sharer.php?u=${urlEncodee}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23.1 10.1 24v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.6 4.5-4.6 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 1-2 1.9v2.3h3.4l-.5 3.5h-2.9V24C19.6 23.1 24 18.1 24 12.1Z"/></svg><span class="sr-only">Facebook</span></a>
         <a class="share-action" href="https://x.com/intent/post?text=${messageEncode}" target="_blank" rel="noopener noreferrer" aria-label="Partager sur X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L2.9 2h6.3l4.4 5.8L18.9 2Zm-1.1 18h1.7L8.3 3.9H6.5L17.8 20Z"/></svg><span class="sr-only">X</span></a>
         <a class="share-action" href="mailto:?subject=${sujetEmail}&body=${messageEncode}" aria-label="Partager par e-mail" title="E-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="sr-only">E-mail</span></a>
-        <button class="share-action" type="button" data-share-copy aria-label="Copier le lien" title="Copier le lien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3A5 5 0 0 0 13 2.9l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3A5 5 0 0 0 11 21.1l1.7-1.7"/></svg><span class="sr-only">Copier le lien</span></button>
+        <button class="share-action" type="button" data-share-copy data-share-url="${echapperTexteHtml(url)}" aria-label="Copier le lien" title="Copier le lien"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3A5 5 0 0 0 13 2.9l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3A5 5 0 0 0 11 21.1l1.7-1.7"/></svg><span class="sr-only">Copier le lien</span></button>
         <button class="share-action" type="button" data-share-print aria-label="Imprimer" title="Imprimer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6z"/></svg><span class="sr-only">Imprimer</span></button>
       </div>
     </section>`;
@@ -1528,7 +1601,7 @@ function activerActionsPartage(conteneur){
   });
   conteneur.querySelectorAll('[data-share-copy]').forEach(bouton => {
     bouton.addEventListener('click', async () => {
-      const url = window.location.href;
+      const url = bouton.getAttribute('data-share-url') || window.location.href;
       if(navigator.clipboard && window.isSecureContext){
         try {
           await navigator.clipboard.writeText(url);
@@ -1543,7 +1616,7 @@ function activerActionsPartage(conteneur){
           console.error('La copie du lien a échoué.', erreur);
         }
       }
-      window.prompt('Copiez le lien de cet article pour le partager :', url);
+      window.prompt('Copiez le lien pour le partager :', url);
     });
   });
 }
@@ -1859,16 +1932,15 @@ function telechargerArticleHtml(article, contenuHtml){
 }
 
 function afficherArticle(title){
-  const livre = LIVRES.find(item => item.title === title);
-  const article = livre || ARTICLES.find(item => item.title === title);
+  const livre = trouverLivre(title);
+  const article = livre || trouverArticle(title);
   const ongletLecture = livre ? 'lire-livre' : 'lire-article';
   const container = document.getElementById(livre ? 'livre-article' : 'article-article');
   if(!article || !container){ reseterMetaPartage(); afficherOnglet(livre ? 'livres' : 'articles'); window.scrollTo(0, 0); return; }
   // Mettre à jour le hash de l'URL pour que le lien partagé pointe directement vers ce contenu
-  if(livre){
-    history.replaceState(null, '', location.pathname + location.search + ancreLivre(title));
-  } else if(!location.hash.startsWith('#article=')){
-    history.replaceState(null, '', location.pathname + location.search + ancreArticle(title));
+  const ancrePropre = livre ? ancreLivre(article.title) : ancreArticle(article.title);
+  if(location.hash !== ancrePropre){
+    history.replaceState(null, '', location.pathname + location.search + ancrePropre);
   }
   const retour = document.querySelector(`#${ongletLecture} .etude-retour`);
   if(retour){
@@ -1879,7 +1951,7 @@ function afficherArticle(title){
   const contenuInterne = (window.ARTICLES_CONTENU || {})[article.title];
   const idPrefixe = 'art-' + slugifier(article.title);
 
-  if((!contenuInterne || (article.notes && !article.sourceChargee)) && article.source && !article.sourceIndisponible){
+  if(!contenuInterne && article.source && !article.sourceIndisponible){
     if(!article.chargementEnCours){
       article.chargementEnCours = true;
       fetch(article.source)
@@ -1892,13 +1964,13 @@ function afficherArticle(title){
           window.ARTICLES_CONTENU[article.title] = window.formaterArticleTexte(texte, { notes: article.notes });
           article.sourceChargee = true;
           article.chargementEnCours = false;
-          afficherArticle(title);
+          afficherArticle(article.title);
         })
         .catch(erreur => {
           console.error('Impossible de charger ou de formater le manuscrit de l’article : ' + article.title, erreur);
           article.chargementEnCours = false;
           article.sourceIndisponible = true;
-          afficherArticle(title);
+          afficherArticle(article.title);
         });
     }
     container.innerHTML = `<div class="article-card"><p>Chargement ${livre ? 'du livre' : 'de l’article'}…</p></div>`;
@@ -2031,8 +2103,9 @@ function afficherOnglet(id){
   document.querySelectorAll('.onglet').forEach(section => {
     section.hidden = (section.id !== id);
   });
+  const idMenu = id === 'lire-livre' ? 'livres' : (id === 'lire-article' ? 'articles' : (id === 'lire-etude' ? 'etudes' : id));
   document.querySelectorAll('nav.header-nav a, nav.footer-nav a').forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    a.classList.toggle('active', a.getAttribute('href') === '#' + idMenu);
   });
 }
 
@@ -2123,12 +2196,21 @@ function naviguerDepuisHash(){
 
   if(cible.startsWith('article=')){
     try{
-      const titre = decodeURIComponent(cible.slice('article='.length));
-      if(LIVRES.some(livre => livre.title === titre)){
-        history.replaceState(null, '', location.pathname + location.search + ancreLivre(titre));
-        afficherArticle(titre);
+      const brut = cible.slice('article='.length);
+      // Vérifier si c'est un livre qui a été partagé avec le mauvais préfixe
+      const livre = trouverLivre(brut);
+      if(livre){
+        history.replaceState(null, '', location.pathname + location.search + ancreLivre(livre.title));
+        afficherArticle(livre.title);
+        return;
+      }
+      const article = trouverArticle(brut);
+      if(article){
+        afficherArticle(article.title);
       } else {
-        afficherArticle(titre);
+        reseterMetaPartage();
+        afficherOnglet('articles');
+        window.scrollTo(0, 0);
       }
     }
     catch(e){ afficherOnglet('articles'); }
@@ -2137,9 +2219,10 @@ function naviguerDepuisHash(){
 
   if(cible.startsWith('livre=')){
     try{
-      const titre = decodeURIComponent(cible.slice('livre='.length));
-      if(LIVRES.some(livre => livre.title === titre)){
-        afficherArticle(titre);
+      const brut = cible.slice('livre='.length);
+      const livre = trouverLivre(brut);
+      if(livre){
+        afficherArticle(livre.title);
       } else {
         reseterMetaPartage();
         afficherOnglet('livres');
