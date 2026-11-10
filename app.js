@@ -1867,12 +1867,15 @@ function rendreLivres(){
   const grid = document.getElementById('livres-grid');
   if(!grid) return;
   const livres = [...LIVRES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
-  grid.innerHTML = livres.map(a => `
-    <a href="${echapperTexteHtml(ancreLivre(a.title))}" class="article-row">
-      <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
-      <span class="title">${echapperTexteHtml(a.title)}</span>
-      <span class="desc">${echapperTexteHtml(a.description)}</span>
-      <span class="meta">${echapperTexteHtml(a.date)} · Lire en ligne <span aria-hidden="true">→</span></span>
+  grid.innerHTML = livres.map((a, i) => `
+    <a href="${echapperTexteHtml(ancreLivre(a.title))}" class="etude-row">
+      <span class="eyebrow num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="body">
+        <span class="title">${echapperTexteHtml(a.title)}</span>
+        <span class="desc">${echapperTexteHtml(a.description)}</span>
+      </span>
+      <span class="meta">${echapperTexteHtml(a.date)}</span>
+      <span class="arrow" aria-hidden="true">→</span>
     </a>
   `).join('');
 }

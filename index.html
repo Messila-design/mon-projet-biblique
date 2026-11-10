@@ -2163,6 +2163,34 @@
       }
     }
 
+    #livres-grid {
+      border-top: 1px solid var(--hairline);
+    }
+
+    #livres-grid .etude-row {
+      border-top: none;
+      border-bottom: 1px solid var(--hairline);
+      padding: 24px 0;
+      gap: 20px;
+    }
+
+    #livres-grid .etude-row .body .title {
+      font-size: 22px;
+    }
+
+    @media (max-width: 639px) {
+      #livres-grid .etude-row {
+        gap: 16px;
+        padding: 20px 0;
+      }
+      #livres-grid .etude-row .num {
+        width: 24px;
+      }
+      #livres-grid .etude-row .body .title {
+        font-size: 19px;
+      }
+    }
+
     .article-row {
       display: flex;
       flex-direction: column;
