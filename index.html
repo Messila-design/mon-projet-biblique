@@ -1282,11 +1282,11 @@
     }
 
     .mag-card-upcoming.is-announcement-arriving {
-      animation: announcement-arrival 4.2s cubic-bezier(.2, .8, .2, 1) both;
+      animation: announcement-arrival 4.2s cubic-bezier(.2, .8, .2, 1) 5 both;
     }
 
     .mag-card-upcoming.is-announcement-arriving .kicker-pill {
-      animation: announcement-badge-arrival 4.2s ease-out both;
+      animation: announcement-badge-arrival 4.2s ease-out 5 both;
     }
 
     @keyframes announcement-arrival {
@@ -2199,6 +2199,25 @@
       padding: 28px 0;
       text-decoration: none;
       color: inherit;
+    }
+
+    .article-row-published {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .article-row .num {
+      width: 32px;
+      flex-shrink: 0;
+      font-size: 12px;
+      letter-spacing: .1em;
+      color: var(--muted-foreground);
+    }
+
+    .article-row-content {
+      flex: 1;
+      min-width: 0;
     }
 
     .article-row .eyebrow {
@@ -3458,6 +3477,14 @@
 
       .article-row {
         padding: 24px 0;
+      }
+
+      .article-row-published {
+        gap: 16px;
+      }
+
+      .article-row-published .num {
+        width: 24px;
       }
 
       .article-article-img {

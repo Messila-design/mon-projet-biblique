@@ -1853,12 +1853,15 @@ function rendreArticles(){
       <span class="meta">${annonce.image ? 'Cliquer sur l’affiche pour l’agrandir · ' : ''}Prochainement</span>
     </article>
   `).join('');
-  grid.innerHTML = annonces + articlesTries.map(a => `
-    <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="article-row">
-      <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
-      <span class="title">${echapperTexteHtml(a.title)}</span>
-      <span class="desc">${echapperTexteHtml(a.description)}</span>
-      <span class="meta">${echapperTexteHtml(a.date)} · Lire en ligne <span aria-hidden="true">→</span></span>
+  grid.innerHTML = annonces + articlesTries.map((a, i) => `
+    <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="article-row article-row-published">
+      <span class="eyebrow num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="article-row-content">
+        <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
+        <span class="title">${echapperTexteHtml(a.title)}</span>
+        <span class="desc">${echapperTexteHtml(a.description)}</span>
+        <span class="meta">${echapperTexteHtml(a.date)} · Lire en ligne <span aria-hidden="true">→</span></span>
+      </span>
     </a>
   `).join('');
 }
