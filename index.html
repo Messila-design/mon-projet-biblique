@@ -1283,12 +1283,10 @@
 
     .mag-card-upcoming.is-announcement-arriving {
       animation: announcement-arrival 4.2s cubic-bezier(.2, .8, .2, 1) both;
-      animation-iteration-count: 5;
     }
 
     .mag-card-upcoming.is-announcement-arriving .kicker-pill {
       animation: announcement-badge-arrival 4.2s ease-out both;
-      animation-iteration-count: 5;
     }
 
     @keyframes announcement-arrival {
@@ -1298,47 +1296,30 @@
         box-shadow: 0 0 0 0 rgba(198, 155, 74, 0);
       }
 
-      15% {
+      10% {
         opacity: 1;
         transform: translateY(-4px) scale(1.025);
         box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
       }
 
-      28% {
-        transform: translateY(0) scale(1);
-        box-shadow: var(--shadow-card);
-      }
-
-      42% {
-        box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
-      }
-
-      55% {
-        box-shadow: var(--shadow-card);
-      }
-
-      69% {
-        box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
-      }
-
-      82% {
-        box-shadow: var(--shadow-card);
-      }
-
-      100% {
+      20%, 40%, 60%, 80%, 100% {
         opacity: 1;
         transform: translateY(0) scale(1);
         box-shadow: var(--shadow-card);
       }
+
+      30%, 50%, 70%, 90% {
+        box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
+      }
     }
 
     @keyframes announcement-badge-arrival {
-      0%, 28%, 55%, 82%, 100% {
-        filter: none;
+      10%, 30%, 50%, 70%, 90% {
+        filter: brightness(1.22);
       }
 
-      15%, 42%, 69% {
-        filter: brightness(1.22);
+      0%, 20%, 40%, 60%, 80%, 100% {
+        filter: none;
       }
     }
 
