@@ -12,13 +12,18 @@
   <meta id="og-title" property="og:title" content="Laméd — Études bibliques & publications">
   <meta id="og-description" property="og:description"
     content="Des études bibliques pour approfondir les Écritures : articles et publications.">
-  <meta id="og-image" property="og:image" content="https://lamed.code/images/pub-1.jpg">
-  <meta id="og-url" property="og:url" content="https://lamed.code/">
+  <meta id="og-image" property="og:image" content="https://centre-lamed.onrender.com/images/partages/defaut.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Laméd — Études bibliques et publications">
+  <meta id="og-url" property="og:url" content="https://centre-lamed.onrender.com/">
+  <link rel="canonical" href="https://centre-lamed.onrender.com/">
   <meta name="twitter:card" content="summary_large_image">
   <meta id="tw-title" name="twitter:title" content="Laméd — Études bibliques & publications">
   <meta id="tw-description" name="twitter:description"
     content="Des études bibliques pour approfondir les Écritures : articles et publications.">
-  <meta id="tw-image" name="twitter:image" content="https://lamed.code/images/pub-1.jpg">
+  <meta id="tw-image" name="twitter:image" content="https://centre-lamed.onrender.com/images/partages/defaut.jpg">
+  <meta name="twitter:image:alt" content="Laméd — Études bibliques et publications">
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111B2B'/%3E%3Ctext x='50%25' y='68%25' text-anchor='middle' font-size='40' font-family='Georgia,serif' font-weight='bold' fill='%23CBA078'%3E%D7%9C%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,9 +38,9 @@
     (function (w, d, e, u, f, l, n) {
       w[f] = w[f] || function () {
         (w[f].q = w[f].q || [])
-        .push(arguments);
+          .push(arguments);
       }, l = d.createElement(e), l.async = 1, l.src = u,
-      n = d.getElementsByTagName(e)[0], n.parentNode.insertBefore(l, n);
+        n = d.getElementsByTagName(e)[0], n.parentNode.insertBefore(l, n);
     })
       (window, document, 'script', 'https://assets.mailerlite.com/js/universal.js', 'ml');
     ml('account', '2498680');
@@ -159,10 +164,19 @@
   4. VERIFIER AVANT DE PUBLIER
   ------------------------------------------------------------------
   Dans le dossier du site :
-      npm test      verifie la syntaxe et les identifiants uniques
-      npm run audit verifie les ressources et les conflits de fusion
-      npm run modele  verifie le respect du modele editorial
-  Les trois commandes doivent repondre "OK" avant un envoi sur GitHub.
+      npm run partages  regenere les pages d'apercu (p/) et leurs images
+      npm test          verifie la syntaxe et les identifiants uniques
+      npm run audit     verifie les ressources et les conflits de fusion
+      npm run modele    verifie le respect du modele editorial
+      npm run controle  execute la generation puis les trois controles
+  Les commandes doivent repondre "OK" avant un envoi sur GitHub.
+
+  Chaque etude, article ou livre possede une page d'apercu dans p/.
+  Ces pages contiennent les balises Open Graph (titre, description,
+  image) lues par WhatsApp et Facebook, puis redirigent vers le site.
+  Il faut donc relancer "npm run partages" apres toute publication
+  ou modification d'image, et envoyer les fichiers p/ et
+  images/partages/ avec le reste du site.
 
 ===================================================================
 -->
@@ -1302,23 +1316,40 @@
         box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
       }
 
-      20%, 40%, 60%, 80%, 100% {
+      20%,
+      40%,
+      60%,
+      80%,
+      100% {
         opacity: 1;
         transform: translateY(0) scale(1);
         box-shadow: var(--shadow-card);
       }
 
-      30%, 50%, 70%, 90% {
+      30%,
+      50%,
+      70%,
+      90% {
         box-shadow: 0 0 0 8px rgba(198, 155, 74, .22), 0 18px 50px rgba(120, 83, 24, .24);
       }
     }
 
     @keyframes announcement-badge-arrival {
-      10%, 30%, 50%, 70%, 90% {
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
         filter: brightness(1.22);
       }
 
-      0%, 20%, 40%, 60%, 80%, 100% {
+      0%,
+      20%,
+      40%,
+      60%,
+      80%,
+      100% {
         filter: none;
       }
     }
@@ -2166,9 +2197,11 @@
         gap: 16px;
         padding: 20px 0;
       }
+
       #livres-grid .etude-row .num {
         width: 24px;
       }
+
       #livres-grid .etude-row .body .title {
         font-size: 19px;
       }
@@ -3574,7 +3607,7 @@
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return; n = f.fbq = function () {
         n.callMethod ?
-        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
       };
       if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
       n.queue = []; t = b.createElement(e); t.async = !0;
@@ -3647,9 +3680,9 @@
               </svg>
             </button>
           </form>
-        <span id="site-search-hint" class="sr-only">Tapez au moins deux caractères pour lancer la recherche dans
-          les études bibliques et les articles.</span>
-        <div class="search-results" id="site-search-results" role="listbox" aria-label="Résultats de recherche"></div>
+          <span id="site-search-hint" class="sr-only">Tapez au moins deux caractères pour lancer la recherche dans
+            les études bibliques et les articles.</span>
+          <div class="search-results" id="site-search-results" role="listbox" aria-label="Résultats de recherche"></div>
         </div>
       </div>
       <div class="reading-tools-group">
@@ -4028,7 +4061,8 @@
         <div class="articles-head">
           <p class="eyebrow">03 — Réflexions</p>
           <h2>Articles</h2>
-          <p class="section-subtitle">Des réflexions bibliques pour éclairer les questions de foi et de vie chrétienne à la lumière des Écritures.</p>
+          <p class="section-subtitle">Des réflexions bibliques pour éclairer les questions de foi et de vie chrétienne à
+            la lumière des Écritures.</p>
         </div>
         <div id="articles-grid" class="articles-grid"></div>
       </div>
@@ -4040,7 +4074,8 @@
         <div class="articles-head">
           <p class="eyebrow">04 — Ouvrages</p>
           <h2>Livres</h2>
-          <p class="section-subtitle">Des ouvrages pour approfondir les Écritures et nourrir la foi, à lire à son rythme et à garder comme ressources.</p>
+          <p class="section-subtitle">Des ouvrages pour approfondir les Écritures et nourrir la foi, à lire à son rythme
+            et à garder comme ressources.</p>
         </div>
         <div id="livres-grid" class="articles-grid"></div>
       </div>

@@ -3,6 +3,14 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const {
+  lirePublications,
+  IMAGE_DEFAUT,
+  SITE_URL,
+  urlAbsolue,
+  echapperHtml,
+  normaliserTitre
+} = require('./publications');
 
 const root = __dirname;
 const files = ['app.js', 'articles-contenu.js'];
@@ -15,87 +23,43 @@ for (const file of files) {
   new vm.Script(fs.readFileSync(filePath, 'utf8'), { filename: file });
 }
 
-const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-const studiesMatch = app.match(/const\s+ETUDES_BIBLIQUES\s*=\s*\[([\s\S]*?)\n\];/);
-const articlesMatch = app.match(/const\s+ARTICLES\s*=\s*\[([\s\S]*?)\n\];/);
-const booksMatch = app.match(/const\s+LIVRES\s*=\s*\[([\s\S]*?)\n\];/);
-
-if (!studiesMatch || !articlesMatch || !booksMatch) {
-  throw new Error('Les tableaux ETUDES_BIBLIQUES, ARTICLES ou LIVRES sont introuvables dans app.js.');
-}
-
-const studies = [...studiesMatch[1].matchAll(/\bid\s*:/g)].length;
-const articles = [...articlesMatch[1].matchAll(/\btitle\s*:/g)].length;
-const books = [...booksMatch[1].matchAll(/\btitle\s*:/g)].length;
-
-if (studies === 0 || articles === 0 || books === 0) {
+const { etudes, articles, livres, toutes } = lirePublications(root);
+if (!etudes.length || !articles.length || !livres.length) {
   throw new Error('Les données des études, des articles ou des livres sont vides.');
 }
-
-function extraireChaines(bloc, champ) {
-  const valeurs = [];
-  const regex = new RegExp(`\\b${champ}\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"`, 'g');
-  for (const match of bloc.matchAll(regex)) {
-    try {
-      valeurs.push(JSON.parse(`"${match[1]}"`));
-    } catch (erreur) {
-      valeurs.push(match[1]);
-    }
-  }
-  return valeurs;
-}
-
-// Chaque lien interne #article=, #livre= ou #etude= doit désigner un contenu
-// de la bonne rubrique, sinon le visiteur atterrit sur le mauvais onglet.
-const titresEtudes = extraireChaines(studiesMatch[1], 'titre');
-const idsEtudes = extraireChaines(studiesMatch[1], 'id');
-const titresArticles = extraireChaines(articlesMatch[1], 'title');
-const titresLivres = extraireChaines(booksMatch[1], 'title');
-const collections = {
-  article: new Set(titresArticles),
-  livre: new Set(titresLivres),
-  etude: new Set([...idsEtudes, ...titresEtudes])
-};
 
 // Deux contenus de rubriques différentes ne doivent pas partager le même
 // titre, sinon un lien #article=... pourrait ouvrir l'onglet d'une autre
 // rubrique. Les identifiants d'études doivent aussi rester uniques.
-function normaliserTitre(valeur) {
-  return String(valeur)
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/œ/g, 'oe')
-    .replace(/æ/g, 'ae')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-}
-
-const publications = [
-  ...titresEtudes.map(titre => ({ rubrique: 'étude', titre })),
-  ...titresArticles.map(titre => ({ rubrique: 'article', titre })),
-  ...titresLivres.map(titre => ({ rubrique: 'livre', titre }))
-];
 const titresVus = new Map();
 const doublons = [];
-for (const publication of publications) {
+for (const publication of toutes) {
   const cle = normaliserTitre(publication.titre);
   if (titresVus.has(cle)) {
-    doublons.push(`${publication.rubrique} « ${publication.titre} » / ${titresVus.get(cle)}`);
+    doublons.push(`${publication.type} « ${publication.titre} » / ${titresVus.get(cle)}`);
   } else {
-    titresVus.set(cle, publication.rubrique);
+    titresVus.set(cle, publication.type);
   }
 }
 const idsVus = new Set();
-for (const id of idsEtudes) {
-  if (idsVus.has(id)) doublons.push(`identifiant d'étude dupliqué « ${id} »`);
-  idsVus.add(id);
+for (const etude of etudes) {
+  if (idsVus.has(etude.identifiant)) doublons.push(`identifiant d'étude dupliqué « ${etude.identifiant} »`);
+  idsVus.add(etude.identifiant);
 }
 if (doublons.length) {
   throw new Error(`Titres ou identifiants ambigus : ${doublons.join(' ; ')}`);
 }
 
+const collections = {
+  article: new Set(articles.map(publication => publication.titre)),
+  livre: new Set(livres.map(publication => publication.titre)),
+  etude: new Set(etudes.flatMap(publication => [publication.identifiant, publication.titre]))
+};
+
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+
+// Chaque lien interne #article=, #livre= ou #etude= doit désigner un contenu
+// de la bonne rubrique, sinon le visiteur atterrit sur le mauvais onglet.
 const liensInvalides = [];
 for (const attribut of html.matchAll(/href\s*=\s*(?:"([^"]*)"|'([^']*)')/gi)) {
   const lien = attribut[1] !== undefined ? attribut[1] : attribut[2];
@@ -116,4 +80,60 @@ if (liensInvalides.length) {
   throw new Error(`Liens internes mal orientés : ${[...new Set(liensInvalides)].join(', ')}`);
 }
 
-console.log(`OK — ${files.length} fichiers analysés, ${studies} étude(s), ${articles} article(s) et ${books} livre(s) trouvés.`);
+if (/lamed\.code/i.test(html)) {
+  throw new Error('index.html référence encore le domaine inexistant lamed.code.');
+}
+const imageDefaut = urlAbsolue(IMAGE_DEFAUT);
+if (!html.includes(`content="${imageDefaut}"`)) {
+  throw new Error(`index.html doit référencer l'image de partage par défaut : ${imageDefaut}`);
+}
+if (!html.includes(`<link rel="canonical" href="${SITE_URL}/">`)) {
+  throw new Error('index.html doit contenir la balise canonique du site.');
+}
+
+// Chaque publication doit avoir sa page de partage et son image optimisée,
+// avec des balises Open Graph cohérentes avec le contenu.
+const problemes = [];
+for (const publication of toutes) {
+  const cheminPage = path.join(root, publication.page);
+  if (!fs.existsSync(cheminPage)) {
+    problemes.push(`page manquante : ${publication.page}`);
+    continue;
+  }
+  const page = fs.readFileSync(cheminPage, 'utf8');
+  const imageRelative = `images/partages/${publication.slug}.jpg`;
+  const imageAbsolue = urlAbsolue(imageRelative);
+  const cheminImage = path.join(root, imageRelative.replace(/\//g, path.sep));
+  if (!fs.existsSync(cheminImage)) {
+    problemes.push(`image manquante : ${imageRelative}`);
+  } else {
+    const taille = fs.statSync(cheminImage).size;
+    if (taille < 5 * 1024 || taille > 400 * 1024) {
+      problemes.push(`image hors limites (${Math.round(taille / 1024)} Ko) : ${imageRelative}`);
+    }
+  }
+
+  const attendus = [
+    `<link rel="canonical" href="${echapperHtml(publication.urlCanonique)}">`,
+    `<meta property="og:type" content="${publication.type === 'livre' ? 'book' : 'article'}">`,
+    `<meta property="og:title" content="${echapperHtml(publication.titre)}">`,
+    `<meta property="og:description" content="${echapperHtml(publication.description)}">`,
+    `<meta property="og:image" content="${echapperHtml(imageAbsolue)}">`,
+    `<meta property="og:url" content="${echapperHtml(publication.urlPage)}">`,
+    `<meta name="twitter:image" content="${echapperHtml(imageAbsolue)}">`,
+    `<script>window.location.replace(${JSON.stringify(publication.urlCanonique)});</script>`
+  ];
+  for (const attendu of attendus) {
+    if (!page.includes(attendu)) {
+      problemes.push(`balise absente dans ${publication.page} : ${attendu}`);
+    }
+  }
+}
+if (problemes.length) {
+  throw new Error(`Pages de partage invalides (exécutez npm run partages) : ${problemes.join(' ; ')}`);
+}
+
+console.log(
+  `OK — ${files.length} fichiers analysés, ${etudes.length} étude(s), ${articles.length} article(s) ` +
+  `et ${livres.length} livre(s) trouvés, ${toutes.length} page(s) de partage vérifiée(s).`
+);

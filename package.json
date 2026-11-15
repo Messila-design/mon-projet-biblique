@@ -5,11 +5,17 @@
   "main": "serve.js",
   "scripts": {
     "start": "node serve.js",
+    "partages": "node generer-partages.js",
+    "build": "node generer-partages.js",
     "test": "node check.js",
     "verify": "node verify.js",
     "audit": "node audit.js",
     "modele": "node modele.js",
-    "controle": "node check.js && node audit.js && node verify.js && node modele.js"
+    "controle": "node generer-partages.js && node check.js && node audit.js && node verify.js && node modele.js"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "acorn": "^8.19.0",
+    "sharp": "^0.35.5"
+  }
 }

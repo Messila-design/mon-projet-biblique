@@ -1791,9 +1791,22 @@ function ouvrirPublication(identifiantOuTitre){
   return true;
 }
 
+function nomPagePartage(publication){
+  const identifiant = publication.type === 'etude'
+    ? publication.item.id
+    : (publication.item.id || publication.item.title);
+  return 'p/' + publication.type + '-' + (slugifier(identifiant) || 'item') + '.html';
+}
+
+function urlPartagePublication(publication){
+  return new URL(nomPagePartage(publication), document.baseURI || window.location.href).href;
+}
+
 function construireActionsPartage(titre){
-  const ancre = ancrePublication(titre) || ancreArticle(titre);
-  const url = new URL(ancre, window.location.href).href;
+  const publication = trouverPublication(titre);
+  const url = publication
+    ? urlPartagePublication(publication)
+    : new URL(ancrePublication(titre) || ancreArticle(titre), window.location.href).href;
   const message = `Je vous recommande cette lecture : ${titre} — ${url}`;
   const urlEncodee = encodeURIComponent(url);
   const messageEncode = encodeURIComponent(message);

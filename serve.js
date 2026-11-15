@@ -74,6 +74,8 @@ const HSTS_HEADER = 'max-age=63072000; includeSubDomains; preload';
 
 function isPublicFile(name) {
   if (['index.html', 'app.js', 'articles-contenu.js', 'livres-contenu.js'].includes(name)) return true;
+  if (/^p\/[a-z0-9][a-z0-9-]*\.html$/.test(name)) return true;
+  if (/^images\/partages\/[^/\\]+\.jpe?g$/i.test(name)) return true;
   if (/^(?:images|images - la croix)\/[^/\\]+\.(?:png|jpe?g|webp|gif|ico|svg)$/i.test(name)) return true;
   if (/^(?:articles|2 - articles)\/[^/\\]+\.(?:txt|pdf|docx?)$/i.test(name)) return true;
   if (/^(?:3 - Livres)\/[^/\\]+\.(?:txt|pdf|docx?)$/i.test(name)) return true;
