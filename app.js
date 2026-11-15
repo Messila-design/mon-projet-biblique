@@ -1248,6 +1248,24 @@ function ancreEtude(identifiant){
   return '#etude=' + encodeURIComponent(identifiantSur(identifiant));
 }
 
+/* Type d'une publication à partir de son objet. Centralise la décision pour
+   éviter qu'un contenu reçoive l'ancre d'une autre rubrique. */
+function typeDePublication(item){
+  if(!item) return null;
+  if(ETUDES_BIBLIQUES.includes(item)) return 'etude';
+  if(LIVRES.includes(item)) return 'livre';
+  if(ARTICLES.includes(item)) return 'article';
+  return null;
+}
+
+function ancreDePublication(item){
+  const type = typeDePublication(item);
+  if(type === 'etude') return ancreEtude(item.id);
+  if(type === 'livre') return ancreLivre(item.title);
+  if(type === 'article') return ancreArticle(item.title);
+  return '#accueil';
+}
+
 function urlInterneSure(url){
   const s = String(url || '').trim();
   if(!s || s === '#') return '#';
@@ -1338,7 +1356,7 @@ function rendreAccueil(){
       read: estimerTempsLecture(e.contenu, '20 min'),
       title: e.titre,
       excerpt: extraireExtrait(e.contenu || '', 160),
-      lien: '#etude=' + encodeURIComponent(e.id),
+      lien: ancreDePublication(e),
       type: 'etude'
     });
   });
@@ -1352,7 +1370,7 @@ function rendreAccueil(){
       read: estimerTempsLecture(contenuTexte, '15 min'),
       title: a.title,
       excerpt: a.description || extraireExtrait(contenuTexte, 160),
-      lien: ancreArticle(a.title),
+      lien: ancreDePublication(a),
       type: 'article'
     });
   });
@@ -1433,7 +1451,7 @@ function rendreAccueil(){
       const contenuTexte = (window.ARTICLES_CONTENU || {})[a.title] || a.description || '';
       const readTime = estimerTempsLecture(contenuTexte, '14 min');
       return `
-        <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="mag-card">
+        <a href="${echapperTexteHtml(ancreDePublication(a))}" class="mag-card">
           <div class="mag-card-thumb">
             <img src="${echapperTexteHtml(imageSure(a.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(a.title)}" width="480" height="300" loading="lazy">
           </div>
@@ -1456,7 +1474,7 @@ function rendreAccueil(){
   if(etudesGrid){
     const etudesTriees = [...ETUDES_BIBLIQUES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date)).slice(0, 4);
     etudesGrid.innerHTML = etudesTriees.map(e => `
-      <a href="#etude=${encodeURIComponent(identifiantSur(e.id))}" class="mag-etude-item">
+      <a href="${echapperTexteHtml(ancreDePublication(e))}" class="mag-etude-item">
         <div class="mag-etude-thumb">
           <img src="${echapperTexteHtml(imageSure(e.image, IMAGE_DEFAUT))}" alt="${echapperTexteHtml(e.titre)}" width="120" height="120" loading="lazy">
         </div>
@@ -1502,7 +1520,7 @@ function rendreEtudes(){
   const etudesTriees = [...ETUDES_BIBLIQUES].sort((a, b) => parseDateFr(b.date) - parseDateFr(a.date));
   list.innerHTML = etudesTriees.map((e, i) => `
     <li>
-      <a href="#etude=${encodeURIComponent(identifiantSur(e.id))}" class="etude-row">
+      <a href="${echapperTexteHtml(ancreDePublication(e))}" class="etude-row">
         <span class="eyebrow num">${String(i + 1).padStart(2, '0')}</span>
         <span class="body">
           <span class="title">${echapperTexteHtml(e.titre)}</span>
@@ -1519,6 +1537,11 @@ function afficherEtude(id){
   const etude = ETUDES_BIBLIQUES.find(e => e.id === id) || ETUDES_BIBLIQUES.find(e => identifiantSur(e.id) === id);
   const container = document.getElementById('etude-article');
   if(!etude || !container){ reseterMetaPartage(); afficherOnglet('etudes'); window.scrollTo(0, 0); return; }
+
+  const ancrePropre = ancreEtude(etude.id);
+  if(location.hash !== ancrePropre){
+    history.replaceState(null, '', location.pathname + location.search + ancrePropre);
+  }
 
   if(etude.source && !etude.contenuComplet && !etude.sourceIndisponible){
     if(!etude.chargementEnCours){
@@ -1696,10 +1719,80 @@ function trouverEtude(identifiantOuTitre){
   return null;
 }
 
+function trouverPublication(identifiantOuTitre){
+  if(!identifiantOuTitre) return null;
+
+  let brut = String(identifiantOuTitre).trim();
+  let decode = brut;
+  try { decode = decodeURIComponent(brut); } catch(e){}
+  const valeurs = [brut, decode];
+  const slugRecherche = slugifier(decode);
+  const normRecherche = normaliserChaineComparaison(decode);
+
+  const rubriques = [
+    { type: 'etude', collection: ETUDES_BIBLIQUES, titre: e => e.titre, id: e => e.id, ancre: e => ancreEtude(e.id) },
+    { type: 'livre', collection: LIVRES, titre: l => l.title, id: l => l.id, ancre: l => ancreLivre(l.title) },
+    { type: 'article', collection: ARTICLES, titre: a => a.title, id: a => a.title, ancre: a => ancreArticle(a.title) }
+  ];
+  function resultat(rubrique, item){
+    return { type: rubrique.type, item, ancre: rubrique.ancre(item) };
+  }
+
+  // 1. Titre ou identifiant strictement identique, toutes rubriques confondues.
+  for(const rubrique of rubriques){
+    const item = rubrique.collection.find(entree =>
+      valeurs.includes(rubrique.titre(entree)) || (rubrique.id(entree) && valeurs.includes(rubrique.id(entree))));
+    if(item) return resultat(rubrique, item);
+  }
+
+  // 2. Même titre après normalisation des accents, des majuscules et de la ponctuation.
+  for(const rubrique of rubriques){
+    const item = rubrique.collection.find(entree =>
+      slugifier(rubrique.titre(entree)) === slugRecherche ||
+      (rubrique.id(entree) && slugifier(rubrique.id(entree)) === slugRecherche));
+    if(item) return resultat(rubrique, item);
+  }
+  for(const rubrique of rubriques){
+    const item = rubrique.collection.find(entree =>
+      normaliserChaineComparaison(rubrique.titre(entree)) === normRecherche);
+    if(item) return resultat(rubrique, item);
+  }
+
+  // 3. Dernier recours : recherche approchante, rubrique par rubrique.
+  const etude = trouverEtude(identifiantOuTitre);
+  if(etude) return { type: 'etude', item: etude, ancre: ancreEtude(etude.id) };
+
+  const livre = trouverLivre(identifiantOuTitre);
+  if(livre) return { type: 'livre', item: livre, ancre: ancreLivre(livre.title) };
+
+  const article = trouverArticle(identifiantOuTitre);
+  if(article) return { type: 'article', item: article, ancre: ancreArticle(article.title) };
+
+  return null;
+}
+
+function ancrePublication(identifiantOuTitre){
+  const publication = trouverPublication(identifiantOuTitre);
+  return publication ? publication.ancre : null;
+}
+
+function ouvrirPublication(identifiantOuTitre){
+  const publication = trouverPublication(identifiantOuTitre);
+  if(!publication) return false;
+
+  if(location.hash !== publication.ancre){
+    history.replaceState(null, '', location.pathname + location.search + publication.ancre);
+  }
+  if(publication.type === 'etude'){
+    afficherEtude(publication.item.id);
+  } else {
+    afficherArticle(publication.item.title);
+  }
+  return true;
+}
+
 function construireActionsPartage(titre){
-  const livre = trouverLivre(titre);
-  const etude = livre ? null : trouverEtude(titre);
-  const ancre = livre ? ancreLivre(livre.title) : (etude ? ancreEtude(etude.id) : ancreArticle(titre));
+  const ancre = ancrePublication(titre) || ancreArticle(titre);
   const url = new URL(ancre, window.location.href).href;
   const message = `Je vous recommande cette lecture : ${titre} — ${url}`;
   const urlEncodee = encodeURIComponent(url);
@@ -1899,19 +1992,19 @@ function grouperPublicationsArchives(){
       titre: e.titre,
       date: e.date,
       type: 'Étude biblique',
-      lien: '#etude=' + encodeURIComponent(identifiantSur(e.id))
+      lien: ancreDePublication(e)
     })),
     ...ARTICLES.map(article => ({
       titre: article.title,
       date: article.date,
       type: 'Article',
-      lien: ancreArticle(article.title)
+      lien: ancreDePublication(article)
     })),
     ...LIVRES.map(livre => ({
       titre: livre.title,
       date: livre.date,
       type: 'Livre',
-      lien: ancreLivre(livre.title)
+      lien: ancreDePublication(livre)
     }))
   ];
   const dossiers = {};
@@ -1981,7 +2074,7 @@ function rendreArticles(){
     </article>
   `).join('');
   grid.innerHTML = annonces + articlesTries.map((a, i) => `
-    <a href="${echapperTexteHtml(ancreArticle(a.title))}" class="article-row article-row-published">
+    <a href="${echapperTexteHtml(ancreDePublication(a))}" class="article-row article-row-published">
       <span class="eyebrow num">${String(i + 1).padStart(2, '0')}</span>
       <span class="article-row-content">
         <span class="eyebrow">${echapperTexteHtml(a.category)}</span>
@@ -2071,7 +2164,7 @@ function afficherArticle(title){
   const container = document.getElementById(livre ? 'livre-article' : 'article-article');
   if(!article || !container){ reseterMetaPartage(); afficherOnglet(livre ? 'livres' : 'articles'); window.scrollTo(0, 0); return; }
   // Mettre à jour le hash de l'URL pour que le lien partagé pointe directement vers ce contenu
-  const ancrePropre = livre ? ancreLivre(article.title) : ancreArticle(article.title);
+  const ancrePropre = ancreDePublication(article);
   if(location.hash !== ancrePropre){
     history.replaceState(null, '', location.pathname + location.search + ancrePropre);
   }
@@ -2330,54 +2423,19 @@ function reseterMetaPartage(){
 function naviguerDepuisHash(){
   const cible = (location.hash || '#accueil').slice(1);
 
-  if(cible.startsWith('etude=')){
-    try{ afficherEtude(decodeURIComponent(cible.slice('etude='.length))); }
-    catch(e){ afficherOnglet('etudes'); }
-    return;
-  }
-
-  if(cible.startsWith('article=')){
+  // Un lien #etude=, #article= ou #livre= est résolu sur toutes les
+  // collections : un préfixe erroné n'égare plus le visiteur.
+  const correspondance = cible.match(/^(etude|article|livre)=/);
+  if(correspondance){
+    const prefixe = correspondance[1];
+    const brut = cible.slice(correspondance[0].length);
     try{
-      const brut = cible.slice('article='.length);
-      // Vérifier si c'est un livre qui a été partagé avec le mauvais préfixe
-      const livre = trouverLivre(brut);
-      if(livre){
-        history.replaceState(null, '', location.pathname + location.search + ancreLivre(livre.title));
-        afficherArticle(livre.title);
-        return;
-      }
-      const article = trouverArticle(brut);
-      if(article){
-        afficherArticle(article.title);
-      } else {
-        const etude = trouverEtude(brut);
-        if(etude){
-          history.replaceState(null, '', location.pathname + location.search + ancreEtude(etude.id));
-          afficherEtude(etude.id);
-          return;
-        }
-        reseterMetaPartage();
-        afficherOnglet('articles');
-        window.scrollTo(0, 0);
-      }
+      if(ouvrirPublication(brut)) return;
     }
-    catch(e){ afficherOnglet('articles'); }
-    return;
-  }
-
-  if(cible.startsWith('livre=')){
-    try{
-      const brut = cible.slice('livre='.length);
-      const livre = trouverLivre(brut);
-      if(livre){
-        afficherArticle(livre.title);
-      } else {
-        reseterMetaPartage();
-        afficherOnglet('livres');
-        window.scrollTo(0, 0);
-      }
-    }
-    catch(e){ afficherOnglet('livres'); }
+    catch(e){}
+    reseterMetaPartage();
+    afficherOnglet(prefixe === 'etude' ? 'etudes' : (prefixe === 'livre' ? 'livres' : 'articles'));
+    window.scrollTo(0, 0);
     return;
   }
 
@@ -2594,7 +2652,7 @@ function construireIndexRecherche(){
       title: e.titre,
       desc: extraireExtrait(e.contenu, 180),
       meta: e.date || '',
-      hash: '#etude=' + encodeURIComponent(identifiantSur(e.id))
+      hash: ancreDePublication(e)
     }, e.contenu);
   });
   [...ARTICLES, ...LIVRES].forEach(a => {
@@ -2603,7 +2661,7 @@ function construireIndexRecherche(){
       title: a.title,
       desc: a.description || '',
       meta: a.category + ' · ' + a.date,
-      hash: LIVRES.includes(a) ? ancreLivre(a.title) : ancreArticle(a.title)
+      hash: ancreDePublication(a)
     }, (window.ARTICLES_CONTENU || {})[a.title] || '');
   });
   PUBLICATIONS.forEach(p => {
