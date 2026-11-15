@@ -369,6 +369,100 @@ function mettreEnValeurTextesOriginaux(contenu) {
 
 const ETUDES_BIBLIQUES = [
   {
+    id: "tourner-autour-du-defunt",
+    titre: "Tourner autour du défunt : entre traditions humaines et enseignement biblique",
+    date: "15/11/2026",
+    image: "images/tourner-autour-du-defunt.jpg",
+    resume: "Une étude des rites funéraires et de la circumambulation autour du défunt, examinés à la lumière des Écritures et du contexte hébreu et grec.",
+    contenu: `
+      <p>Dans de nombreuses cérémonies funéraires africaines, notamment au Gabon, la veillée mortuaire comporte un moment devenu presque incontournable : hommes et femmes sont invités à faire le tour du cercueil pour rendre un dernier hommage au défunt.</p>
+      <p>Cette pratique s’inscrit dans un héritage de traditions ancestrales que les peuples du Gabon s’efforcent de préserver et de transmettre. Elle est souvent vécue comme une véritable tradition. En effet, c’est le dernier moment pendant lequel la famille et les proches peuvent se recueillir autour du défunt avant que celui-ci ne soit emmené dans sa dernière demeure, le cimetière. Or, pour le chrétien, la question se pose : cette tradition relève-t-elle de la coutume ou de la foi ? Cette étude se limitera à son examen à la lumière des Écritures, en tenant compte du contexte hébreu et grec.</p>
+      <p>Par conséquent, le chrétien, appelé à être « la lumière du monde » (Matthieu 5 : 14), peut-il participer à cette pratique de tourner autour du défunt ?</p>
+      <p>Cette étude a pour objectif d’examiner l’origine et le sens de cette pratique, puis de déterminer, à la lumière de la Bible, l’attitude que le croyant est appelé à adopter.</p>
+      <p>Pour ce faire, nous définirons d’abord le concept, son origine et ses différents sens. Ensuite, nous verrons comment les Hébreux et les juifs du temps de l’empire romain pratiquaient les rites funéraires, avant d’examiner ce que l’enseignement biblique dit de cette pratique.</p>
+
+      <h3>1. Définition du concept</h3>
+      <p>« Tourner autour du défunt » désigne, au Gabon, un rite spécifique de la veillée mortuaire : les proches, hommes et femmes, font le tour du cercueil afin de rendre au défunt un dernier hommage avant l’inhumation.</p>
+      <p>Ce tour, généralement mené par les personnes âgées, suit un circuit précis, dans le sens inverse des aiguilles d’une montre. Il se déroule dans un silence recueilli, parfois accompagné de chants religieux, et il est fréquemment interrompu par des cris et des pleurs de ceux qui réalisent qu’ils ne reverront plus cette personne parmi les vivants. En outre, il s’accompagne aussi, dans certains cas, de signes de croix catholiques.</p>
+
+      <h4>Son origine et ses différents sens</h4>
+      <p>La pratique de tourner autour d’un corps sans vie lors d’une veillée mortuaire, bien que spécifique à certaines cultures, tire ses origines de traditions anciennes liées aux rituels funéraires et aux croyances spirituelles. Cette pratique, souvent appelée circumambulation, varie selon les contextes culturels, religieux et géographiques, mais elle repose généralement sur des significations symboliques profondes. Voici une explication concise de ses origines possibles :</p>
+      <p><strong>Symbolisme spirituel et protection :</strong> Dans de nombreuses cultures, tourner autour du défunt est un acte rituel destiné à honorer l’âme du mort, à faciliter son passage vers l’au-delà ou à protéger le corps et les vivants des mauvais esprits<sup class="note-marque" tabindex="0" data-note="Source : https://www.encyclopedia.com/environment/encyclopedias-almanacs-transcripts-and-maps/circumambulation">1</sup>. Par exemple, dans certaines traditions africaines ou asiatiques, ce geste peut être perçu comme une façon de créer une barrière spirituelle ou de purifier l’espace.</p>
+      <p><strong>Rituels préhistoriques et animistes :</strong> Les origines de cette pratique remontent souvent à des croyances animistes, où le mouvement circulaire était associé à des cycles naturels (vie, mort, renaissance) ou à des rituels pour apaiser les esprits. Marcher en cercle autour du corps peut symboliser l’accompagnement de l’âme dans son voyage ou la connexion entre le monde des vivants et celui des morts<sup class="note-marque" tabindex="0" data-note="Source : https://www.academia.edu/130168680/Death_Rites_and_Dance_Performance_among_the_Saoras_of_Odisha_a_Funeral_March_at_the_Festival_of_Indigenous_Cultures">2</sup>.</p>
+      <p><strong>Influences religieuses :</strong> Dans certaines religions, comme l’hindouisme ou le bouddhisme, la circumambulation (parikrama ou pradakshina) autour d’un objet sacré ou d’un corps est un acte de respect et de dévotion. Dans le contexte funéraire, cela peut être adapté pour honorer le défunt ou pour invoquer des bénédictions divines pour son âme<sup class="note-marque" tabindex="0" data-note="Source : https://www.encyclopedia.com/environment/encyclopedias-almanacs-transcripts-and-maps/circumambulation">3</sup>.</p>
+      <p><strong>Traditions locales :</strong> Dans certaines communautés, tourner autour du corps peut être associé à des danses ou des chants funéraires spécifiques, intégrés dans des rituels pour célébrer la vie du défunt ou pour marquer la transition entre la vie et la mort<sup class="note-marque" tabindex="0" data-note="https://beep.ird.fr/collect/inseps/index/assoc/MI12-22.dir/MI12-22.pdf">4</sup>. Par exemple, dans certaines cultures ouest-africaines, les danses rituelles autour du corps sont un moyen d’exprimer le deuil tout en célébrant la mémoire.</p>
+
+      <h3>2. Pratiques chez les Hébreux et les Juifs du temps de l’Empire romain</h3>
+      <p>Comme mentionné précédemment, les pratiques mortuaires varient selon les peuples. Dans les textes de l’Ancienne Alliance, les Écritures ne présentent pas d’hommes tournant autour d’un corps sans vie. Il y est plutôt fait la description de pratiques de deuil et de sépulture assez particulières : pleurs, jeûne, déchirement des vêtements, sac et cendres, lavage et onction du corps, enveloppement dans un linceul, puis inhumation rapide. Nous illustrerons notre propos avec des événements décrits dans la Bible.</p>
+
+      <h4>Deuil et manifestation de douleur</h4>
+      <p>Il était courant d’observer dans l’Écriture, lorsqu’un Hébreu mourait, que son décès était ponctué par le déchirement des vêtements, le port du sac et de la cendre.</p>
+      <p>Lorsque Ya’aqov (Jacob) pensait que son fils était mort, il déchira ses vêtements, mit le sac et la cendre et pleura beaucoup :</p>
+      <blockquote>
+        <p>Yaacov la reconnut et dit : C’est la tunique de mon fils ! Une bête féroce l’a dévoré ! Déchirer, Yossef a été déchiré ! Et Yaacov déchira ses vêtements, il mit un sac sur ses reins et il porta le deuil de son fils durant plusieurs jours. Tous ses fils et toutes ses filles vinrent pour le consoler, mais il rejeta toute consolation. Il disait : C’est en pleurant que je descendrai vers mon fils dans le shéol ! C’est ainsi que son père le pleurait.<sup class="note-marque" tabindex="0" data-note="Les versets bibliques sont extraits de La Bible de Yéhoshoua. Si notre version de Bible est utilisée, nous la citerons.">5</sup></p>
+        <cite>Genèse 37 : 33-35 — BYM</cite>
+      </blockquote>
+      <p>À l’annonce de la mort de Sha’uwl et de ses fils, David et ses hommes déchirèrent leurs vêtements, se lamentèrent et pleurèrent jusqu’au soir :</p>
+      <blockquote>
+        <p>David saisit ses vêtements et les déchira, et tous les hommes qui étaient avec lui firent de même. Ils se lamentèrent, pleurèrent et jeûnèrent jusqu’au soir sur Shaoul, sur Yehonathan, son fils, sur le peuple de YHWH et sur la maison d’Israël, parce qu’ils étaient tombés par l’épée.</p>
+        <cite>2 Samuel 1 : 11-12</cite>
+      </blockquote>
+      <p>De même, lorsque le roi David apprit la mort d’Abnér, fils de Nér, il demanda au peuple de déchirer ses vêtements, de se ceindre et de se lamenter :</p>
+      <blockquote>
+        <p>David dit à Yoab et à tout le peuple qui était avec lui : Déchirez vos vêtements, ceignez-vous de sacs et lamentez-vous devant Abner ! Et le roi David marchait derrière le cercueil.</p>
+        <cite>2 Samuel 3 : 31</cite>
+      </blockquote>
+
+      <h4>Durée et jeûne du deuil</h4>
+      <p>La durée du deuil variait selon le contexte :</p>
+      <ul>
+        <li>Yôséph (Joseph) et sa famille font un deuil de sept jours pour Ya’aqov, leur père, dans l’aire d’Athad (Genèse 50 : 10) ;</li>
+        <li>Les habitants de Yabesh en Galaad jeûnent sept jours après avoir enseveli Sha’uwl et ses fils (1 Samuel 31 : 13) ;</li>
+        <li>Tous les enfants de Yisra’él pleurèrent ‘Aharôn trente jours (Nombres 20 : 29) ;</li>
+        <li>De même, les enfants de Yisra’él pleurèrent Moshèh (Moïse) trente jours dans les plaines de Moab (Deutéronome 34 : 8).</li>
+      </ul>
+
+      <h4>Préparation du corps</h4>
+      <p>Dans les Évangiles, il était coutume de procéder au lavage du corps avant son ensevelissement. En effet, avant la mort du Seigneur Yehowshou’a ha-Mashiya’h (Jésus-Christ), une femme brise un vase d’albâtre, rempli d’un baume de nard, vrai et très coûteux (Marc 14 : 8). Au jour de sa résurrection, les femmes venaient au tombeau pour l’oindre avec des aromates (Marc 16 : 1) ; toutefois, il n’y était plus. Cet événement montre clairement qu’il s’agissait d’une habitude établie, car les parfums permettaient d’atténuer les odeurs du corps en pleine décomposition. De plus, dans Jean 19 : 39-40, la Bible précise :</p>
+      <blockquote>
+        <p>Or Nikodemos qui, étant venu de nuit vers Yéhoshoua en premier, vint aussi, apportant un mélange de myrrhe et d’aloès d’environ 100 livres. Ils prirent donc le corps de Yéhoshoua et l’enveloppèrent de petites étoffes de lin, avec des aromates, comme les Juifs ont coutume d’ensevelir.</p>
+        <cite>Jean 19 : 39-40</cite>
+      </blockquote>
+      <p>Nous voyons bien qu’il s’agissait d’une coutume en Yisra’él pour parfumer le défunt, et qu’ils ne pratiquaient pas des rituels consistant à tourner autour des morts en signe de rendre un dernier hommage au défunt. Il convient toutefois de préciser que l’évocation de ces usages n’a pas pour but d’inviter le croyant à reproduire la culture juive. Le deuil demeure en grande partie une expression culturelle qui varie selon les époques et les peuples. L’enjeu pour le disciple n’est donc pas d’importer des coutumes étrangères, mais de veiller à ce que ses pratiques culturelles respectent les limites fixées par la Parole d’Èlohiym, sans jamais glisser vers des rituels d’inspiration spirituelle ou païenne.</p>
+
+      <h3>3. Que dit la Bible ?</h3>
+      <p>Face à toutes ces pratiques issues du paganisme, les apôtres du Seigneur Yehowshou’a ha-Mashiya’h nous invitent, par leurs écrits, à se démarquer des habitudes du monde fortement ancrées dans nos sociétés. En effet, bien qu’étant dans ce monde, nous ne sommes pas de ce monde. Ainsi, pour avoir part à notre cité céleste, nous devons vivre selon les principes et les valeurs du Royaume des Cieux. La foi que nous confessons est d’essence céleste, inspirée d’Èlohiym, ce qui fait que notre foi est indissociablement liée aux Écritures.</p>
+      <p>La Bible enseigne que notre Seigneur a fait de nous un peuple saint et mis à part pour lui afin d’annoncer les vertus de son Royaume :</p>
+      <blockquote>
+        <p>Mais, comme celui qui vous a appelés est saint, vous aussi de même soyez saints dans toute conduite.</p>
+        <cite>1 Pierre 1 : 15</cite>
+      </blockquote>
+      <blockquote>
+        <p>Mais vous, vous êtes une race élue, une prêtrise royale, une nation sainte, un peuple acquis, afin que vous proclamiez les vertus de celui qui vous a appelés de la ténèbre à sa merveilleuse lumière.</p>
+        <cite>1 Pierre 2 : 9</cite>
+      </blockquote>
+      <blockquote>
+        <p>Yohanan aux sept assemblées qui sont en Asie : à vous grâce et shalôm, de la part de l’Étant, et l’Était et le Venant, et de la part des sept Esprits qui sont devant son trône, et de la part de Yéhoshoua Mashiah, le témoin fidèle, le premier-né d’entre les morts et le chef des rois de la Terre. À celui qui nous a aimés et qui nous a lavés de nos péchés dans son sang, et qui a fait de nous des rois et des prêtres pour Elohîm, son Père, à lui soient la gloire et la force souveraine pour les âges des âges. Amen !</p>
+        <cite>Apocalypse 1 : 4-6</cite>
+      </blockquote>
+      <p>En tant que membre de ce peuple, nous devons laisser notre intelligence être renouvelée par le Saint-Esprit pour être métamorphosés. C’est ainsi que nous allons comprendre la volonté d’Èlohiym :</p>
+      <blockquote>
+        <p>Je vous exhorte donc, frères, à travers les compassions d’Elohîm, à présenter vos corps en sacrifice vivant, saint, agréable à Elohîm : c’est votre service sacré spirituel. Et ne vous conformez pas à cet âge-ci, mais soyez transformés par le renouvellement de votre pensée, pour que vous examiniez quelle est la volonté d’Elohîm, ce qui est bon, agréable et parfait.</p>
+        <cite>Romains 12 : 1-2</cite>
+      </blockquote>
+      <blockquote>
+        <p>Mais vous, ce n’est pas ainsi que vous avez appris le Mashiah, si toutefois vous l’avez entendu et avez été instruits par lui, conformément à la vérité qui est en Yéhoshoua : à vous débarrasser pour ce qui est de votre conduite précédente, du vieil être humain qui se corrompt selon les désirs de la tromperie, à vous laisser renouveler par l’Esprit dans votre pensée, et à vous revêtir du nouvel être humain, créé selon Elohîm dans une justice et une sainteté de la vérité.</p>
+        <cite>Éphésiens 4 : 20-24</cite>
+      </blockquote>
+      <p>En somme, toutes les valeurs sociétales que nous avons reçues et qui peuvent sembler appréciables et agréables aux yeux des hommes, si elles ne sont pas encore en adéquation avec la culture du Royaume des Cieux de notre Seigneur Yehowshou’a ha-Mashiya’h, ne sont pas issues de la foi, mais du monde. À cet effet, tout ce qui vient du monde, nous avons l’obligation de le rejeter systématiquement si nous voulons nous conserver purs devant le Seigneur de Gloire. Comme le Seigneur le déclarait aux apôtres :</p>
+      <blockquote>
+        <p>Étant allés donc, faites de toutes les nations des disciples, les baptisant pour le nom du Père et du Fils et du Saint-Esprit, leur enseignant à garder tout ce que je vous ai ordonné. Et voici moi, je suis avec vous tous les jours jusqu’à l’achèvement de l’âge. Amen !</p>
+        <cite>Matthieu 28 : 19-20</cite>
+      </blockquote>
+
+    `
+  },
+  {
     id: "oeuvre-elohiym-grace-et-appel",
     titre: "L’œuvre d’Èlohiym : une affaire de grâce et d’appel",
     date: "12/10/2026",
