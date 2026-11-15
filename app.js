@@ -1244,6 +1244,10 @@ function ancreLivre(titre){
   return '#livre=' + encodeURIComponent(titre).replace(/'/g, '%27');
 }
 
+function ancreEtude(identifiant){
+  return '#etude=' + encodeURIComponent(identifiantSur(identifiant));
+}
+
 function urlInterneSure(url){
   const s = String(url || '').trim();
   if(!s || s === '#') return '#';
@@ -1664,9 +1668,38 @@ function trouverArticle(identifiantOuTitre){
   return null;
 }
 
+function trouverEtude(identifiantOuTitre){
+  if(!identifiantOuTitre) return null;
+  let brut = String(identifiantOuTitre).trim();
+  let decode = brut;
+  try { decode = decodeURIComponent(brut); } catch(e){}
+
+  let trouve = ETUDES_BIBLIQUES.find(e => e.id === decode || e.id === brut || e.titre === decode || e.titre === brut);
+  if(trouve) return trouve;
+
+  const slugRecherche = slugifier(decode);
+  trouve = ETUDES_BIBLIQUES.find(e => slugifier(e.id) === slugRecherche || slugifier(e.titre) === slugRecherche);
+  if(trouve) return trouve;
+
+  const normRecherche = normaliserChaineComparaison(decode);
+  trouve = ETUDES_BIBLIQUES.find(e => normaliserChaineComparaison(e.titre) === normRecherche);
+  if(trouve) return trouve;
+
+  if(normRecherche.length >= 4){
+    trouve = ETUDES_BIBLIQUES.find(e => {
+      const normEtude = normaliserChaineComparaison(e.titre);
+      return normEtude.startsWith(normRecherche) || normEtude.includes(normRecherche) || normRecherche.includes(normEtude);
+    });
+    if(trouve) return trouve;
+  }
+
+  return null;
+}
+
 function construireActionsPartage(titre){
   const livre = trouverLivre(titre);
-  const ancre = livre ? ancreLivre(livre.title) : ancreArticle(titre);
+  const etude = livre ? null : trouverEtude(titre);
+  const ancre = livre ? ancreLivre(livre.title) : (etude ? ancreEtude(etude.id) : ancreArticle(titre));
   const url = new URL(ancre, window.location.href).href;
   const message = `Je vous recommande cette lecture : ${titre} — ${url}`;
   const urlEncodee = encodeURIComponent(url);
@@ -2317,6 +2350,12 @@ function naviguerDepuisHash(){
       if(article){
         afficherArticle(article.title);
       } else {
+        const etude = trouverEtude(brut);
+        if(etude){
+          history.replaceState(null, '', location.pathname + location.search + ancreEtude(etude.id));
+          afficherEtude(etude.id);
+          return;
+        }
         reseterMetaPartage();
         afficherOnglet('articles');
         window.scrollTo(0, 0);
