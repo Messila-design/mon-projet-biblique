@@ -161,8 +161,9 @@ function createServer() {
         return;
       }
 
-      // Le HTML est relu pour y injecter le nonce sur les scripts inline.
-      if (name === 'index.html') {
+      // Le HTML est relu pour y injecter le nonce sur les scripts inline
+      // (page principale et pages d'apercu p/*.html).
+      if (name.endsWith('.html')) {
         const html = await fs.promises.readFile(realFile, 'utf8');
         const avecNonce = injecterNonce(html, nonce);
         const buffer = Buffer.from(avecNonce, 'utf8');

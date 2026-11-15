@@ -7,6 +7,9 @@ nul
 # Dependances
 node_modules/
 
+# Dossier de publication genere par npm run build
+dist/
+
 # Fichiers temporaires de l'IDE
 .idea/workspace.xml
 *.log

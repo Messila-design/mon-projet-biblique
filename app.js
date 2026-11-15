@@ -745,7 +745,7 @@ const ETUDES_BIBLIQUES = [
       </ul>
 
       <p>Désolé pour la longueur du texte. Cependant, j'ai la conviction qu'il vous fera du bien, comme moi-même j'ai été édifié dessus.</p>
-      <p style="font-size:12px; color:var(--text-soft); margin-top:1.5em;">Source de l'illustration : <a href="https://www.24heures.ch/sante-mentale-le-pervers-narcissique-capable-de-tout-coupable-de-rien-835983095149" target="_blank" rel="noopener">24heures.ch</a></p>
+      <p style="font-size:12px; color:var(--text-soft); margin-top:1.5em;">Source de l'illustration : <a href="https://www.24heures.ch/sante-mentale-le-pervers-narcissique-capable-de-tout-coupable-de-rien-835983095149" target="_blank" rel="noopener noreferrer">24heures.ch</a></p>
     `
   },
   {

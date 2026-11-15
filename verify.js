@@ -83,6 +83,12 @@ if (liensInvalides.length) {
 if (/lamed\.code/i.test(html)) {
   throw new Error('index.html référence encore le domaine inexistant lamed.code.');
 }
+if (!/<meta http-equiv="Content-Security-Policy"/.test(html)) {
+  throw new Error('index.html doit définir une politique de sécurité du contenu (CSP).');
+}
+if (!/<meta name="referrer" content="strict-origin-when-cross-origin">/.test(html)) {
+  throw new Error('index.html doit définir une politique de référent stricte.');
+}
 const imageDefaut = urlAbsolue(IMAGE_DEFAUT);
 if (!html.includes(`content="${imageDefaut}"`)) {
   throw new Error(`index.html doit référencer l'image de partage par défaut : ${imageDefaut}`);
@@ -121,6 +127,8 @@ for (const publication of toutes) {
     `<meta property="og:image" content="${echapperHtml(imageAbsolue)}">`,
     `<meta property="og:url" content="${echapperHtml(publication.urlPage)}">`,
     `<meta name="twitter:image" content="${echapperHtml(imageAbsolue)}">`,
+    `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; script-src 'unsafe-inline'">`,
+    `<meta name="referrer" content="no-referrer">`,
     `<script>window.location.replace(${JSON.stringify(publication.urlCanonique)});</script>`
   ];
   for (const attendu of attendus) {

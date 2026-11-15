@@ -12,6 +12,7 @@ const SOURCE_DEFAUT = path.join(RACINE, 'images', 'pub-1.jpg');
 const LARGEUR = 1200;
 const HAUTEUR = 630;
 const POIDS_MAX = 300 * 1024;
+const CSP_PARTAGE = "default-src 'none'; base-uri 'none'; form-action 'none'; script-src 'unsafe-inline'";
 
 function estDansRacine(chemin) {
   const relatif = path.relative(RACINE, chemin);
@@ -58,6 +59,8 @@ function construirePage(publication, imageRelative) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="${CSP_PARTAGE}">
+  <meta name="referrer" content="no-referrer">
   <title>${titre} — Laméd</title>
   <meta name="description" content="${description}">
   <link rel="canonical" href="${urlCanonique}">
@@ -114,7 +117,11 @@ async function main() {
   console.log(`OK — ${toutes.length} page(s) de partage et image(s) générées (${SITE_URL}).`);
 }
 
-main().catch(erreur => {
-  console.error('Impossible de générer les pages de partage :', erreur);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch(erreur => {
+    console.error('Impossible de générer les pages de partage :', erreur);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { main };
